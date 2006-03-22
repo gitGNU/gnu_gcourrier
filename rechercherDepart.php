@@ -115,21 +115,21 @@ $eDate2 = $_POST['eDate2'];
 $ext = $_POST['ext'];
 
 
-$requetetmp = "SELECT depart.id as idCourrier,
-		   depart.libelle as libelle,
-		   depart.dateArrivee as dateArrivee,
-		   depart.dateArchivage as dateArchivage ";
-$from ="    FROM depart ";
-$where =" WHERE depart.validite = 0 ";
+$requetetmp = "SELECT courrier.id as idCourrier,
+		   courrier.libelle as libelle,
+		   courrier.dateArrivee as dateArrivee,
+		   courrier.dateArchivage as dateArchivage ";
+$from ="    FROM courrier ";
+$where =" WHERE courrier.validite = 0 and courrier.type=2";
 
 
 if(strcmp($libelle,"")!=0){
-	$requete.= " and depart.libelle = '".$libelle."' ";
+	$requete.= " and courrier.libelle = '".$libelle."' ";
 
 }
 
 if(strcmp($numero,"")!=0){
-	$requete.= " and depart.id = '".$numero."' ";
+	$requete.= " and courrier.id = '".$numero."' ";
 
 }
 
@@ -142,14 +142,14 @@ if(strcmp($date,"jj-mm-aaaa")!=0){
 	$tmpdate.=substr($date, 0,2);
 	$date = $tmpdate;
 
-	$requete.= " and depart.dateArrivee = '".$date."' ";
+	$requete.= " and courrier.dateArrivee = '".$date."' ";
 
 }
 
 
 if(strcmp($ext,"rien")!=0){
 	$from .= " ,destinataire";
-	$requete.=" and depart.idDestinataire = destinataire.id and destinataire.id = ".$ext." ";
+	$requete.=" and courrier.idDestinataire = destinataire.id and destinataire.id = ".$ext." ";
 
 }
 
@@ -170,7 +170,7 @@ $tmpdate.='-';
 $tmpdate.=substr($eDate2, 0,2);
 $eDate2 = $tmpdate;
 
-$requete.=" and depart.dateArrivee >='".$eDate1."' and depart.dateArrivee<='".$eDate2."' ";
+$requete.=" and courrier.dateArrivee >='".$eDate1."' and courrier.dateArrivee<='".$eDate2."' ";
 		
 }
 

@@ -20,7 +20,6 @@ along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 author VELU Jonathan
-test
 */
 
 require("connexion.php");
@@ -38,17 +37,12 @@ session_start();
 	</center>
 		<br>
 
-<form method = POST action=voirCourrierAffiche.php>
-<table align=center style="border:1px solid black;"><tr><td>
-<label>nombre de courrier a afficher : </label><input type = text name=affiche value=5 size=2></input><input type=submit name=ok value=ok></input>
-</td></tr></table>
-</form>
 <?php
 echo "<center><div id= titre>Courrier Entrant</div></center><br>";
 
 if(!isset( $_GET['id'] )){
 
-$re = "select max(id)as id from courrier;";
+$re = "select max(id)as id from courrier where type = 1;";
 $res = mysql_query( $re ) or die (mysql_error() );
 while($ligne = mysql_fetch_array( $res ) ){
 	$id = $ligne['id']; 
@@ -61,7 +55,6 @@ else{
 	$idTmp = $_GET['id'];
 }
 
-
 if(!isset( $_GET['nbAffiche'] )){
 	$nbAffiche=5; 
 }
@@ -70,9 +63,24 @@ else{
 	$nbAffiche = $_GET['nbAffiche'];
 }
 
+?>
+<form method = POST action=voirCourrierAffiche.php>
+<table align=center style="border:1px dotted black;"><tr><td>
+<label>nombre de courrier a afficher : </label>
+
+<?php 
+echo"<input type = text name=affiche value=".$nbAffiche." size=2></input>";
+echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
+?>
+
+<input type=submit name=ok value=ok></input>
+</td></tr></table>
+</form>
 
 
 
+
+<?php
 if(strcmp($_SESSION['login'] , 'admin') == 0){
 	$requeteEntrant ="select courrier.id as idCourrier,
                                   priorite.nbJours as nbJours,
@@ -82,12 +90,17 @@ if(strcmp($_SESSION['login'] , 'admin') == 0){
 				  destinataire.prenom as prenomDestinataire,
 				  courrier.libelle as libelleCourrier
 		   	   from courrier,priorite,destinataire		          
-			   where courrier.validite = 0			 
+			   where courrier.id<=".$idTmp." 
+			   and courrier.validite = 0			 
 			   and courrier.idPriorite = priorite.id
 			   and courrier.idDestinataire = destinataire.id
+			   and courrier.type = 1
 		           order by courrier.id DESC
 			   LIMIT ".$nbAffiche.";";}
 else{
+
+
+
 
 	$requeteEntrant = "select courrier.id as idCourrier,
                                   priorite.nbJours as nbJours,
@@ -102,8 +115,10 @@ else{
 			   and courrier.serviceCourant = ".$_SESSION['idService']."
 			   and courrier.idPriorite = priorite.id
 			   and courrier.idDestinataire = destinataire.id
+			   and courrier.type = 1
 		           order by courrier.id DESC
 			   LIMIT ".$nbAffiche.";";
+
 }
 
 $resultatEntrant = mysql_query($requeteEntrant) or die("erreur rEntrant ".mysql_error());
@@ -141,8 +156,8 @@ while( $ligne = mysql_fetch_array($resultatEntrant) ){
 
 
 	echo"<tr>";
-
 	$idCourrier = $ligne['idCourrier'];
+	$idTmp = $idCourrier;
 	$destinataire = $ligne['nomDestinataire']." ".$ligne['prenomDestinataire'];
 	$tmpdateArrivee = $ligne['dateArrivee']; 
 	$dateArrivee=substr($tmpdateArrivee,8,2)."-".substr($tmpdateArrivee,5,2)."-".substr($tmpdateArrivee,0,4);
@@ -156,15 +171,15 @@ while( $ligne = mysql_fetch_array($resultatEntrant) ){
 	echo "<td bgcolor=".$couleur.">".$observation."</td>";	
 	
 	
-	echo"<td bgcolor=".$couleur."><a href=chemin.php?idCourrier=".$idCourrier.">historique</a></td>";
+	echo"<td bgcolor=".$couleur."><a href=chemin.php?idCourrier=".$idCourrier."&affiche=".$nbAffiche.">historique</a></td>";
 
 	if(strcmp($_SESSION['login'] , 'admin') != 0){
-		echo"<td bgcolor=".$couleur."><a href=transmettre.php?idCourrier=".$idCourrier.">transmettre</a></td>";
+		echo"<td bgcolor=".$couleur."><a href=transmettre.php?idCourrier=".$idCourrier."&affiche=".$nbAffiche.">transmettre</a></td>";
 		echo"<td bgcolor=".$couleur."><a href=valider.php?idCourrier=".$idCourrier.">terminer</a></td>";
 	}
 
 	if($ack == 0)
-		echo"<td bgcolor=".$couleur."><a href=avtAccuse.php?idCourrier=".$idCourrier.">creer</a></td>";
+		echo"<td bgcolor=".$couleur."><a href=avtAccuse.php?idCourrier=".$idCourrier."&nbAffiche=".$nbAffiche.">creer</a></td>";
 	
 	else
 		echo"<td bgcolor=".$couleur.">X</td>";
@@ -197,13 +212,17 @@ while( $ligne = mysql_fetch_array($resultatEntrant) ){
 echo "</tr>";
 }//fin while
 echo "</table>";
-if(mysql_num_rows($resultatEntrant) == 5)
-	echo "<center><a href = voirCourrier.php?id=".$idTmp."&nbAffiche=".$nbAffiche."><b>page suivante</b></a></center>";
+$idTmp--;
+?>
+<br/>
+<center><a href="javascript:history.go(-1)"> <b>page precedente </b></a> &nbsp/
 
+<?php
+if(mysql_num_rows($resultatEntrant) == $nbAffiche){
+	echo "<a href = voirCourrier.php?id=".$idTmp."&nbAffiche=".$nbAffiche."><b>page suivante</b></a></center>";
+}
 
 ?>	
-
-
 <center><br>
 <a href = index.php>index</a><br><br>
 

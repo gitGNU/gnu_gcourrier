@@ -119,13 +119,13 @@ $date.=substr($tmpDate, 3,2);
 $date.='-';
 $date.=substr($tmpDate, 0,2);
 	
-$requeteCourrier = "insert into depart(libelle,dateArrivee,observation,idPriorite,idServiceCreation,idDestinataire,serviceCourant) values('".$libelle."','".$date."','".$observation."','".$priorite."','".$_SESSION['idService']."','".$destinataire."','".$service."');";
+$requeteCourrier = "insert into courrier(libelle,dateArrivee,observation,idPriorite,idServiceCreation,idDestinataire,serviceCourant,type) values('".$libelle."','".$date."','".$observation."','".$priorite."','".$_SESSION['idService']."','".$destinataire."','".$service."',2);";
 $resultatCourrier = mysql_query( $requeteCourrier ) or die ("erreur requete courrier :".mysql_error( ) );
 
 //Recuperation de l'id du courrier cree
 
 
-$requeteIdCourrier = "select id from depart order by id;";
+$requeteIdCourrier = "select id from courrier where type=2 order by id;";
 $resultatIdCourrier = mysql_query( $requeteIdCourrier ) or die ("erreur requete idCourrier".mysql_error( ) );
 while($ligne = mysql_fetch_array($resultatIdCourrier ) )
 	$idCourrier = $ligne['id'];
@@ -134,7 +134,7 @@ while($ligne = mysql_fetch_array($resultatIdCourrier ) )
 //transmission du courrier
 
 
-$requeteTransmis = "insert into estTransmisDepart( idService, idDepart,dateTransmission ) values('".$service."','".$idCourrier."','".date("Y-m-d")."');";
+$requeteTransmis = "insert into estTransmis( idService, idCourrier,dateTransmission ) values('".$service."','".$idCourrier."','".date("Y-m-d")."');";
 $resultatTransmis = mysql_query( $requeteTransmis ) or die ("erreur requete transmis ".mysql_error( ) );
 
 

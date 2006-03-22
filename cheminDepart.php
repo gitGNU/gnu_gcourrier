@@ -37,18 +37,19 @@ session_start();
 </center>
 
 <?php
+$affiche = $_GET['affiche'];
 $log = $_SESSION['login'];
 $idCourrier =  $_GET['idCourrier'];
 echo"<center>HISTORIQUE DU COURRIER DEPART NUMERO : ".$idCourrier."</center><br><br>";
 
 $requete = "select service.libelle as libService,
 		   service.designation as desService,
-		   estTransmisDepart.dateTransmission as dateTransmission
-	    from depart, estTransmisDepart,service
-	    where depart.id = estTransmisDepart.idDepart
-	    and depart.id = ".$idCourrier."
-	    and estTransmisDepart.idService = service.id
-	    order by estTransmisDepart.id ASC;";
+		   estTransmis.dateTransmission as dateTransmission
+	    from courrier, estTransmis,service
+	    where courrier.id = estTransmis.idCourrier
+	    and courrier.id = ".$idCourrier."
+	    and estTransmis.idService = service.id
+	    order by estTransmis.id ASC;";
 	
 	$boul = 0;
 	echo "<table align=center>";
@@ -91,7 +92,7 @@ while ( $ligne = mysql_fetch_array($result) ){
 	echo "<td bgcolor=".$couleur.">".$date."</td>";
 }
 echo "</table><br>";
-echo"<center><a href = voirCourrierDepart.php?id=".$idCourrier.">voir mes departs</a></center>";
+echo"<center><a href = voirCourrierDepart.php?id=".$idCourrier."&nbAffiche=".$affiche.">voir mon courrier</a></center>";
 
 ?>
 <br><br>

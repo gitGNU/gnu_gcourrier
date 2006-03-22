@@ -25,10 +25,7 @@ author VELU Jonathan
 require("connexion.php");
 session_start();
 
-
-
-$idCourrier = $_GET['idCourrier'];
-$date = date("Y-m-d");
-$requete = "update courrier set validite = 1, dateArchivage='".$date."' where id = ".$idCourrier." ;";
-$result = mysql_query( $requete ) or die (mysql_error( ));
-echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
+$affiche = $_POST['affiche'];
+$idTmp = $_POST['idTmp'];
+echo "<meta http-equiv=\"refresh\" content=\"0;url=voirCourrierDepart.php?id=".$idTmp."&nbAffiche=".$affiche."\">";
+?>

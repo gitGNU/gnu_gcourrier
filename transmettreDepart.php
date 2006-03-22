@@ -25,6 +25,7 @@ author VELU Jonathan
 require("connexion.php");
 session_start();
 
+$affiche = $_GET['affiche'];
 
 if(!isset( $_POST["enregistrer"])){
 ?>
@@ -57,7 +58,7 @@ if(!isset( $_POST["enregistrer"])){
 	<tr><td>Observation</td>
 	<td><textarea name=observation cols=30 rows=4>
 	<?php
-	$requete = "Select observation from depart where id = ".$idCourrier." ; ";
+	$requete = "Select observation from courrier where id = ".$idCourrier." ; ";
 	$result = mysql_query( $requete ) or die (mysql_error( ) );
 	$ligne = mysql_fetch_array( $result );
 echo $ligne['observation'];
@@ -71,7 +72,8 @@ echo $ligne['observation'];
 
 <center><br>
 <?php
-echo"<a href = voirCourrierDepart.php?id=".$idCourrier.">voir mon courrier</a><br><br>";
+
+echo"<a href = voirCourrierDepart.php?id=".$idCourrier."&nbAffiche=".$affiche.">voir mon courrier</a><br><br>";
 ?>
 </center>
 </div>
@@ -82,17 +84,17 @@ echo"<a href = voirCourrierDepart.php?id=".$idCourrier.">voir mon courrier</a><b
 $service = $_POST["service"];
 $idCourrier = $_POST["idCourrier"];
 
-$requete = "select * from estTransmisDepart where idDepart = ".$idCourrier.";";
+$requete = "select * from estTransmis where idCourrier = ".$idCourrier.";";
 $result = mysql_query($requete) or die(mysql_error() );
 
 
-$requete="insert into estTransmisDepart(dateTransmission,idDepart,idService) values('".date("Y-m-d")."','".$idCourrier."','".$service."');";
+$requete="insert into estTransmis(dateTransmission,idCourrier,idService) values('".date("Y-m-d")."','".$idCourrier."','".$service."');";
 
 
 $result=mysql_query($requete) or die(mysql_error());
 
 $observation = $_POST['observation'];
-$requete = "update depart set observation ='".$observation."',serviceCourant=".$service." where id =".$idCourrier.";";
+$requete = "update courrier set observation ='".$observation."',serviceCourant=".$service." where id =".$idCourrier.";";
 $result = mysql_query($requete) or die( mysql_error() );
 
 header("Location: voirCourrierDepart.php?id=".$idCourrier." ");

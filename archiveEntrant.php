@@ -120,7 +120,7 @@ $requetetmp = "SELECT courrier.id as idCourrier,
 		   courrier.dateArrivee as dateArrivee,
 		   courrier.dateArchivage as dateArchivage ";
 $from ="    FROM courrier ";
-$where =" WHERE courrier.validite = 1 ";
+$where =" WHERE courrier.validite = 1 and courrier.type=1";
 
 
 if(strcmp($libelle,"")!=0){

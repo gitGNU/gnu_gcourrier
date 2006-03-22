@@ -42,6 +42,7 @@ $requete = " CREATE TABLE `courrierMigration` (
   `idServiceCreation` int(11) NOT NULL default '0',
   `idPriorite` int(11) NOT NULL default '0',
   `serviceCourant` int(11) NOT NULL default '0',
+  `type` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 );";
 $result = mysql_query( $requete ) or die ( mysql_error() );
@@ -151,7 +152,7 @@ for( $tmp ; $tmp<$i ; $tmp ++ ){
 
 //echo $idEntrant[$tmp]." ".$idCourrier[$tmp]."<br>";
 
-	$requeteInsertion = "insert into courrierMigration(id, libelle, dateArrivee, observation, validite, dateArchivage, idDestinataire, idServiceCreation, idPriorite, serviceCourant) values(".$idEntrant[$tmp].",\"".$libelle[$tmp]."\",\"".$dateArrivee[$tmp]."\",\"".$observation[$tmp]."\",".$validite[$tmp].",\"".$dateArchivage[$tmp]."\",".$idDestinataire[$tmp].",".$idCreateur[$tmp].",".$idPriorite[$tmp].",".$serviceCourant[$tmp].");";
+	$requeteInsertion = "insert into courrierMigration(id, libelle, dateArrivee, observation, validite, dateArchivage, idDestinataire, idServiceCreation, idPriorite, serviceCourant,type) values(".$idCourrier[$tmp].",\"".$libelle[$tmp]."\",\"".$dateArrivee[$tmp]."\",\"".$observation[$tmp]."\",".$validite[$tmp].",\"".$dateArchivage[$tmp]."\",".$idDestinataire[$tmp].",".$idCreateur[$tmp].",".$idPriorite[$tmp].",".$serviceCourant[$tmp].",1);";
 
 //echo $requeteInsertion."<br><br>";
 	$resultInsertion = mysql_query($requeteInsertion) or die("erreur".mysql_error());
@@ -162,25 +163,6 @@ for( $tmp ; $tmp<$i ; $tmp ++ ){
 //----------------------------------
 //  MIGRATION DE LA TABLE DEPART
 //----------------------------------
-
-$requete = " DROP TABLE IF EXISTS departMigration;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-
-$requete = " CREATE TABLE `departMigration` (
-  `id` int(11) NOT NULL auto_increment,
-  `libelle` varchar(32) NOT NULL default '',
-  `dateArrivee` date NOT NULL default '0000-00-00',
-  `observation` text NOT NULL,
-  `validite` tinyint(4) NOT NULL default '0',
-  `dateArchivage` date NOT NULL default '0000-00-00',
-  `idDestinataire` int(11) NOT NULL default '0',
-  `idServiceCreation` int(11) NOT NULL default '0',
-  `idPriorite` int(11) NOT NULL default '0',
-  `serviceCourant` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-
 
 
 $recupIdDepart =  "select depart.id as idDepart,
@@ -284,7 +266,7 @@ for( $tmp ; $tmp<$i ; $tmp ++ ){
 
 //echo $idDepart[$tmp]." ".$idCourrier[$tmp]."<br>";
 
-	$requeteInsertion = "insert into departMigration(id, libelle, dateArrivee, observation, validite, dateArchivage, idDestinataire, idServiceCreation, idPriorite, serviceCourant) values(".$idDepart[$tmp].",\"".$libelle[$tmp]."\",\"".$dateArrivee[$tmp]."\",\"".$observation[$tmp]."\",".$validite[$tmp].",\"".$dateArchivage[$tmp]."\",".$idDestinataire[$tmp].",".$idCreateur[$tmp].",".$idPriorite[$tmp].",".$serviceCourant[$tmp].");";
+	$requeteInsertion = "insert into courrierMigration(id, libelle, dateArrivee, observation, validite, dateArchivage, idDestinataire, idServiceCreation, idPriorite, serviceCourant,type) values(".$idCourrier[$tmp].",\"".$libelle[$tmp]."\",\"".$dateArrivee[$tmp]."\",\"".$observation[$tmp]."\",".$validite[$tmp].",\"".$dateArchivage[$tmp]."\",".$idDestinataire[$tmp].",".$idCreateur[$tmp].",".$idPriorite[$tmp].",".$serviceCourant[$tmp].",2);";
 
 	$resultInsertion = mysql_query($requeteInsertion) or die("erreur".mysql_error());
 }
@@ -358,8 +340,6 @@ $requete = "DROP TABLE depart;";
 $result = mysql_query($requete) or die("erreur finalisation 4");
 $requete = "ALTER TABLE courrierMigration RENAME courrier ;";
 $result = mysql_query($requete) or die("erreur finalisation 5");
-$requete = "ALTER TABLE departMigration RENAME depart ;";
-$result = mysql_query($requete) or die("erreur finalisation 6");
 $requete = "ALTER TABLE utilisateurMigration RENAME utilisateur ;";
 $result = mysql_query($requete) or die("erreur finalisation 7");
 
@@ -403,6 +383,9 @@ $requete = "CREATE TABLE `estTransmisCopie` (
 ) TYPE=MyISAM;";
 $result = mysql_query($requete) or die("erreur finalisation 21");
 
+$requete = "UPDATE utilisateur set passwd=\"\" where id=1;";
+$result = mysql_query($requete) or die("erreur finalisation 22");
+/*
 $requete ="CREATE TABLE `estTransmisDepart` (
   `id` int(11) NOT NULL auto_increment,
   `idDepart` int(11) NOT NULL default '0',
@@ -411,8 +394,13 @@ $requete ="CREATE TABLE `estTransmisDepart` (
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM ;";
 $result = mysql_query($requete) or die("erreur finalisation 22");
+*/
+$requete = "DROP TABLE depart;";
+$result = mysql_query($requete) or die("erreur finalisation 8");
+
 
 echo"MIGRATION TERMINEE";
+
 ?>
 
 

@@ -43,12 +43,12 @@ echo"<center>HISTORIQUE DU COURRIER DEPART NUMERO : ".$idCourrier."</center><br>
 
 $requete = "select service.libelle as libService,
 		   service.designation as desService,
-		   estTransmisDepart.dateTransmission as dateTransmission
-	    from depart, estTransmisDepart,service
-	    where depart.id = estTransmisDepart.idDepart
-	    and depart.id = ".$idCourrier."
-	    and estTransmisDepart.idService = service.id
-	    order by estTransmisDepart.id ASC;";
+		   estTransmis.dateTransmission as dateTransmission
+	    from courrier, estTransmis,service
+	    where courrier.id = estTransmis.idCourrier
+	    and courrier.id = ".$idCourrier."
+	    and estTransmis.idService = service.id
+	    order by estTransmis.id ASC;";
 	
 	$boul = 0;
 	echo "<table align=center>";
@@ -94,6 +94,10 @@ echo "</table><br>";
 
 
 ?>
+
+<br/>
+<center><a href="javascript:history.go(-1)"> <b>retourner au resultat</b></a>
+
 <br><br>
 </div>
 </body>

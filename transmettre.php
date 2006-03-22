@@ -25,7 +25,7 @@ author VELU Jonathan
 require("connexion.php");
 session_start();
 
-
+$affiche = $_GET['affiche'];
 if(!isset( $_POST["enregistrer"])){
 ?>
 <html>
@@ -71,7 +71,7 @@ echo $ligne['observation'];
 
 <center><br>
 <?php
-echo"<a href = voirCourrier.php?id=".$idCourrier.">voir mon courrier</a><br><br>";
+echo"<a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$affiche.">voir mon courrier</a><br><br>";
 ?>
 </center>
 </div>

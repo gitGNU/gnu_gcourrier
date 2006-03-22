@@ -37,6 +37,7 @@ session_start();
 </center>
 
 <?php
+$affiche = $_GET['affiche'];
 $log = $_SESSION['login'];
 $idCourrier =  $_GET['idCourrier'];
 echo"<center>HISTORIQUE DU COURRIER NUMERO : ".$idCourrier."</center><br><br>";
@@ -91,7 +92,7 @@ while ( $ligne = mysql_fetch_array($result) ){
 	echo "<td bgcolor=".$couleur.">".$date."</td>";
 }
 echo "</table><br>";
-echo"<center><a href = voirCourrier.php?id=".$idCourrier.">voir mon courrier</a></center>";
+echo"<center><a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$affiche.">voir mon courrier</a></center>";
 
 ?>
 <br><br>

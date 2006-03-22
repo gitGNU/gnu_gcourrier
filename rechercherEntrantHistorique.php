@@ -94,6 +94,8 @@ echo "</table><br>";
 
 
 ?>
+<br/>
+<center><a href="javascript:history.go(-1)"> <b>retourner au resultat</b></a>
 <br><br>
 </div>
 </body>
