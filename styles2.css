@@ -1,0 +1,95 @@
+/*
+GCourrier
+Copyright (C) 2005,2006 CLISS XXI
+
+This file is part of GCourrier.
+
+GCourrier is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+GCourrier is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GCourrier; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+author VELU Jonathan
+*/
+
+A {
+color: black ;
+text-decoration: underline ;
+font-weight:bold;
+}
+A:link {
+color: black ;
+text-decoration: underline ;
+font-weight:bold;
+}
+A:hover {
+color: black ;
+text-decoration: underline ;
+font-weight:bold;
+}
+A:active {
+color: black;
+text-decoration: underline ;
+font-weight:bold;
+}
+A:visited {
+color: black ;
+text-decoration: underline ;
+font-weight:bold;
+}
+
+
+#page
+{
+color:black;
+background:white;
+border-left:5px solid black;
+border-right: 5px solid black;
+border-top : 5px solid black;
+border-bottom: 5px solid black;
+margin-left: 20%;
+margin-right:20%;
+margin-top:15%;//2.9%;//1.4%;
+}
+
+#pageGd
+{
+color:black;
+background:white;
+border-left:5px solid black;
+border-right: 5px solid black;
+border-top : 5px solid black;
+border-bottom: 5px solid black;
+margin-left: 20%;
+margin-right:20%;
+margin-top:10%;//2.9%;//1.4%;
+}
+
+#pageTGd
+{
+color:black;
+background:white;
+border-left:5px solid black;
+border-right: 5px solid black;
+border-top : 5px solid black;
+border-bottom: 5px solid black;
+margin-left: 20%;
+margin-right:20%;
+margin-top:5%;//2.9%;//1.4%;
+}
+
+body 
+{
+padding: 0;
+background: silver;
+color: black;
+}

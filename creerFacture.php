@@ -1,0 +1,133 @@
+<?php
+/*
+GCourrier
+Copyright (C) 2005,2006 CLISS XXI
+
+This file is part of GCourrier.
+
+GCourrier is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+GCourrier is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GCourrier; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+author VELU Jonathan
+*/
+
+require("connexion.php");
+session_start();
+
+
+if(!isset($_POST["enregistrer"])){
+?>
+<html>
+<head> <title>gCourrier</title>
+<LINK HREF="styles2.css" REL="stylesheet"></head>
+<body>
+<div id = pageTGd><br>
+	<center><img src = images/banniere2.jpg></img></center><br><br><br>
+	<table align = center>
+	<form name = creerFactureForm method = POST action = creerFacture.php>
+		<tr>
+		<td>Fournisseur</td>
+		<td><select name = fournisseur>
+		<?php
+		$requete = "select * from destinataire order by nom; ";
+		$result = mysql_query($requete) or die( mysql_error() );
+		while( $ligne = mysql_fetch_array( $result ) ){
+		    echo "<option value = '".$ligne['id']."'>".$ligne['nom']." ".$ligne['prenom']."</option>";
+		}
+		?>
+	</select><a href=creerDestinataire.php>creer</a></td></tr>
+		<tr>
+		<td>Reference facture</td>
+		<td><input type = text name = numFacture></input></td></tr>
+		<tr><td>Date mairie</td><td>
+		<?php
+			$dateToday = date("d-m-Y"); 
+			echo "<input type = text name= dateFacture value ='".$dateToday."'></input>";
+		?></td></tr>
+		<tr><td>Date facture</td><td>
+		<?php
+			$dateToday = date("d-m-Y"); 
+			echo "<input type = text name= dateFactureOrigine value ='".$dateToday."'></input>";
+		?></td></tr>		
+		
+		<tr><td>Montant</td>
+		<td><input type = text name = montant></input></td></tr>
+		<td>Priorite</td>
+		<td><select name = priorite>
+		<?php
+		$requete = "select * from priorite ; ";
+		$result = mysql_query($requete) or die( mysql_error() );
+		while( $ligne = mysql_fetch_array( $result ) ){
+		    echo "<option value = '".$ligne['id']."'>".$ligne['libelle']." ".$ligne['designation']."</option>";
+		}
+		?>
+	</select></td></tr>
+
+	
+		<tr>
+		<td>Observation</td>
+		<td><textarea name=observation cols=30 rows=4></textarea></td></tr>
+		
+		</table>
+		<center>
+		<input type = submit name = enregistrer value = enregistrer>
+		</center>
+	</form>
+
+<center><br>
+<a href = index.php>index</a><br><br>
+</div>
+</center>
+</body>
+</html>
+<?php
+
+}else{
+	$montant=$_POST["montant"];
+	$refFacture=$_POST["numFacture"];
+	$dateFacture=$_POST["dateFacture"];
+	$dateFactureOrigine=$_POST["dateFactureOrigine"];
+	$observation=$_POST["observation"];
+	$idServiceCreation = $_SESSION["idService"];
+	$idPriorite = $_POST["priorite"];
+	$idFournisseur = $_POST["fournisseur"];
+
+	$tmp= substr($dateFacture, 6,4);
+
+	$tmp.='-';
+	$tmp.=substr($dateFacture, 3,2);
+	$tmp.='-';
+	$tmp.=substr($dateFacture, 0,2);
+	$dateFacture = $tmp;
+	
+	$tmp2= substr($dateFactureOrigine, 6,4);
+	$tmp2.='-';
+	$tmp2.=substr($dateFactureOrigine, 3,2);
+	$tmp2.='-';
+	$tmp2.=substr($dateFactureOrigine, 0,2);
+	$dateFactureOrigine = $tmp2;
+
+$requeteCourrier = "insert into facture(montant,refFacture,dateFacture,dateFactureOrigine, observation,idServiceCreation,idPriorite,idFournisseur) values('".$montant."','".$refFacture."','".$dateFacture."','".$dateFactureOrigine."','".$observation."','".$idServiceCreation."','".$idPriorite."','".$idFournisseur."');";
+$resultatCourrier = mysql_query( $requeteCourrier ) or die ("erreur requete courrier :".mysql_error( ) );
+
+$requeteIdCourrier = "select id from courrier order by id;";
+$resultatIdCourrier = mysql_query( $requeteIdCourrier ) or die ("erreur requete idCourrier".mysql_error( ) );
+
+	while($ligne = mysql_fetch_array($resultatIdCourrier ))
+		$idCourrier = $ligne['id'];
+	
+
+echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
+}
+?>
