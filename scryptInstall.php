@@ -36,50 +36,27 @@ require("connexion.php");
 echo "<h3><font color = white><i>Installation en cours ...</i></font></h3>";
 echo "<h3><font color = white><i>Verification de la base de donnees ...</i></font></h3>";
 
-$requete = " DROP TABLE IF EXISTS retour;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS retourTmp;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS estTransmisCopie;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
 $requete = " DROP TABLE IF EXISTS courrier;";
 $result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS facture;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS entrant;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS depart;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS aModifier;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS chemin;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS envoyeA;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS estTransmis;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS aCreer;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
+
 $requete = " DROP TABLE IF EXISTS destinataire;";
 $result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS estImportant;";
+
+$requete = " DROP TABLE IF EXISTS estTransmis;";
 $result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS service;";
+
+$requete = " DROP TABLE IF EXISTS facture;";
 $result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS appartient;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS utilisateur;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS aMailer;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS estAffecte;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS compteMail;";
-$result = mysql_query( $requete ) or die ( mysql_error() );
+
 $requete = " DROP TABLE IF EXISTS priorite;";
 $result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = " DROP TABLE IF EXISTS mail;";
+
+$requete = " DROP TABLE IF EXISTS service;";
 $result = mysql_query( $requete ) or die ( mysql_error() );
+
+$requete = " DROP TABLE IF EXISTS utilisateur;";
+$result = mysql_query( $requete ) or die ( mysql_error() );
+
 
 echo "<h3><font color = white><i>Creation des tables ...</i></font></h3>";
 
@@ -88,89 +65,44 @@ $requete = "CREATE TABLE `estTransmisCopie` (
   `idFacture` int(11) NOT NULL default '0',
   `idService` int(11) NOT NULL default '0',
   `dateTransmission` date NOT NULL default '0000-00-00',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-
-$requete = "CREATE TABLE `retour` (
-  `id` int(11) NOT NULL auto_increment,
   `dateRetour` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`id`)
 );";
 $result = mysql_query( $requete ) or die ( mysql_error() );
 
-$requete = " CREATE TABLE `retourTmp` (
-  `id` int(11) NOT NULL auto_increment,
-  `idFacture` int(11) NOT NULL default '0',
-  `idRetour` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
 
 $requete = " CREATE TABLE `courrier` (
   `id` int(11) NOT NULL auto_increment,
   `libelle` varchar(32) NOT NULL default '',
   `dateArrivee` date NOT NULL default '0000-00-00',
   `observation` text NOT NULL,
-  `ack` tinyint(4) NOT NULL default '0',
   `validite` tinyint(4) NOT NULL default '0',
   `dateArchivage` date NOT NULL default '0000-00-00',
-  `estTransmis` int(11) NOT NULL default '0',
+  `idDestinataire` int(11) NOT NULL default '0',
+  `idServiceCreation` int(11) NOT NULL default '0',
+  `idPriorite` int(11) NOT NULL default '0',
+  `serviceCourant` int(11) NOT NULL default '0',
+  `type` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 );";
 $result = mysql_query( $requete ) or die ( mysql_error() );
 
 $requete = " CREATE TABLE `facture` (
   `id` int(11) NOT NULL auto_increment,
-  `idCourrier` int(11) NOT NULL default '0',
   `montant` varchar(32) NOT NULL default '',
   `refFacture` varchar(32) NOT NULL default '',
   `dateFacture` date NOT NULL default '0000-00-00',
   `dateFactureOrigine` date NOT NULL default '0000-00-00',
+  `observation` text NOT NULL,
+  `validite` tinyint(4) NOT NULL default '0',
+  `dateArchivage` date NOT NULL default '0000-00-00',
+  `idFournisseur` int(11) NOT NULL default '0',
+  `idServiceCreation` int(11) NOT NULL default '0',
+  `idPriorite` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 );";
 $result = mysql_query( $requete ) or die ( mysql_error() );
 
-$requete = " CREATE TABLE `entrant` (
-  `id` int(11) NOT NULL auto_increment,
-  `idCourrier` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-
-$requete = " 
-CREATE TABLE `depart` (
-  `id` int(11) NOT NULL auto_increment,
-  `idCourrier` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-
-$requete = " CREATE TABLE `aModifier` (
-  `id` int(11) NOT NULL auto_increment,
-  `idCourrier` int(11) NOT NULL default '0',
-  `idService` int(11) NOT NULL default '0',
-  `idChemin` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-
-$requete = "
-CREATE TABLE `chemin` (
-  `id` int(11) NOT NULL auto_increment,
-  `dateTransmission` date NOT NULL default '0000-00-00',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-
-$requete = " 
-CREATE TABLE `envoyeA` (
-  `id` int(11) NOT NULL auto_increment,
-  `idCourrier` int(11) NOT NULL default '0',
-  `idDestinataire` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
 
 $requete = " CREATE TABLE `estTransmis` (
   `id` int(11) NOT NULL auto_increment,
@@ -181,13 +113,6 @@ $requete = " CREATE TABLE `estTransmis` (
 );";
 $result = mysql_query( $requete ) or die ( mysql_error() );
 
-$requete = "CREATE TABLE `aCreer` (
-  `id` int(11) NOT NULL auto_increment,
-  `idCourrier` int(11) NOT NULL default '0',
-  `idService` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
 
 $requete = "
 CREATE TABLE `destinataire` (
@@ -202,15 +127,6 @@ CREATE TABLE `destinataire` (
 );";
 
 $result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = "
-CREATE TABLE `estImportant` (
-  `id` int(11) NOT NULL auto_increment,
-  `idCourrier` int(11) NOT NULL default '0',
-  `idPriorite` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-);";
-
-$result = mysql_query( $requete ) or die ( mysql_error() );
 
 $requete = "
 CREATE TABLE `service` (
@@ -221,13 +137,6 @@ CREATE TABLE `service` (
 );";
 $result = mysql_query( $requete ) or die ( mysql_error() );
 
-$requete = " CREATE TABLE `appartient` (
-  `id` int(11) NOT NULL auto_increment,
-  `idService` int(11) NOT NULL default '0',
-  `idUtilisateur` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
 
 $requete = "
 CREATE TABLE `utilisateur` (
@@ -236,33 +145,11 @@ CREATE TABLE `utilisateur` (
   `nom` varchar(32) NOT NULL default '',
   `prenom` varchar(32) NOT NULL default '',
   `passwd` varchar(60) NOT NULL default '',
+  `idService` int(11) NOT NULL auto_increment,
   PRIMARY KEY  (`id`)
 );";
 $result = mysql_query( $requete ) or die ( mysql_error() );
 
-$requete = "CREATE TABLE `aMailer` (
-  `id` int(11) NOT NULL auto_increment,
-  `idServiceExp` int(11) NOT NULL default '0',
-  `idServiceDest` int(11) NOT NULL default '0',
-  `idMail` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-
-$requete = "CREATE TABLE `estAffecte` (
-  `id` int(11) NOT NULL auto_increment,
-  `idMail` int(11) NOT NULL default '0',
-  `idService` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-
-$requete = "CREATE TABLE `compteMail` (
-  `id` int(11) NOT NULL auto_increment,
-  `adresse` varchar(60) NOT NULL default '',
-  PRIMARY KEY  (`id`)
-);";
-$result = mysql_query( $requete ) or die ( mysql_error() );
 $requete = "
 CREATE TABLE `priorite` (
   `id` int(11) NOT NULL auto_increment,
@@ -272,17 +159,6 @@ CREATE TABLE `priorite` (
 );";
 
 $result = mysql_query( $requete ) or die ( mysql_error() );
-$requete = "CREATE TABLE `mail` (
-  `id` int(11) NOT NULL auto_increment,
-  `objet` varchar(32) NOT NULL default '',
-  `message` text NOT NULL,
-  `dateArrivee` date NOT NULL default '0000-00-00',
-  `lu` tinyint(4) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-);";
-
-$result = mysql_query( $requete ) or die ( mysql_error() );
-
 
 echo "<h3><font color = white><i>Creation du service ADMIN ...</i></font></h3>";
 $requete = "INSERT INTO service(libelle,designation) VALUES ('ADMIN', 'admin');";
@@ -290,9 +166,7 @@ $result = mysql_query( $requete ) or die ( mysql_error() );
 
 
 echo "<h3><font color = b27e5e><i>Creation du compte admin ...</i></font></h3>";
-$requete="INSERT INTO utilisateur(login,nom,prenom) VALUES('admin','administrateur','gCourrier');";
-$result = mysql_query( $requete ) or die ( mysql_error() );
-$requete="INSERT INTO appartient(idUtilisateur,idService) VALUES(1,1);";
+$requete="INSERT INTO utilisateur(login,nom,prenom,idService) VALUES('admin','administrateur','gCourrier',1);";
 $result = mysql_query( $requete ) or die ( mysql_error() );
 
 ?>
