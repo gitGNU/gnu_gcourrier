@@ -66,8 +66,8 @@ if(strcmp($_SESSION['login'] ,'admin')==0){
 
 <td>
 <div id="logo2">
-<a href= voirCourrier.php>voir entrant</a><br>
-<a href= voirCourrierDepart.php>voir depart</a><br>
+<a href= voirCourrier.php?type=1>voir entrant</a><br>
+<a href= voirCourrierDepart.php?type=2>voir depart</a><br>
 <a href= voirFacture.php>voir facture</a><br>
 <?php
 /*
@@ -171,38 +171,11 @@ else{
 <td>
 <div id="logo2">
 
-<a href= voirCourrier.php>voir entrant</a><br>
-<a href= voirCourrierDepart.php>voir depart</a><br>
+<a href= voirCourrier.php?type=1>voir entrant</a><br>
+<a href= voirCourrier.php?type=2>voir depart</a><br>
 <a href= voirFacture.php>voir facture</a><br>
-<?php
-/*
-$re = "select max(id)as id from courrier;";
-$res = mysql_query( $re ) or die (mysql_error() );
-while($ligne = mysql_fetch_array( $res ) ){
-	$id = $ligne['id']; 
-}
-echo"<a href= voirCourrier.php?id=".$id.">voir entrant</a><br>";
 
 
-$re = "select max(id)as id from facture;";
-$res = mysql_query( $re ) or die (mysql_error() );
-while($ligne = mysql_fetch_array( $res ) ){
-	$id = $ligne['id']; 
-}
-echo"<a href= voirFacture.php?id=".$id.">voir facture</a><br>";
-
-
-$re = "select max(id)as id from depart;";
-$res = mysql_query( $re ) or die (mysql_error() );
-while($ligne = mysql_fetch_array( $res ) ){
-	$id = $ligne['id']; 
-}
-echo"<a href= voirCourrierDepart.php?id=".$id.">voir depart</a><br>";
-
-
-//echo"<a href= voirCourrierTransmis.php?id=".$id.">voir transmis</a><br>";
-*/
-?>
 </div>
 </td>
 
@@ -212,8 +185,6 @@ echo"<a href= voirCourrierDepart.php?id=".$id.">voir depart</a><br>";
 <div id="logo3">
 
 <a href = modifierProfil.php>profil</a><br>
-<?php //<a href = historique.php>archive</a><br>
-?>
 </div>
 </td>
 

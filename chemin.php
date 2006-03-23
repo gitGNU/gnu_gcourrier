@@ -92,7 +92,7 @@ while ( $ligne = mysql_fetch_array($result) ){
 	echo "<td bgcolor=".$couleur.">".$date."</td>";
 }
 echo "</table><br>";
-echo"<center><a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$affiche.">voir mon courrier</a></center>";
+echo"<center><a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$affiche."&type=".$_GET['type'].">voir mon courrier</a></center>";
 
 ?>
 <br><br>

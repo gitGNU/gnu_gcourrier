@@ -66,12 +66,16 @@ echo $ligne['observation'];
 	</textarea></td></tr>
 	</table>
 	<center>
+<?php
+	echo "<input type = hidden name=nbAffiche value=".$affiche."></input>";
+	echo "<input type = hidden name=type value=".$_GET['type']."></input>";
+?>
 	<input type = submit name = enregistrer value = transmettre></input></center>
 </form>
 
 <center><br>
 <?php
-echo"<a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$affiche.">voir mon courrier</a><br><br>";
+echo"<a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$affiche."&type=".$_GET['type'].">voir mon courrier</a><br><br>";
 ?>
 </center>
 </div>
@@ -95,6 +99,6 @@ $observation = $_POST['observation'];
 $requete = "update courrier set observation ='".$observation."',serviceCourant=".$service." where id =".$idCourrier.";";
 $result = mysql_query($requete) or die( mysql_error() );
 
-header("Location: voirCourrier.php?id=".$idCourrier." ");
+header("Location: voirCourrier.php?id=".$idCourrier."&nbAffiche=".$_POST['nbAffiche']."&type=".$_POST['type']." ");
 }
 ?>

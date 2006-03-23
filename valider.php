@@ -31,4 +31,7 @@ $idCourrier = $_GET['idCourrier'];
 $date = date("Y-m-d");
 $requete = "update courrier set validite = 1, dateArchivage='".$date."' where id = ".$idCourrier." ;";
 $result = mysql_query( $requete ) or die (mysql_error( ));
-echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
+
+header("Location: voirCourrier.php?id=".$idCourrier."&affiche=".$_GET['nbAffiche']."&type=".$_GET['type']." ");
+
+//echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";

@@ -42,7 +42,7 @@ echo "<center><div id= titre>Courrier Entrant</div></center><br>";
 
 if(!isset( $_GET['id'] )){
 
-$re = "select max(id)as id from courrier where type = 1;";
+$re = "select max(id)as id from courrier where type = ".$_GET["type"].";";
 $res = mysql_query( $re ) or die (mysql_error() );
 while($ligne = mysql_fetch_array( $res ) ){
 	$id = $ligne['id']; 
@@ -69,6 +69,7 @@ else{
 <label>nombre de courrier a afficher : </label>
 
 <?php 
+echo"<input type = hidden name=type value=".$_GET['type']." size=2></input>";
 echo"<input type = text name=affiche value=".$nbAffiche." size=2></input>";
 echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
 ?>
@@ -94,7 +95,7 @@ if(strcmp($_SESSION['login'] , 'admin') == 0){
 			   and courrier.validite = 0			 
 			   and courrier.idPriorite = priorite.id
 			   and courrier.idDestinataire = destinataire.id
-			   and courrier.type = 1
+			   and courrier.type = ".$_GET['type']."
 		           order by courrier.id DESC
 			   LIMIT ".$nbAffiche.";";}
 else{
@@ -115,7 +116,7 @@ else{
 			   and courrier.serviceCourant = ".$_SESSION['idService']."
 			   and courrier.idPriorite = priorite.id
 			   and courrier.idDestinataire = destinataire.id
-			   and courrier.type = 1
+			   and courrier.type = ".$_GET['type']."
 		           order by courrier.id DESC
 			   LIMIT ".$nbAffiche.";";
 
@@ -136,6 +137,7 @@ echo "<td align=center>historique</td>";
 if(strcmp($_SESSION['login'] , 'admin') != 0){	
 	echo "<td align=center>transmettre</td>";
 	echo "<td align=center>terminer </td>";
+if($_GET['type'] ==1)
 	echo "<td align=center>accuse </td>";
 }
 	
@@ -171,18 +173,15 @@ while( $ligne = mysql_fetch_array($resultatEntrant) ){
 	echo "<td bgcolor=".$couleur.">".$observation."</td>";	
 	
 	
-	echo"<td bgcolor=".$couleur."><a href=chemin.php?idCourrier=".$idCourrier."&affiche=".$nbAffiche.">historique</a></td>";
+	echo"<td bgcolor=".$couleur."><a href=chemin.php?idCourrier=".$idCourrier."&affiche=".$nbAffiche."&type=".$_GET['type'].">historique</a></td>";
 
 	if(strcmp($_SESSION['login'] , 'admin') != 0){
-		echo"<td bgcolor=".$couleur."><a href=transmettre.php?idCourrier=".$idCourrier."&affiche=".$nbAffiche.">transmettre</a></td>";
-		echo"<td bgcolor=".$couleur."><a href=valider.php?idCourrier=".$idCourrier.">terminer</a></td>";
+		echo"<td bgcolor=".$couleur."><a href=transmettre.php?idCourrier=".$idCourrier."&affiche=".$nbAffiche."&type=".$_GET['type'].">transmettre</a></td>";
+		echo"<td bgcolor=".$couleur."><a href=valider.php?idCourrier=".$idCourrier."&affiche=".$nbAffiche."&type=".$_GET['type'].">terminer</a></td>";
 	}
 
-	if($ack == 0)
-		echo"<td bgcolor=".$couleur."><a href=avtAccuse.php?idCourrier=".$idCourrier."&nbAffiche=".$nbAffiche.">creer</a></td>";
-	
-	else
-		echo"<td bgcolor=".$couleur.">X</td>";
+	if($_GET['type'] == 1)
+		echo"<td bgcolor=".$couleur."><a href=avtAccuse.php?idCourrier=".$idCourrier."&nbAffiche=".$nbAffiche."&type=".$_GET['type'].">creer</a></td>";
 
 //test pour urgence du courrier
 		$dateActuel = date("Y-m-d");
@@ -219,7 +218,7 @@ $idTmp--;
 
 <?php
 if(mysql_num_rows($resultatEntrant) == $nbAffiche){
-	echo "<a href = voirCourrier.php?id=".$idTmp."&nbAffiche=".$nbAffiche."><b>page suivante</b></a></center>";
+	echo "<a href = voirCourrier.php?id=".$idTmp."&nbAffiche=".$nbAffiche."&type=".$_GET['type']."><b>page suivante</b></a></center>";
 }
 
 ?>	

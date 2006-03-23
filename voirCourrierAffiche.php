@@ -24,8 +24,11 @@ author VELU Jonathan
 
 require("connexion.php");
 session_start();
-
+$type = $_POST['type'];
 $affiche = $_POST['affiche'];
 $idTmp = $_POST['idTmp'];
-echo "<meta http-equiv=\"refresh\" content=\"0;url=voirCourrier.php?id=".$idTmp."&nbAffiche=".$affiche."\">";
+
+header("Location: voirCourrier.php?id=".$idTmp."&nbAffiche=".$_POST['affiche']."&type=".$_POST['type']." ");
+
+//echo "<meta http-equiv=\"refresh\" content=\"0;url=voirCourrier.php?id=".$idTmp."&nbAffiche=".$affiche."\">";
 ?>

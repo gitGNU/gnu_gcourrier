@@ -128,7 +128,7 @@ Nous vous prions d'agreer, Madame, Monsieur, l'expression de nos salutations dis
 	<input type = submit name = creer value = creer></input>
 	</center><br>
 <?php
-echo"<b><a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$nbAffiche.">voir mon courrier</a></b>";
+echo"<b><a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$nbAffiche."&type=".$_GET['type'].">voir mon courrier</a></b>";
 ?>
 
 	</form>
