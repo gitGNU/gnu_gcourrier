@@ -58,9 +58,6 @@ if(strcmp($_SESSION['login'] ,'admin')==0){
 <a href = creerService.php>creer service</a><br>
 <a href = creerCompte.php>creer compte</a><br>
 <a href = creerPriorite.php>creer priorite</a><br>
-<?
-//<a href = affecterMail.php>mail/service</a><br>
-?>
 </td>
 </div>
 
@@ -69,37 +66,6 @@ if(strcmp($_SESSION['login'] ,'admin')==0){
 <a href= voirCourrier.php?type=1>voir entrant</a><br>
 <a href= voirCourrierDepart.php?type=2>voir depart</a><br>
 <a href= voirFacture.php>voir facture</a><br>
-<?php
-/*
-$re = "select max(id)as id from courrier;";
-$res = mysql_query( $re ) or die (mysql_error() );
-if(mysql_num_rows($res)!=0){
-	while($ligne = mysql_fetch_array( $res ) ){
-		$id = $ligne['id']; 
-	}	
-}
-echo"<a href= voirCourrier.php?id=".$id.">voir entrant</a><br>";
-
-
-$re = "select max(id)as id from depart;";
-$res = mysql_query( $re ) or die (mysql_error() );
-if(mysql_num_rows($res)!=0){
-	while($ligne = mysql_fetch_array( $res ) ){
-		$id = $ligne['id']; 
-	}	
-}
-echo"<a href= voirCourrierDepart.php?id=".$id.">voir depart</a><br>";
-
-$re = "select max(id)as id from facture;";
-$res = mysql_query( $re ) or die (mysql_error() );
-if(mysql_num_rows($res)!=0){
-	while($ligne = mysql_fetch_array( $res ) ){
-		$id = $ligne['id']; 
-	}	
-}
-echo"<a href= voirFacture.php?id=".$id.">voir facture</a><br>";
-*/
-?>
 
 </div>
 </td>
@@ -109,9 +75,6 @@ echo"<a href= voirFacture.php?id=".$id.">voir facture</a><br>";
 <td>
 <div id="logo3">
 <a href = modifierProfil.php>profil</a><br>
-<?php
-//<a href = historique.php>archive</a><br>
-?>
 </div>
 </td>
 
@@ -131,18 +94,7 @@ else{
 
 <div id = "page">
 <br>
-<?php
-/*
-<table align = center>
-<tr>
-<td><font size=1px>message : <a href=envoyerMessage.php>ecrire</a> <a href=voirMessage.php>lire</a> <a href=voirMessageEnvoyer.php>voir</a></font></td>
-</tr>
-</table>
-<br><br>
-*/
-?>
-
-<table align = center  style="font-size:10px">
+<table align = center  style="font-size:10px" >
 <tr>
 <td>rechercher :</td><td><a href="rechercherEntrant.php">entrant</a></td><td><a href="rechercherDepart.php">depart</a></td></font></td>
 

@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 author VELU Jonathan
 */
-require("connexion.php");
+require("../connexion.php");
 
 
 //----------------------------------
@@ -329,7 +329,8 @@ $resultInsertUser = mysql_query($requeteInsertUser) or die("insertUser");
 }
 
 //FINALISATION
-
+$requete = "DROP TABLE facture;";
+$result = mysql_query($requete) or die("erreur finalisation 1");
 $requete = "DROP TABLE courrier;";
 $result = mysql_query($requete) or die("erreur finalisation 1");
 $requete = "DROP TABLE entrant;";
@@ -395,8 +396,24 @@ $requete ="CREATE TABLE `estTransmisDepart` (
 ) TYPE=MyISAM ;";
 $result = mysql_query($requete) or die("erreur finalisation 22");
 */
-$requete = "DROP TABLE depart;";
-$result = mysql_query($requete) or die("erreur finalisation 8");
+
+
+$requete = " CREATE TABLE `facture` (
+  `id` int(11) NOT NULL auto_increment,
+  `montant` varchar(32) NOT NULL default '',
+  `refFacture` varchar(32) NOT NULL default '',
+  `dateFacture` date NOT NULL default '0000-00-00',
+  `dateFactureOrigine` date NOT NULL default '0000-00-00',
+  `observation` text NOT NULL,
+  `validite` tinyint(4) NOT NULL default '0',
+  `dateArchivage` date NOT NULL default '0000-00-00',
+  `idFournisseur` int(11) NOT NULL default '0',
+  `idServiceCreation` int(11) NOT NULL default '0',
+  `idPriorite` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+);";
+$result = mysql_query( $requete ) or die ( mysql_error() );
+
 
 
 echo"MIGRATION TERMINEE";
