@@ -41,8 +41,18 @@ if(!isset( $_POST["rechercher"] ) ){
 ?>
 <div id =pageTGd><br>
 <center><img src = images/banniere2.jpg></center><br><br>
-<center><b>RECHERCHE COURRIER ENTRANT</b><br><br>
-<form name = rechercheAvanceeForm method = POST action = rechercherEntrant.php>
+<center><b>RECHERCHE COURRIER
+<?php
+if($_GET['type']==1)
+	echo " ENTRANT";
+else
+	echo " DEPART";
+?>
+
+</b><br><br>
+<?php
+echo"<form name = rechercheAvanceeForm method = POST action = rechercher.php?type=".$_GET['type'].">";
+?>
 <table align = center>
 <tr>
 <td>libelle</td>
@@ -120,7 +130,7 @@ $requetetmp = "SELECT courrier.id as idCourrier,
 		   courrier.dateArrivee as dateArrivee,
 		   courrier.dateArchivage as dateArchivage ";
 $from ="    FROM courrier ";
-$where =" WHERE courrier.validite = 0 and courrier.type=1";
+$where =" WHERE courrier.validite = 0 and courrier.type=".$_GET['type']."";
 
 
 if(strcmp($libelle,"")!=0){
@@ -186,6 +196,7 @@ echo "<td align=center>numero</td>";
 echo "<td align=center>libelle</td>";
 echo "<td align=center>date arrivee</td>";
 echo "<td align=center>historique</td>";
+echo "<td align=center>transmettre</td>";
 echo "</tr>";
 
 $boul = 0;
@@ -210,11 +221,12 @@ $tmp.=substr($ligne['dateArrivee'], 5,2);
 $tmp.='-';
 $tmp.=substr($ligne['dateArrivee'], 0,4);
 
-echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=rechercherEntrantHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td></tr>";
+echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>
+<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td></tr>";
 }//fin while
 echo "</table>";
 
-echo "<br><a href = rechercherEntrant.php>nouvelle recherche</a>";
+echo "<br><a href = rechercher.php?type=".$_GET['type'].">nouvelle recherche</a>";
 echo "<br><a href = index.php>index</a>";
 
 echo "</center>";

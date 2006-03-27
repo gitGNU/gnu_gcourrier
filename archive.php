@@ -41,8 +41,17 @@ if(!isset( $_POST["rechercher"] ) ){
 ?>
 <div id =pageTGd><br>
 <center><img src = images/banniere2.jpg></center><br><br>
-<center><b>RECHERCHE COURRIER DEPART</b><br><br>
-<form name = rechercheAvanceeForm method = POST action = rechercherDepart.php>
+<center><b>ARCHIVE COURRIER
+<?php
+if($_GET['type']==1)
+	echo " ENTRANT";
+else
+	echo " DEPART";
+?>
+</b><br><br>
+<?
+echo"<form name = rechercheAvanceeForm method = POST action = archive.php?type=".$_GET['type'].">";
+?>
 <table align = center>
 <tr>
 <td>libelle</td>
@@ -67,7 +76,7 @@ if(!isset( $_POST["rechercher"] ) ){
 
 
 <tr>
-<td>destinataire</td>
+<td>emmeteur</td>
 <td><select name = ext>
 	<option value = "rien"></option>
 		<?php
@@ -120,7 +129,7 @@ $requetetmp = "SELECT courrier.id as idCourrier,
 		   courrier.dateArrivee as dateArrivee,
 		   courrier.dateArchivage as dateArchivage ";
 $from ="    FROM courrier ";
-$where =" WHERE courrier.validite = 0 and courrier.type=2";
+$where =" WHERE courrier.validite = 1 and courrier.type=".$_GET['type']."";
 
 
 if(strcmp($libelle,"")!=0){
@@ -210,11 +219,11 @@ $tmp.=substr($ligne['dateArrivee'], 5,2);
 $tmp.='-';
 $tmp.=substr($ligne['dateArrivee'], 0,4);
 
-echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=rechercherDepartHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td></tr>";
+echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=archiveHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td></tr>";
 }//fin while
 echo "</table>";
 
-echo "<br><a href = rechercherDepart.php>nouvelle recherche</a>";
+echo "<br><a href = archive.php?type=".$_GET['type'].">nouvelle recherche</a>";
 echo "<br><a href = index.php>index</a>";
 
 echo "</center>";

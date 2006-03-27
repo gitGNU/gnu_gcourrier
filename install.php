@@ -109,6 +109,7 @@ $requete = " CREATE TABLE `estTransmis` (
   `idCourrier` int(11) NOT NULL default '0',
   `idService` int(11) NOT NULL default '0',
   `dateTransmission` date NOT NULL default '0000-00-00',
+  `danger` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
 );";
 $result = mysql_query( $requete ) or die ( mysql_error() );

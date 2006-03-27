@@ -414,7 +414,8 @@ $requete = " CREATE TABLE `facture` (
 );";
 $result = mysql_query( $requete ) or die ( mysql_error() );
 
-
+$requete = "ALTER TABLE `estTransmis` ADD `danger` int(11) NOT NULL ;";
+$result = mysql_query( $requete ) or die ( mysql_error() );
 
 echo"MIGRATION TERMINEE";
 

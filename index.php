@@ -96,10 +96,10 @@ else{
 <br>
 <table align = center  style="font-size:10px" >
 <tr>
-<td>rechercher :</td><td><a href="rechercherEntrant.php">entrant</a></td><td><a href="rechercherDepart.php">depart</a></td></font></td>
+<td>rechercher :</td><td><a href="rechercher.php?type=1">entrant</a></td><td><a href="rechercher.php?type=2">depart</a></td></font></td>
 
 <td> </td><td> </td><td> </td>
-<td>archive :</td><td><a href="archiveEntrant.php">entrant</a></td><td><a href="archiveDepart.php">depart</a></td></font></td>
+<td>archive :</td><td><a href="archive.php?type=1">entrant</a></td><td><a href="archive.php?type=2">depart</a></td></font></td>
 </tr>
 
 </table>

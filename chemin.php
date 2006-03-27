@@ -44,7 +44,8 @@ echo"<center>HISTORIQUE DU COURRIER NUMERO : ".$idCourrier."</center><br><br>";
 
 $requete = "select service.libelle as libService,
 		   service.designation as desService,
-		   estTransmis.dateTransmission as dateTransmission
+		   estTransmis.dateTransmission as dateTransmission,
+		   estTransmis.danger as danger
 	    from courrier, estTransmis,service
 	    where courrier.id = estTransmis.idCourrier
 	    and courrier.id = ".$idCourrier."
@@ -53,11 +54,11 @@ $requete = "select service.libelle as libService,
 	
 	$boul = 0;
 	echo "<table align=center>";
+
 	echo "<tr>";
-	echo "<tr>";
-	
 	echo "<td align=center>service</td>";
 	echo "<td align=center>date de modification</td>";
+	echo "<td></td>";
 	echo"</tr>";
 
 
@@ -88,8 +89,18 @@ while ( $ligne = mysql_fetch_array($result) ){
 	
 	$service = $ligne['libService']." ".$ligne['desService'];
 
+
+//	echo "<td bgcolor=".$couleur.">".$service."</td>";
 	echo "<td bgcolor=".$couleur.">".$service."</td>";
 	echo "<td bgcolor=".$couleur.">".$date."</td>";
+
+	if($ligne['danger']==1)
+		echo "<td ><img src=\"images/attention.png\"></img></td>";
+	else 
+		echo "<td></td>";
+		
+
+
 }
 echo "</table><br>";
 echo"<center><a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$affiche."&type=".$_GET['type'].">voir mon courrier</a></center>";

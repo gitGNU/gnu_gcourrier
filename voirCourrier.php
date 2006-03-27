@@ -38,7 +38,15 @@ session_start();
 		<br>
 
 <?php
-echo "<center><div id= titre>Courrier Entrant</div></center><br>";
+echo "<center><div id= titre>Courrier";
+
+if($_GET['type']==1)
+	echo " Entrant";
+else
+	echo " Depart";
+
+
+echo" </div></center><br>";
 
 if(!isset( $_GET['id'] )){
 
