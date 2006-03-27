@@ -417,6 +417,22 @@ $result = mysql_query( $requete ) or die ( mysql_error() );
 $requete = "ALTER TABLE `estTransmis` ADD `danger` int(11) NOT NULL ;";
 $result = mysql_query( $requete ) or die ( mysql_error() );
 
+$requete = "CREATE TABLE `accuse` (
+  `id` int(11) NOT NULL auto_increment,
+  `expediteur` varchar(50) NOT NULL default '',
+  `adresse` varchar(255) NOT NULL default '',
+  `codePostal` varchar(5) NOT NULL default '',
+  `ville` varchar(50) NOT NULL default '',
+  `telephone` varchar(30) NOT NULL default '',
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM;";
+
+$result = mysql_query( $requete ) or die ( mysql_error() );
+
+$requete="INSERT INTO accuse(id) VALUES(1);";
+$result = mysql_query( $requete ) or die ( mysql_error() );
+
+
 echo"MIGRATION TERMINEE";
 
 ?>

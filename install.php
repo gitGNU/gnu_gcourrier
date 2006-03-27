@@ -39,6 +39,9 @@ echo "<h3><font color = white><i>Verification de la base de donnees ...</i></fon
 $requete = " DROP TABLE IF EXISTS courrier;";
 $result = mysql_query( $requete ) or die ( mysql_error() );
 
+$requete = " DROP TABLE IF EXISTS accuse;";
+$result = mysql_query( $requete ) or die ( mysql_error() );
+
 $requete = " DROP TABLE IF EXISTS destinataire;";
 $result = mysql_query( $requete ) or die ( mysql_error() );
 
@@ -68,6 +71,18 @@ $requete = "CREATE TABLE `estTransmisCopie` (
   `dateRetour` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`id`)
 );";
+$result = mysql_query( $requete ) or die ( mysql_error() );
+
+$requete = "CREATE TABLE `accuse` (
+  `id` int(11) NOT NULL auto_increment,
+  `expediteur` varchar(50) NOT NULL default '',
+  `adresse` varchar(255) NOT NULL default '',
+  `codePostal` varchar(5) NOT NULL default '',
+  `ville` varchar(50) NOT NULL default '',
+  `telephone` varchar(30) NOT NULL default '',
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM;";
+
 $result = mysql_query( $requete ) or die ( mysql_error() );
 
 
@@ -169,6 +184,10 @@ $result = mysql_query( $requete ) or die ( mysql_error() );
 echo "<h3><font color = b27e5e><i>Creation du compte admin ...</i></font></h3>";
 $requete="INSERT INTO utilisateur(login,nom,prenom,idService) VALUES('admin','administrateur','gCourrier',1);";
 $result = mysql_query( $requete ) or die ( mysql_error() );
+
+$requete="INSERT INTO accuse(id) VALUES(1);";
+$result = mysql_query( $requete ) or die ( mysql_error() );
+
 
 ?>
 

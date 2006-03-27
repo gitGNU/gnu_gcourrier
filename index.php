@@ -58,6 +58,8 @@ if(strcmp($_SESSION['login'] ,'admin')==0){
 <a href = creerService.php>creer service</a><br>
 <a href = creerCompte.php>creer compte</a><br>
 <a href = creerPriorite.php>creer priorite</a><br>
+<a href = modifierAccuse.php>gerer l'accuse</a><br>
+
 </td>
 </div>
 

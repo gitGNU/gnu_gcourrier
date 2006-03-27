@@ -48,26 +48,47 @@ $adresse = $ligne['adresse'];
 $codePostal = $ligne['codePostal'];
 $ville = $ligne['ville'];
 }
-$date = "Harnes, le ";
-$date.=date("d-m-Y");
+
 $objet = "objet : accuse reception courrier num ".$idCourrier;
+
+$requete = "select * from accuse where id=1;";
+$result = mysql_query($requete) or die(mysql_error());
+while($ligne = mysql_fetch_array($result)){
+	$expediteurAccuse = $ligne['expediteur'];
+	$adresseAccuse = $ligne['adresse'];
+	$codePostalAccuse = $ligne['codePostal'];
+	$villeAccuse = $ligne['ville'];
+	$telephoneAccuse = $ligne['telephone'];
+}
+$date = $expediteurAccuse.", le ";
+$date.=date("d-m-Y");
 
 ?>
 	<table align = left>
 		<tr><td>Expediteur</td>
-		<td><input type = text name = expediteur value = 'Mairie de harnes'></input></td>
+<?php
+echo"		<td><input type = text name = expediteur value = '".$expediteurAccuse."' ></input></td> ";
+?>
 		</tr>
 		<tr><td>Adresse</td>
-		<td><input type = text name = adresse value = '35, rue des Fusilles'></input></td>
+<?php
+echo"		<td><input type = text name = adresse value = '".$adresseAccuse."' ></input></td>";
+?>
 		</tr>
 		<tr><td>Code postal</td>
-		<td><input type = text name = codePostal value = '62440'></input></td>
+<?php
+echo"		<td><input type = text name = codePostal value='".$codePostalAccuse."' ></input></td>";
+?>
 		</tr>
 		<tr><td>Ville</td>
-		<td><input type = text name = ville value = 'Harnes'></input></td>
+<?php
+echo"		<td><input type = text name = ville value='".$villeAccuse."'></input></td>";
+?>
 		</tr>
 		<tr><td>Telephone</td>
-		<td><input type=text name = telephone value = '0321794279'></input></td>
+<?php
+echo"		<td><input type=text name = telephone value='".$telephoneAccuse."'></input></td>";
+?>
 		</tr>
 	</table><br><br><br><br><br><br>
 	<table align = right>
@@ -113,7 +134,7 @@ Nous avons bien recu votre courrier qui est actuellement en cours de traitement.
 
 Nous vous prions d'agreer, Madame, Monsieur, l'expression de nos salutations distinguees.~~
 
-|La Mairie de Harnes.
+|".$expediteurAccuse.".
 		</textarea></td>";
 		?>
 		</tr>
