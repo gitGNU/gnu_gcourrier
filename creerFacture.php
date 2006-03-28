@@ -66,7 +66,7 @@ if(!isset($_POST["enregistrer"])){
 		<td>Priorite</td>
 		<td><select name = priorite>
 		<?php
-		$requete = "select * from priorite ; ";
+		$requete = "select * from priorite; ";
 		$result = mysql_query($requete) or die( mysql_error() );
 		while( $ligne = mysql_fetch_array( $result ) ){
 		    echo "<option value = '".$ligne['id']."'>".$ligne['libelle']." ".$ligne['designation']."</option>";

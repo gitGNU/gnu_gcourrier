@@ -58,7 +58,7 @@ else{
 
 
 
-echo"<center><div id= titre>Factures  / <a href=copieFacture.php >Copies de Factures</a><br/><br/></div></center>";
+echo"<center><div id= titre><a href=voirFacture.php>Factures</a>  / Copies de Factures<br/><br/></div></center>";
 
 
 if(strcmp($_SESSION['login'] , 'admin') == 0){
@@ -86,18 +86,20 @@ $requeteFacture = "select facture.id as idFacture,
 			  facture.dateFactureOrigine as dateFactureOrigine,
 			  facture.observation as observation,			  
 			  facture.montant as montant,
+			  estTransmisCopie.dateTransmission as dateTransmission,
 			  destinataire.nom as nomFournisseur,
-			  destinataire.prenom as prenomFournisseur,
-			  priorite.nbJours as nbJours
- 		    from facture,destinataire,priorite
+			  destinataire.prenom as prenomFournisseur
+ 		    from facture,destinataire,estTransmisCopie
 		    where facture.id<=".$idTmp." 
              		   and facture.validite = 0
-			   and facture.idServiceCreation = ".$_SESSION['idService']."
-			   and facture.idPriorite = priorite.id
 			   and facture.idFournisseur = destinataire.id
+			   and facture.id = estTransmisCopie.idFacture
+			   and estTransmisCopie.idService = ".$_SESSION['idService']."
 		           order by facture.id DESC
 			   LIMIT 5;";
 }
+
+
 
 $resultatFacture = mysql_query($requeteFacture) or die("erreur facture ".mysql_error() );
 
@@ -110,14 +112,10 @@ echo "<table align=center font-color ='white'>";
 	echo "<td align=center>dateMairie</td>";
 	echo "<td align=center>dateFacture</td>";
 	echo "<td align=center>observation</td>";
-	echo "<td align=center>historique</td>";
-if(strcmp($_SESSION['login'] , 'admin') != 0){
-
-	echo "<td align=center>transmettre</td>";
-	echo "<td align=center>terminer</td>";
-}
-	echo "<td align=center>jours restant</td>";
+	echo "<td align=center>date reception</td>";
 	echo"</tr>";
+
+
 $boul = 0;
 while($ligne = mysql_fetch_array($resultatFacture)){
 	$idTmp = $ligne['idTmp'];
@@ -133,7 +131,7 @@ while($ligne = mysql_fetch_array($resultatFacture)){
 
 //	echo "nbJours:".$ligne['nbJours'];
 	
-
+	$transmission = $ligne['dateTransmission'];
 	$idCourrier = $ligne['idFacture'];
 	$nomDestinataire = $ligne['nomFournisseur']." ".$ligne['prenomFournisseur'];
 	$refFacture = $ligne['refFacture'];
@@ -160,54 +158,17 @@ while($ligne = mysql_fetch_array($resultatFacture)){
 	echo "<td bgcolor=".$couleur.">".$dateArrivee."</td>";
 	echo "<td bgcolor=".$couleur.">".$dateFacture."</td>";
 	echo "<td bgcolor=".$couleur.">".$observation."</td>";
-	echo"<td bgcolor=".$couleur."><a href=cheminFacture.php?idCourrier=".$idCourrier."><center><font color= ".$couleur."><img src=images/loupe.png></img></font></center></a></td>";
+	echo "<td bgcolor=".$couleur.">".$transmission."</td>";
 
 
 
 
-if(strcmp($_SESSION['login'] , 'admin') != 0){
-
-	echo"<td bgcolor=".$couleur."><a href=transmettreFacture.php?idCourrier=".$idCourrier.">transmettre</a></td>";
-	echo"<td bgcolor=".$couleur."><a href=validerFacture.php?idCourrier=".$idCourrier.">terminer</a></td>";
 
 
-}
-
-
-	//test pour urgence du courrier
-		$dateActuel = date("Y-m-d");
-		$jourActuel = substr($dateActuel,8,2);
-		$moisActuel = substr($dateActuel,5,2);
-		$anneeActuel= substr($dateActuel,0,4);
-
-		$tmpDateArrivee = $ligne['dateFactureOrigine'];
-		$jourArrivee =substr($tmpDateArrivee,8,2);
-		$moisArrivee =substr($tmpDateArrivee,5,2);
-		$anneeArrivee =substr($tmpDateArrivee,0,4);
-		
-//		echo " feafaoho".$tmpdateArrivee;
-
-		$nbJours = $ligne['nbJours'];
-		
-		$timestampActuel = mktime(0,0,0,$moisActuel,$jourActuel,$anneeActuel);
-		$timestampArrivee= mktime(0,0,0,$moisArrivee,$jourArrivee,$anneeArrivee);
-		$urgence = ($timestampActuel - $timestampArrivee ) / 86400;
-
-		$nbJoursRestant = $nbJours - $urgence;
-
-//		echo " fze ".$urgence." : ".$nbJours." :: ".$ligne['nbJours']."<br>";
-		if ($nbJoursRestant >= 5)
-			$alerte = "green";
-		else
-			$alerte = "red";
-		
-
-                   echo "<td bgcolor=".$couleur." style=\"color:".$alerte.";font-weight:bold\"><center>".$nbJoursRestant."</center></td></tr>";
-	
 }
 	echo"</table>";
 if(mysql_num_rows($resultatFacture) == 5) 
-	echo "<center><a href = voirFacture.php?id=".$idTmp.">page suivante</a></center>";
+	echo "<center><a href = voirCopieFacture.php.php?id=".$idTmp.">page suivante</a></center>";
 
 
 

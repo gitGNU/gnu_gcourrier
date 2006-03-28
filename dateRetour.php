@@ -77,7 +77,7 @@ $idCourrier = $_POST['idCourrier'];
 $requete ="update estTransmisCopie set dateRetour = '".$date."' where id =".$idCourrier.";";
 $result = mysql_query($requete) or die (mysql_error( ) );
 
-header("Location: voirFacture.php?id=".$idCourrier." ");
+header("Location: voirFacture.php");
 
 }//fin else
 ?>
