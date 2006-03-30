@@ -163,7 +163,7 @@ if(strcmp($dateOrigine,"jj-mm-aaaa")!=0){
 
 if(strcmp($fournisseur,"rien")!=0){
 	$from .= " ,destinataire";
-	$requete.=" and facture.idDestinataire = destinataire.id and destinataire.id = ".$fournisseur." ";
+	$requete.=" and facture.idFournisseur = destinataire.id and destinataire.id = ".$fournisseur." ";
 
 }
 
