@@ -69,6 +69,7 @@ $requeteFacture = "select facture.id as idFacture,
 			  dateFactureOrigine as dateFactureOrigine,
 			  observation as observation,			  
 			  destinataire.nom as nomFournisseur,
+			  destinataire.id as idDest,
 			  destinataire.prenom as prenomFournisseur,
 			  priorite.nbJours as nbJours	
  		   from facture,destinataire,priorite
@@ -87,6 +88,7 @@ $requeteFacture = "select facture.id as idFacture,
 			  facture.observation as observation,			  
 			  facture.montant as montant,
 			  destinataire.nom as nomFournisseur,
+			  destinataire.id as idDest,
 			  destinataire.prenom as prenomFournisseur,
 			  priorite.nbJours as nbJours
  		    from facture,destinataire,priorite
@@ -133,7 +135,7 @@ while($ligne = mysql_fetch_array($resultatFacture)){
 
 //	echo "nbJours:".$ligne['nbJours'];
 	
-
+	$dest=$ligne['nomFournisseur'];
 	$idCourrier = $ligne['idFacture'];
 	$nomDestinataire = $ligne['nomFournisseur']." ".$ligne['prenomFournisseur'];
 	$refFacture = $ligne['refFacture'];
@@ -152,11 +154,18 @@ while($ligne = mysql_fetch_array($resultatFacture)){
 		$montant.=",00";
 	}
 	
+	if(strcmp($refFacture,"") ==0)
+		$refFacture="modifier";
+	if(strcmp($montant,"") ==0)
+		$montant="modifier";
+	if(strcmp($dest,"") ==0)
+		$nomDestinataire="modifier";
+	
 
 	echo "<td bgcolor=".$couleur.">".$idCourrier."</td>";
-	echo "<td bgcolor=".$couleur.">".$nomDestinataire."</td>";
-	echo "<td bgcolor=".$couleur." style=\"text-align:center\">".$refFacture."</td>";
-	echo "<td bgcolor=".$couleur." style=\"text-align:right\">".$montant."</td>";
+	echo "<td bgcolor=".$couleur."><a href=modifDestinataire.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$nomDestinataire."</a></td>";
+	echo "<td bgcolor=".$couleur." style=\"text-align:center\"><a href=modifRef.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$refFacture."</a></td>";
+	echo "<td bgcolor=".$couleur." style=\"text-align:right\"><a href=modifMontant.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$montant."</a></td>";
 	echo "<td bgcolor=".$couleur.">".$dateArrivee."</td>";
 	echo "<td bgcolor=".$couleur.">".$dateFacture."</td>";
 	echo "<td bgcolor=".$couleur.">".$observation."</td>";
