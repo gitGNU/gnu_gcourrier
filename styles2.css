@@ -20,6 +20,30 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 author VELU Jonathan
 */
+input{
+border:2px solid black;
+background:white;
+color:black;
+font-weight: bold;
+border : 2px solid black;
+}
+textarea{
+border:2px solid black;
+background:white;
+color:black;
+font-weight: bold;
+border : 2px solid black;
+}
+select{
+border:2px solid black;
+background:white;
+color:black;
+font-weight: bold;
+border : 2px solid black;
+}
+
+
+
 
 A {
 color: black ;
@@ -56,8 +80,8 @@ border-left:5px solid black;
 border-right: 5px solid black;
 border-top : 5px solid black;
 border-bottom: 5px solid black;
-margin-left: 20%;
-margin-right:20%;
+margin-left: 15%;
+margin-right:15%;
 margin-top:15%;//2.9%;//1.4%;
 }
 
@@ -69,8 +93,8 @@ border-left:5px solid black;
 border-right: 5px solid black;
 border-top : 5px solid black;
 border-bottom: 5px solid black;
-margin-left: 20%;
-margin-right:20%;
+margin-left: 15%;
+margin-right:15%;
 margin-top:10%;//2.9%;//1.4%;
 }
 
@@ -82,8 +106,8 @@ border-left:5px solid black;
 border-right: 5px solid black;
 border-top : 5px solid black;
 border-bottom: 5px solid black;
-margin-left: 20%;
-margin-right:20%;
+margin-left: 15%;
+margin-right:15%;
 margin-top:5%;//2.9%;//1.4%;
 }
 

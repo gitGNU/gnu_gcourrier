@@ -44,7 +44,7 @@ if(!isset($_POST["enregistrer"])){
 		<form name = creerCourrier.php method= POST action = creerCourrier.php> 
 		
 		<tr>
-		<td>numero courrier : </td>
+		<td>numero courrier: </td>
 		<td>
 		<?php
 		$requete = "select max(id) as idTmp from courrier ;";
