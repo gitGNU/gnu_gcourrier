@@ -40,6 +40,13 @@ session_start();
 
 <?php
 
+if(!isset( $_GET['order'] )){
+$order = "facture.id";
+}
+else{
+$order = $_GET['order'];
+}
+
 if(!isset( $_GET['id'] )){
 
 $re = "select max(id)as id from facture;";
@@ -76,7 +83,7 @@ $requeteFacture = "select facture.id as idFacture,
 		   where facture.idFournisseur = destinataire.id
 		   and validite=0 
 		   and facture.idPriorite = priorite.id
-		   order by facture.id DESC LIMIT 5;";
+		   order by ".$order." DESC LIMIT 5;";
 
 
 }
@@ -97,7 +104,7 @@ $requeteFacture = "select facture.id as idFacture,
 			   and facture.idServiceCreation = ".$_SESSION['idService']."
 			   and facture.idPriorite = priorite.id
 			   and facture.idFournisseur = destinataire.id
-		           order by facture.id DESC
+		           order by ".$order." DESC
 			   LIMIT 5;";
 }
 
@@ -105,12 +112,12 @@ $resultatFacture = mysql_query($requeteFacture) or die("erreur facture ".mysql_e
 
 echo "<table align=center font-color ='white'>";
 	echo "<tr>";
-	echo "<td align=center>numero </td>";
-	echo "<td align=center>fournisseur</td>";
-	echo "<td align=center>refFacture</td>";
-	echo "<td align=center>montant</td>";
-	echo "<td align=center>dateMairie</td>";
-	echo "<td align=center>dateFacture</td>";
+	echo "<td align=center><a href=voirFacture?order=facture.id style=\"text-decoration:none;font-weight:normal\">numero</a> </td>";
+	echo "<td align=center><a href=voirFacture?order=facture.idFournisseur style=\"text-decoration:none;font-weight:normal\">fournisseur</a></td>";
+	echo "<td align=center><a href=voirFacture?order=facture.refFacture style=\"text-decoration:none;font-weight:normal\">refFacture</a></td>";
+	echo "<td align=center><a href=voirFacture?order=facture.montant style=\"text-decoration:none;font-weight:normal\">montant</a></td>";
+	echo "<td align=center><a href=voirFacture?order=facture.dateFacture style=\"text-decoration:none;font-weight:normal\">dateMairie</a></td>";
+	echo "<td align=center><a href=voirFacture?order=facture.dateFactureOrigine style=\"text-decoration:none;font-weight:normal\">dateFacture</a></td>";
 	echo "<td align=center>observation</td>";
 	echo "<td align=center>historique</td>";
 if(strcmp($_SESSION['login'] , 'admin') != 0){
