@@ -65,9 +65,9 @@ if(strcmp($_SESSION['login'] ,'admin')==0){
 
 <td>
 <div id="logo2">
-<a href= voirCourrier.php?type=1>voir entrant</a><br>
-<a href= voirCourrierDepart.php?type=2>voir depart</a><br>
-<a href= voirFacture.php>voir facture</a><br>
+<img src="images/enveloppe.png"></img>&nbsp&nbsp<a href= voirCourrier.php?type=1>voir entrant</a><br>
+<img src="images/enveloppe.png"></img>&nbsp&nbsp<a href= voirCourrierDepart.php?type=2>voir depart</a><br>
+<img src="images/euro.png"></img>&nbsp&nbsp<a href= voirFacture.php>voir facture</a><br>
 
 </div>
 </td>
@@ -125,9 +125,9 @@ else{
 <td>
 <div id="logo2">
 
-<a href= voirCourrier.php?type=1>voir entrant</a><br>
-<a href= voirCourrier.php?type=2>voir depart</a><br>
-<a href= voirFacture.php>voir facture</a><br>
+<img src="images/enveloppe.png"></img>&nbsp&nbsp<a href= voirCourrier.php?type=1>voir entrant</a><br>
+<img src="images/enveloppeD.png"></img>&nbsp&nbsp<a href= voirCourrier.php?type=2>voir depart</a><br>
+<img src="images/euro.png"></img>&nbsp&nbsp<a href= voirFacture.php>voir facture</a><br>
 
 
 </div>
