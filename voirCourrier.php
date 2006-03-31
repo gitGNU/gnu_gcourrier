@@ -46,7 +46,7 @@ else
 	echo " Depart";
 
 
-echo" </div></center><br>";
+echo" <br/><i style=\"font-size:10px;font-weight:normal\">note :Ceci est le courrier de votre service uniquement</i></div></center><br>";
 
 if(!isset( $_GET['id'] )){
 

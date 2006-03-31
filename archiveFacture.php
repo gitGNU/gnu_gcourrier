@@ -118,10 +118,14 @@ $fournisseur = $_POST['fournisseur'];
 $requetetmp = 	"SELECT	facture.id as idCourrier,
 			facture.refFacture as refFacture,
 			facture.dateFacture as dateArrivee,
-			facture.dateFactureOrigine as dateOrigine
+			facture.dateFactureOrigine as dateOrigine,
+			destinataire.nom as nomDest,
+			destinataire.prenom as prenomDest
+
+		
 		";
 
-$from ="    FROM facture ";
+$from ="    FROM facture,destinataire ";
 $where =" WHERE facture.validite = 1 and facture.idServiceCreation=".$_SESSION['idService']."";
 
 
@@ -168,6 +172,13 @@ if(strcmp($fournisseur,"rien")!=0){
 }
 
 
+else{
+	$requete.=" and facture.idFournisseur = destinataire.id ";
+
+}
+
+
+
 
 if(strcmp($eDate1,"jj-mm-aaaa")!=0 && strcmp($eDate2,"jj-mm-aaaa")!=0){
 $tmpdate= substr($eDate1, 6,4);
@@ -197,6 +208,7 @@ $result = mysql_query( $requete ) or die ( mysql_error() ) ;
 echo "<table align=center font-color ='white'>";
 echo "<tr>";
 echo "<td align=center>numero</td>";
+echo "<td align=center>fournisseur</td>";
 echo "<td align=center>refFacture</td>";
 echo "<td align=center>date arrivee</td>";
 echo "<td align=center>date origine</td>";
@@ -233,6 +245,7 @@ $tmp2.='-';
 $tmp2.=substr($ligne['dateOrigine'], 0,4);
 
 echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
+echo "<td bgcolor = ".$couleur.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
 echo "<td bgcolor = ".$couleur.">".$ligne['refFacture']."</td>";
 echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
 echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";

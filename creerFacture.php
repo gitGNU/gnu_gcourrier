@@ -63,16 +63,29 @@ if(!isset($_POST["enregistrer"])){
 		
 		<tr><td>Montant</td>
 		<td><input type = text name = montant></input></td></tr>
-		<td>Priorite</td>
-		<td><select name = priorite>
 		<?php
 		$requete = "select * from priorite; ";
 		$result = mysql_query($requete) or die( mysql_error() );
-		while( $ligne = mysql_fetch_array( $result ) ){
-		    echo "<option value = '".$ligne['id']."'>".$ligne['libelle']." ".$ligne['designation']."</option>";
+		if(mysql_num_rows($result) > 1){
+			echo"<tr><td>Priorite</td>";
+			echo"<td><select name = priorite>";
+			while( $ligne = mysql_fetch_array( $result ) ){
+			    echo "<option value = '".$ligne['id']."'>".$ligne['libelle']." ".$ligne['designation']."</option>";
+			}
+		echo "</select></td></tr>";
+		}
+		else if(mysql_num_rows($result) == 0){
+			echo"<td>Priorite</td><td>Veuillez contacter l'admin pour ajouter une priorite</td></tr>";
+		}	
+		else{
+		$id=1;
+			while( $ligne = mysql_fetch_array( $result ) ){
+				$id = $ligne['id'];		    
+			}
+		echo"<input type=hidden name=priorite value=".$id."></input>";
+		
 		}
 		?>
-	</select></td></tr>
 
 	
 		<tr>

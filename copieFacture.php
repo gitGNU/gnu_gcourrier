@@ -58,7 +58,7 @@ else{
 
 
 
-echo"<center><div id= titre><a href=voirFacture.php>Factures</a>  / Copies de Factures<br/><br/></div></center>";
+echo"<center><div id= titre><a href=voirFacture.php>Factures</a>  / Copies de Factures<br/><br/><i style=\"font-size:10px;font-weight:normal\">note :Ceci est les factures de votre service uniquement</i><br/><br/></div></center>";
 
 
 if(strcmp($_SESSION['login'] , 'admin') == 0){

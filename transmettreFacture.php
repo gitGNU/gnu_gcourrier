@@ -34,8 +34,12 @@ if(!isset( $_POST["enregistrer"])){
 </head>
 <body>
 <div id = page><br>
-	<center><img src =images/banniere2.jpg></center><br><br><br>
-
+	<center><img src =images/banniere2.jpg><br><br>
+	
+	<i style="font-size:10px;font-weight:normal">note : les services sont crees par l'administrateur</i>
+</center>
+	<br>
+	
 	<table align = center>
 
 	<form name = transmettreForm method = POST action = transmettreFacture.php>
