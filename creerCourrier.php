@@ -42,7 +42,7 @@ if(!isset($_POST["enregistrer"])){
 	</center>
 	<table align = center>
 		<form name = creerCourrier.php method= POST action = creerCourrier.php> 
-		
+<?/*		
 		<tr>
 		<td>numero courrier: </td>
 		<td>
@@ -56,7 +56,8 @@ if(!isset($_POST["enregistrer"])){
 		?>
 		</td>
 		</tr>
-
+*/
+?>
 		<tr>
 		<td>Emetteur</td>
 		<td><select name = destinataire>
@@ -140,7 +141,7 @@ $resultatCourrier = mysql_query( $requeteCourrier ) or die ("erreur requete cour
 //Recuperation de l'id du courrier cree
 
 
-$requeteIdCourrier = "select id from courrier order by id;";
+$requeteIdCourrier = "select id from courrier where idServiceCreation =".$_SESSION['idService']." order by id;";
 $resultatIdCourrier = mysql_query( $requeteIdCourrier ) or die ("erreur requete idCourrier".mysql_error( ) );
 while($ligne = mysql_fetch_array($resultatIdCourrier ) )
 	$idCourrier = $ligne['id'];
@@ -153,6 +154,12 @@ while($ligne = mysql_fetch_array($resultatIdCourrier ) )
 $requeteTransmis = "insert into estTransmis( idService, idCourrier,dateTransmission ) values('".$service."','".$idCourrier."','".date("Y-m-d")."');";
 $resultatTransmis = mysql_query( $requeteTransmis ) or die ("erreur requete transmis ".mysql_error( ) );
 
+
+$adresse ="infoCourrier.php?idCourrier=".$idCourrier;
+
+echo"<SCRIPT LANGUAGE=JavaScript>";
+echo" window.open('".$adresse."','info',  'width=200,height=120,directories=no,scrollbars=no');"; 
+echo"</SCRIPT>";
 
 echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
 }

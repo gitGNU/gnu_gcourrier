@@ -125,7 +125,7 @@ $resultatCourrier = mysql_query( $requeteCourrier ) or die ("erreur requete cour
 //Recuperation de l'id du courrier cree
 
 
-$requeteIdCourrier = "select id from courrier where type=2 order by id;";
+$requeteIdCourrier = "select id from courrier where type=2 and idServiceCreation=".$_SESSION['idService']." order by id;";
 $resultatIdCourrier = mysql_query( $requeteIdCourrier ) or die ("erreur requete idCourrier".mysql_error( ) );
 while($ligne = mysql_fetch_array($resultatIdCourrier ) )
 	$idCourrier = $ligne['id'];
@@ -138,6 +138,11 @@ $requeteTransmis = "insert into estTransmis( idService, idCourrier,dateTransmiss
 $resultatTransmis = mysql_query( $requeteTransmis ) or die ("erreur requete transmis ".mysql_error( ) );
 
 
+$adresse ="infoCourrier.php?idCourrier=".$idCourrier;
+
+echo"<SCRIPT LANGUAGE=JavaScript>";
+echo" window.open('".$adresse."','info',  'width=200,height=125,directories=no,scrollbars=no');"; 
+echo"</SCRIPT>";
 echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
 }
 ?>
