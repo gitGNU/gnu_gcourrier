@@ -63,6 +63,31 @@ else{
 }
 
 
+if(!isset( $_GET['nbAffiche'] )){
+        $nbAffiche=5;
+}
+
+else{
+        $nbAffiche = $_GET['nbAffiche'];
+}
+?>
+<form method = POST action=voirFactureAffiche.php>
+<table align=center style="border:1px dotted black;"><tr><td>
+<label>nombre de facture a afficher : </label>
+
+<?php
+echo"<input type = hidden name=type value=".$_GET['type']." size=2></input>";
+echo"<input type = text name=affiche value=".$nbAffiche." size=2></input>";
+echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
+?>
+
+<input type=submit name=ok value=ok></input>
+</td></tr></table>
+</form>
+
+
+<?php
+
 
 
 echo"<center><div id= titre>Factures  / <a href=copieFacture.php >Copies de Factures</a><br/><br/><i style=\"font-size:10px;font-weight:normal\">note :Ceci est les factures de votre service uniquement</i><br/><br/></div></center>";
@@ -83,7 +108,8 @@ $requeteFacture = "select facture.id as idFacture,
 		   where facture.idFournisseur = destinataire.id
 		   and validite=0 
 		   and facture.idPriorite = priorite.id
-		   order by ".$order." DESC LIMIT 5;";
+		   order by ".$order." DESC LIMIT 5
+	           LIMIT ".$nbAffiche.";";
 
 
 }
@@ -105,7 +131,7 @@ $requeteFacture = "select facture.id as idFacture,
 			   and facture.idPriorite = priorite.id
 			   and facture.idFournisseur = destinataire.id
 		           order by ".$order." DESC
-			   LIMIT 5;";
+			   LIMIT ".$nbAffiche.";";
 }
 
 $resultatFacture = mysql_query($requeteFacture) or die("erreur facture ".mysql_error() );
