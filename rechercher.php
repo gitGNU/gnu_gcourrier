@@ -43,10 +43,14 @@ if(!isset( $_POST["rechercher"] ) ){
 <center><img src = images/banniere2.jpg></center><br><br>
 <center><b>RECHERCHE COURRIER
 <?php
-if($_GET['type']==1)
+if($_GET['type']==1){
 	echo " ENTRANT";
-else
+	$emetteur = "emetteur";
+}
+else{
 	echo " DEPART";
+	$emetteur = "destinataire";
+}
 ?>
 
 </b><br><br>
@@ -77,7 +81,13 @@ echo"<form name = rechercheAvanceeForm method = POST action = rechercher.php?typ
 
 
 <tr>
-<td>emmeteur</td>
+<td>
+<?php
+echo $emetteur;
+?>
+</td>
+
+
 <td><select name = ext>
 	<option value = "rien"></option>
 		<?php
@@ -88,7 +98,10 @@ echo"<form name = rechercheAvanceeForm method = POST action = rechercher.php?typ
 		}
 		?></select></td>
 </tr>
-
+<tr>
+<td><label>deja transmis</br> par le service</label></td>
+<td><input type = "checkbox" name ="gTransmis"/></td>
+</tr>
 
 </table>
 
@@ -101,6 +114,17 @@ echo"<form name = rechercheAvanceeForm method = POST action = rechercher.php?typ
 <?php
 }
 else{
+
+if(isset($_POST['gTransmis'])){
+$reqTmpTransmission = " and courrier.id = estTransmis.idCourrier
+		       and estTransmis.idService =".$_SESSION['idService']." ";
+$fromTransmission = ",estTransmis,service";
+}
+else{
+$reqTmpTransmission =" ";
+$fromTransmission = "";
+}
+
 echo"<html>";
 echo"<head><title>gCourrier</title>";
 echo"<LINK HREF=styles3.css REL=stylesheet>";
@@ -129,10 +153,9 @@ $requetetmp = "SELECT courrier.id as idCourrier,
 		   courrier.libelle as libelle,
 		   courrier.dateArrivee as dateArrivee,
 		   courrier.dateArchivage as dateArchivage ";
-$from ="    FROM courrier ";
+$from =" FROM courrier ".$fromTransmission;
 $where =" WHERE courrier.validite = 0 and courrier.type=".$_GET['type']."";
-
-
+$where .= $reqTmpTransmission;
 if(strcmp($libelle,"")!=0){
 	$requete.= " and courrier.libelle = '".$libelle."' ";
 
@@ -186,8 +209,9 @@ $requete.=" and courrier.dateArrivee >='".$eDate1."' and courrier.dateArrivee<='
 
 
 $requetetmp .= " ".$from." ".$where." ".$requete." ";
-$requete = $requetetmp;
-
+$requetetmp.=$requete."group by courrier.id";
+//$requete.=$requetetmp." group by courrier.id;";
+echo $requete."<br><br>";
 
 $result = mysql_query( $requete ) or die ( mysql_error() ) ;
 echo "<table align=center font-color ='white'>";
@@ -200,6 +224,8 @@ echo "<td align=center>transmettre</td>";
 echo "</tr>";
 
 $boul = 0;
+
+
 
 while($ligne = mysql_fetch_array( $result ) ){
 
@@ -223,12 +249,15 @@ $tmp.=substr($ligne['dateArrivee'], 0,4);
 
 echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>
 <td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td></tr>";
+
 }//fin while
+
 echo "</table>";
 
 echo "<br><a href = rechercher.php?type=".$_GET['type'].">nouvelle recherche</a>";
 echo "<br><a href = index.php>index</a>";
 
 echo "</center>";
+
 }//fin du premier else
 ?> 
