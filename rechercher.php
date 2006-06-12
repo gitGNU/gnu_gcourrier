@@ -102,7 +102,10 @@ echo $emetteur;
 <td><label>deja transmis</br> par le service</label></td>
 <td><input type = "checkbox" name ="gTransmis"/></td>
 </tr>
-
+<tr>
+<td><label>courrier retard</label></td>
+<td><input type = "checkbox" name ="retard"/></td>
+</tr>
 </table>
 
 <br><input type = submit name = rechercher value = rechercher>
@@ -123,6 +126,15 @@ $fromTransmission = ",estTransmis,service";
 else{
 $reqTmpTransmission =" ";
 $fromTransmission = "";
+}
+
+if(isset($_POST['retard'])){
+$fromRetard = ",priorite ";
+$whereRetard = " and courrier.idPriorite = priorite.id";
+}
+else{
+$whereRetard="";
+$fromRetard = ""; 
 }
 
 echo"<html>";
@@ -153,9 +165,9 @@ $requetetmp = "SELECT courrier.id as idCourrier,
 		   courrier.libelle as libelle,
 		   courrier.dateArrivee as dateArrivee,
 		   courrier.dateArchivage as dateArchivage ";
-$from =" FROM courrier ".$fromTransmission;
+$from =" FROM courrier ".$fromTransmission.$fromRetard;
 $where =" WHERE courrier.validite = 0 and courrier.type=".$_GET['type']."";
-$where .= $reqTmpTransmission;
+$where .= $reqTmpTransmission.$whereRetard;
 if(strcmp($libelle,"")!=0){
 	$requete.= " and courrier.libelle = '".$libelle."' ";
 
@@ -211,8 +223,8 @@ $requete.=" and courrier.dateArrivee >='".$eDate1."' and courrier.dateArrivee<='
 $requetetmp .= " ".$from." ".$where." ".$requete." ";
 $requetetmp.=$requete."group by courrier.id";
 //$requete.=$requetetmp." group by courrier.id;";
-echo $requete."<br><br>";
-
+$requete = $requetetmp;
+//echo $requete."<br><br>";
 $result = mysql_query( $requete ) or die ( mysql_error() ) ;
 echo "<table align=center font-color ='white'>";
 echo "<tr>";
@@ -228,28 +240,61 @@ $boul = 0;
 
 
 while($ligne = mysql_fetch_array( $result ) ){
-
 if($boul == 0){
-		$couleur = lightblue;
-		$boul = 1;
-	}
-	else{
-		$couleur = white;
-		$boul = 0;	
-	}
+	$couleur = lightblue;
+	$boul = 1;	
+}
+else{
+	$couleur = white;
+	$boul = 0;	
+}
+if(isset($_POST['retard'])){
+//test pour urgence du courrier
+		$dateActuel = date("Y-m-d");
+		$jourActuel = substr($dateActuel,8,2);
+		$moisActuel = substr($dateActuel,5,2);
+		$anneeActuel= substr($dateActuel,0,4);
 
+		$tmpDateArrivee = $ligne['dateArrivee'];
+		$jourArrivee =substr($tmpDateArrivee,8,2);
+		$moisArrivee =substr($tmpDateArrivee,5,2);
+		$anneeArrivee =substr($tmpDateArrivee,0,4);
+		
 
-echo "<tr>";	
+		$nbJours = $ligne['nbJours'];
+		
+		$timestampActuel = mktime(0,0,0,$moisActuel,$jourActuel,$anneeActuel);
+		$timestampArrivee= mktime(0,0,0,$moisArrivee,$jourArrivee,$anneeArrivee);
+		$urgence = ($timestampActuel - $timestampArrivee ) / 86400;
 
-$tmp= substr($ligne['dateArrivee'], 8,2);
-$tmp.='-';
-$tmp.=substr($ligne['dateArrivee'], 5,2);
-$tmp.='-';
-$tmp.=substr($ligne['dateArrivee'], 0,4);
+		$nbJoursRestant = $nbJours - $urgence;
 
-echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>
+		if($urgence <= $nbJours){
+			echo "<tr>";	
+			$tmp= substr($ligne['dateArrivee'], 8,2);
+			$tmp.='-';
+			$tmp.=substr($ligne['dateArrivee'], 5,2);
+			$tmp.='-';
+			$tmp.=substr($ligne['dateArrivee'], 0,4);
+
+			echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>
 <td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td></tr>";
+		}//fin if urgence
+}//fin if retard
 
+else{
+
+	echo "<tr>";	
+	$tmp= substr($ligne['dateArrivee'], 8,2);
+	$tmp.='-';
+	$tmp.=substr($ligne['dateArrivee'], 5,2);
+	$tmp.='-';
+	$tmp.=substr($ligne['dateArrivee'], 0,4);
+
+	echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>
+<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td></tr>";
+	
+	}//fin else
 }//fin while
 
 echo "</table>";
