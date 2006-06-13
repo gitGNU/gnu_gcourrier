@@ -26,18 +26,18 @@ require('connexion.php');
 
 
 //recuperation des donnees
-$expediteur = $_POST['expediteur'];
-$adresse = $_POST['adresse'];
-$codePostal = $_POST['codePostal']." ".$_POST['ville'];
-$telephone = $_POST['telephone'];
+$expediteur = stripcslashes($_POST['expediteur']);
+$adresse = stripcslashes($_POST['adresse']);
+$codePostal = stripcslashes($_POST['codePostal']." ".$_POST['ville']);
+$telephone = stripcslashes($_POST['telephone']);
 
-$destinataire = $_POST['destinataire'];
-$adresseDest = $_POST['adresseDest'];
-$codePostalDest= $_POST['codePostalDest']." ".$_POST['villeDest'];
+$destinataire = stripcslashes($_POST['destinataire']);
+$adresseDest =stripcslashes( $_POST['adresseDest']);
+$codePostalDest= stripcslashes($_POST['codePostalDest']." ".$_POST['villeDest']);
 
-$date = $_POST['date'];
-$objet = $_POST['objet'];
-$corps = $_POST['corps'];
+$date = stripcslashes($_POST['date']);
+$objet = stripcslashes($_POST['objet']);
+$corps = stripcslashes($_POST['corps']);
 
 
 $pdf = new pdffile;
@@ -147,7 +147,7 @@ $param["font"] = "Helvetica";
 $param["rotation"] = 0;
 $pdf->draw_text($x, $y, substr($corps,$debut,$fin-$debut-1), $firstpage, $param);
 
-header("Content-Disposition: filename=ack.pdf");
+header("Content-Disposition: filename=accuseReception.pdf");
 header("Content-Type: application/pdf");
 $temp = $pdf->generate();
 header('Content-Length: ' . strlen($temp));

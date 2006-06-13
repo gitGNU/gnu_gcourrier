@@ -221,7 +221,7 @@ while( $ligne = mysql_fetch_array($resultatEntrant) ){
                    echo "<td bgcolor=".$couleur."><center><img src=images/ok.png title = \"reste ".$nbJoursRestant." jours\"></img></center></td>";
 
 if(strcmp($ligne['url'],"") !=0)
-	echo "<td bgcolor=".$couleur."><a href='".$ligne['url']."'>download</a></td>";
+	echo "<td style='text-align:center' bgcolor=".$couleur."><a href='".$ligne['url']."'><img src='images/download.gif' style='border:0px solid black'></a></td>";
 else
 	echo "<td bgcolor=".$couleur."> </td>";
 echo "</tr>";

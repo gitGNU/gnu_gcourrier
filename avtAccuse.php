@@ -44,7 +44,7 @@ $resultat = mysql_query( $requete ) or die (mysql_error( ) );
 while( $ligne = mysql_fetch_array($resultat) ){
 $nom = $ligne['nom'];
 $prenom = $ligne['prenom'];
-$adresse = $ligne['adresse'];
+$adresse = $ligne["adresse"];
 $codePostal = $ligne['codePostal'];
 $ville = $ligne['ville'];
 }
@@ -60,34 +60,34 @@ while($ligne = mysql_fetch_array($result)){
 	$villeAccuse = $ligne['ville'];
 	$telephoneAccuse = $ligne['telephone'];
 }
-$date = $expediteurAccuse.", le ";
+$date = $villeAccuse.", le ";
 $date.=date("d-m-Y");
 
 ?>
 	<table align = left>
 		<tr><td>Expediteur</td>
 <?php
-echo"		<td><input type = text name = expediteur value = '".$expediteurAccuse."' ></input></td> ";
+echo"		<td><input type = text name = expediteur value = \"".$expediteurAccuse."\" ></input></td> ";
 ?>
 		</tr>
 		<tr><td>Adresse</td>
 <?php
-echo"		<td><input type = text name = adresse value = '".$adresseAccuse."' ></input></td>";
+echo"		<td><input type = text name = adresse value = \"".$adresseAccuse."\" ></input></td>";
 ?>
 		</tr>
 		<tr><td>Code postal</td>
 <?php
-echo"		<td><input type = text name = codePostal value='".$codePostalAccuse."' ></input></td>";
+echo"		<td><input type = text name = codePostal value=\"".$codePostalAccuse."\" ></input></td>";
 ?>
 		</tr>
 		<tr><td>Ville</td>
 <?php
-echo"		<td><input type = text name = ville value='".$villeAccuse."'></input></td>";
+echo"		<td><input type = text name = ville value=\"".$villeAccuse."\"></input></td>";
 ?>
 		</tr>
 		<tr><td>Telephone</td>
 <?php
-echo"		<td><input type=text name = telephone value='".$telephoneAccuse."'></input></td>";
+echo"		<td><input type=text name = telephone value=\"".$telephoneAccuse."\"></input></td>";
 ?>
 		</tr>
 	</table><br><br><br><br><br><br>
@@ -95,12 +95,12 @@ echo"		<td><input type=text name = telephone value='".$telephoneAccuse."'></inpu
 		<tr><td>Destinataire</td>
 		<td>
 		<?php
-		echo"<input type = text name = destinataire value ='".$nom." ".$prenom."'></input></td>";
+		echo"<input type = text name = destinataire value =\"".$nom." ".$prenom."\"></input></td>";
 		?>
 		</tr>
 		<tr><td>Adresse</td>
 		<?php
-		echo"<td><input type = text name=adresseDest value = '".$adresse."'></input></td>";
+		echo"<td><input type = text name=adresseDest value = \"".$adresse."\"></input></td>";
 		?>
 		</tr>
 		<tr><td>Code postal</td>
@@ -110,12 +110,12 @@ echo"		<td><input type=text name = telephone value='".$telephoneAccuse."'></inpu
 		</tr>
 		<tr><td>Ville</td>
 		<?php
-		echo"<td><input type = text name = villeDest value =".$ville."></input></td>";
+		echo"<td><input type = text name = villeDest value =\"".$ville."\"></input></td>";
 		?>
 		</tr>
 		<tr><td>Date</td>
 		<?php
-		echo"<td><input type = text name = date value='".$date."'></input></td>";
+		echo"<td><input type = text name = date value=\"".$date."\"></input></td>";
 		?>
 		</tr>
 	</table><br><br><br><br><br><br>
