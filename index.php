@@ -147,17 +147,17 @@ else{
 </table>
 <div id="dco">
 <?php
-$requete = "Select count(*) as nbEntrant from courrier where courrier.serviceCourant=".$_SESSION['idService']." and type=1;";
+$requete = "Select count(*) as nbEntrant from courrier where courrier.serviceCourant=".$_SESSION['idService']." and type=1 and validite = 0;";
 $result = mysql_query($requete) or die(mysql_error());
 while($ligne = mysql_fetch_array($result)){
 $nbEntrant = $ligne['nbEntrant'];
 }
-$requete = "Select count(*) as nbDepart from courrier where courrier.serviceCourant=".$_SESSION['idService']." and type=2;";
+$requete = "Select count(*) as nbDepart from courrier where courrier.serviceCourant=".$_SESSION['idService']." and type=2 and validite = 0;";
 $result = mysql_query($requete) or die(mysql_error());
 while($ligne = mysql_fetch_array($result)){
 $nbDepart = $ligne['nbDepart'];
 }
-$requete = "Select count(*) as nbFacture from facture where facture.idServiceCreation=".$_SESSION['idService'].";";
+$requete = "Select count(*) as nbFacture from facture where facture.idServiceCreation=".$_SESSION['idService']." and validite = 0;";
 $result = mysql_query($requete) or die(mysql_error());
 while($ligne = mysql_fetch_array($result)){
 $nbFacture = $ligne['nbFacture'];
