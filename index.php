@@ -145,8 +145,27 @@ else{
 
 
 </table>
+<div id="dco">
+<?php
+$requete = "Select count(*) as nbEntrant from courrier where courrier.serviceCourant=".$_SESSION['idService']." and type=1;";
+$result = mysql_query($requete) or die(mysql_error());
+while($ligne = mysql_fetch_array($result)){
+$nbEntrant = $ligne['nbEntrant'];
+}
+$requete = "Select count(*) as nbDepart from courrier where courrier.serviceCourant=".$_SESSION['idService']." and type=2;";
+$result = mysql_query($requete) or die(mysql_error());
+while($ligne = mysql_fetch_array($result)){
+$nbDepart = $ligne['nbDepart'];
+}
+$requete = "Select count(*) as nbFacture from facture where facture.idServiceCreation=".$_SESSION['idService'].";";
+$result = mysql_query($requete) or die(mysql_error());
+while($ligne = mysql_fetch_array($result)){
+$nbFacture = $ligne['nbFacture'];
+}
+echo"info : nbEntrant ".$nbEntrant.", nbDepart ".$nbDepart.", nbFactures ".$nbFacture;
+?>
+<br><br><br><a href=login.php>deconnexion</a></div><br>
 
-<br><br><br><div id="dco"><a href=login.php>deconnexion</a></div><br>
 </div>
 
 <?php
