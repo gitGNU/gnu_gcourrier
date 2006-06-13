@@ -25,6 +25,22 @@ author VELU Jonathan
 require("connexion.php");
 session_start();
 
+if(!isset($_GET['valider'])){
+?>
+<html>
+	<head> <title>gCourrier</title>
+<LINK HREF="styles2.css" REL="stylesheet"></head>
+	<body>
+
+
+<div id = pageTGd><br>
+	<center>
+	<img src = images/banniere2.jpg></img><br><br><br>
+<?
+echo "etes vous sur de vouloir archiver ce courrier ?<br>";
+echo "<a href=valider.php?idCourrier=".$_GET['idCourrier']."&valider='o'>oui</a> &nbsp; &nbsp; <a href=index.php>non</a><br><br>";
+}
+else{
 
 
 $idCourrier = $_GET['idCourrier'];
@@ -32,6 +48,6 @@ $date = date("Y-m-d");
 $requete = "update courrier set validite = 1, dateArchivage='".$date."' where id = ".$idCourrier." ;";
 $result = mysql_query( $requete ) or die (mysql_error( ));
 
-header("Location: voirCourrier.php?id=".$idCourrier."&affiche=".$_GET['nbAffiche']."&type=".$_GET['type']." ");
-
+header("Location:index.php");
+}
 //echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
