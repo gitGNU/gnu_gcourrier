@@ -150,9 +150,10 @@ if(strcmp($_SESSION['login'] , 'admin') != 0){
 if($_GET['type'] ==1)
 	echo "<td align=center>accuse </td>";
 }
-echo"<td>fichier attache</td>";
+
 	
 echo "<td align=center> urgence</td>";
+echo"<td>fichier</td>";
 echo"</tr>";
 
 

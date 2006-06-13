@@ -125,14 +125,14 @@ if(!isset($_POST["enregistrer"])){
     }
     // on copie le fichier dans le dossier de destination
     $name_file = $_FILES['fichier']['name'];
-/*
+
     if( !move_uploaded_file($tmp_file, $content_dir . $name_file) )
     {
-        exit("Impossible de copier le fichier dans $content_dir");
+        //exit("Impossible de copier le fichier dans $content_dir");
     }
 
-    echo "Le fichier a bien été uploade";
-*/
+//    echo "Le fichier a bien été uploade";
+
 
 
 $destinataire = $_POST['destinataire'];

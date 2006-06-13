@@ -41,7 +41,7 @@ if(!isset($_POST["enregistrer"])){
 	<img src = images/banniere2.jpg></img><br><br><br>
 	</center>
 	<table align = center>
-		<form name = creerCourrier.php method= POST action = creerCourrier.php> 
+		<form  enctype="multipart/form-data"  name = creerCourrier.php method= POST action = creerCourrier.php> 
 <?/*		
 		<tr>
 		<td>numero courrier: </td>
@@ -104,7 +104,10 @@ if(!isset($_POST["enregistrer"])){
 		}
 		?>
 	</select></td></tr>
-	
+	<tr>
+	<td><label>attacher un fichier</label></td>
+	<td><input type="file" name="fichier"></td>
+	</tr>
 	</table>
 		<center>
 		<input type = submit name = enregistrer value = enregistrer></input>
@@ -121,6 +124,32 @@ if(!isset($_POST["enregistrer"])){
 <?php
 
 }else{
+
+
+    $content_dir = 'upload/'; // dossier où sera déplacé le fichier
+
+    $tmp_file = $_FILES['fichier']['tmp_name'];
+
+    if( !is_uploaded_file($tmp_file) )
+    {
+	$url = "";
+    }
+
+    else{
+        $url = "upload/".$_FILES['fichier']['name'];
+    }
+    // on copie le fichier dans le dossier de destination
+    $name_file = $_FILES['fichier']['name'];
+
+    if( !move_uploaded_file($tmp_file, $content_dir . $name_file) )
+    {
+//        exit("Impossible de copier le fichier dans $content_dir");
+    }
+
+  //  echo "Le fichier a bien été uploade";
+
+
+
 $destinataire = $_POST['destinataire'];
 $libelle = $_POST['libelle'];
 $observation = $_POST['observation'];
@@ -134,7 +163,7 @@ $date.=substr($tmpDate, 3,2);
 $date.='-';
 $date.=substr($tmpDate, 0,2);
 	
-$requeteCourrier = "insert into courrier(libelle,dateArrivee,observation,idPriorite,idServiceCreation,idDestinataire,serviceCourant,type) values('".$libelle."','".$date."','".$observation."','".$priorite."','".$_SESSION['idService']."','".$destinataire."','".$service."',1);";
+$requeteCourrier = "insert into courrier(libelle,dateArrivee,observation,idPriorite,idServiceCreation,idDestinataire,serviceCourant,type,url) values('".$libelle."','".$date."','".$observation."','".$priorite."','".$_SESSION['idService']."','".$destinataire."','".$service."',1,'".$url."');";
 $resultatCourrier = mysql_query( $requeteCourrier ) or die ("erreur requete courrier :".mysql_error( ) );
 
 
