@@ -24,13 +24,21 @@ author VELU Jonathan
 
 require("connexion.php");
 session_start();
+if($_GET['type']==1){
+	$tmpCouleur ="white";
+}
+else{
+	$tmpCouleur="white";
+}
 
 ?>
 <html>
 <head><title>gCourrier</title>
 <link rel="stylesheet" href=styles3.css type="text/css">
 </head>
-<body >
+<?php
+echo"<body style='background:".$tmpCouleur."' >";
+?>
 <br>
 	<center>
 		<img src= images/banniere2.jpg></img>
@@ -39,11 +47,11 @@ session_start();
 
 <?php
 echo "<center><div id= titre>Courrier";
-
 if($_GET['type']==1)
 	echo " Entrant";
 else
 	echo " Depart";
+
 
 
 echo" <br/><i style=\"font-size:10px;font-weight:normal\">note :Ceci est le courrier de votre service uniquement</i></div></center><br>";

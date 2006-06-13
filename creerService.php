@@ -55,6 +55,14 @@ if(!isset($_POST["envoyer"])){
 </html>
 <?php
 }else{
+	$requeteVerif="select * from service where libelle = '".$_POST['libelle']."';";
+	$result = mysql_query($requeteVerif) or die(mysql_error());
+	if(mysql_num_rows($result) !=0 ){
+		echo "Ce service existe deja !</br>";
+		echo "<a href=index.php>index</a>";
+		exit();
+	}
+
 	$libelle = $_POST['libelle'];
 	$designation = $_POST['designation'];
 	

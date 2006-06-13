@@ -71,7 +71,7 @@ if(!isset($_POST["enregistrer"])){
 	</select><a href=creerDestinataire.php>creer</a></td></tr>
 		
 		<tr>
-		<td>Destinataire</td>
+		<td>Service Destinataire</td>
 		<td><select name = serviceDest>
 		<?php
 			$requete = "select * from service where libelle <>'admin' order by libelle;";
@@ -105,7 +105,7 @@ if(!isset($_POST["enregistrer"])){
 		?>
 	</select></td></tr>
 	<tr>
-	<td><label>attacher un fichier</label></td>
+	<td><label>Attacher un fichier</label></td>
 	<td><input type="file" name="fichier"></td>
 	</tr>
 	</table>

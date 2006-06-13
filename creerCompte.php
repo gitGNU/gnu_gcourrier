@@ -78,6 +78,13 @@ if(!isset( $_POST['enregistrer'] ) ){
 <?php
 }
 else{
+	$requeteVerif="select * from utilisateur where login = '".$_POST['login']."';";
+	$result = mysql_query($requeteVerif) or die(mysql_error());
+	if(mysql_num_rows($result) !=0 ){
+		echo "Ce login existe deja !</br>";
+		echo "<a href=index.php>index</a>";
+		exit();
+	}
 
 	//test de verification des passwords
 	if( $_POST['password1'] != $_POST['password2'] ){

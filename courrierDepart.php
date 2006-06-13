@@ -44,7 +44,7 @@ if(!isset($_POST["enregistrer"])){
 		<form enctype="multipart/form-data" name = creerCourrier.php method= POST action = courrierDepart.php> 
 		
 		<tr>
-		<td>Emetteur</td>
+		<td>Destinataire</td>
 		<td><select name = destinataire>
 		<?php
 		$requete = "select * from destinataire order by nom ; ";
@@ -56,7 +56,7 @@ if(!isset($_POST["enregistrer"])){
 	</select><a href=creerDestinataire.php>creer</a></td></tr>
 		
 		<tr>
-		<td>Destinataire</td>
+		<td>Emetteur</td>
 		<td><select name = serviceDest>
 		<?php
 			$requete = "select * from service where libelle <>'admin' order by libelle;";
