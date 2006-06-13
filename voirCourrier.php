@@ -97,7 +97,8 @@ if(strcmp($_SESSION['login'] , 'admin') == 0){
 				  courrier.observation as observation,
 				  destinataire.nom as nomDestinataire,
 				  destinataire.prenom as prenomDestinataire,
-				  courrier.libelle as libelleCourrier
+				  courrier.libelle as libelleCourrier,
+				  courrier.url as url
 		   	   from courrier,priorite,destinataire		          
 			   where courrier.id<=".$idTmp." 
 			   and courrier.validite = 0			 
@@ -117,7 +118,8 @@ else{
 				  courrier.observation as observation,
 				  destinataire.nom as nomDestinataire,
 				  destinataire.prenom as prenomDestinataire,
-				  courrier.libelle as libelleCourrier
+				  courrier.libelle as libelleCourrier,
+				  courrier.url as url
 		   	   from courrier,priorite,destinataire
 		           where courrier.id<=".$idTmp." 
              		   and courrier.validite = 0
@@ -148,6 +150,7 @@ if(strcmp($_SESSION['login'] , 'admin') != 0){
 if($_GET['type'] ==1)
 	echo "<td align=center>accuse </td>";
 }
+echo"<td>fichier attache</td>";
 	
 echo "<td align=center> urgence</td>";
 echo"</tr>";
@@ -216,6 +219,10 @@ while( $ligne = mysql_fetch_array($resultatEntrant) ){
 		else	
                    echo "<td bgcolor=".$couleur."><center><img src=images/ok.png title = \"reste ".$nbJoursRestant." jours\"></img></center></td>";
 
+if(strcmp($ligne['url'],"") !=0)
+	echo "<td bgcolor=".$couleur."><a href='".$ligne['url']."'>download</a></td>";
+else
+	echo "<td bgcolor=".$couleur."> </td>";
 echo "</tr>";
 }//fin while
 echo "</table>";
