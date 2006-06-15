@@ -115,14 +115,14 @@ $eDate2 = $_POST['eDate2'];
 $fournisseur = $_POST['fournisseur'];
 
 
-$requetetmp = 	"SELECT	facture.id as idCourrier,
+$requetetmp = 	"SELECT	facture.refuse as refuse,
+			facture.observation as observation,
+			facture.id as idCourrier,
 			facture.refFacture as refFacture,
 			facture.dateFacture as dateArrivee,
 			facture.dateFactureOrigine as dateOrigine,
 			destinataire.nom as nomDest,
 			destinataire.prenom as prenomDest
-
-		
 		";
 
 $from ="    FROM facture,destinataire ";
@@ -212,7 +212,9 @@ echo "<td align=center>fournisseur</td>";
 echo "<td align=center>refFacture</td>";
 echo "<td align=center>date arrivee</td>";
 echo "<td align=center>date origine</td>";
+echo "<td align=center>observation</td>";
 echo "<td align=center>historique</td>";
+echo "<td align=center>refuser</td>";
 echo "</tr>";
 
 $boul = 0;
@@ -227,6 +229,11 @@ if($boul == 0){
 		$couleur = white;
 		$boul = 0;	
 	}
+
+if($ligne["refuse"] == 1)
+	$couleurTmp = "red";
+else
+	$couleurTmp = $couleur;
 
 
 echo "<tr>";	
@@ -244,12 +251,23 @@ $tmp2.=substr($ligne['dateOrigine'], 5,2);
 $tmp2.='-';
 $tmp2.=substr($ligne['dateOrigine'], 0,4);
 
-echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
-echo "<td bgcolor = ".$couleur.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
-echo "<td bgcolor = ".$couleur.">".$ligne['refFacture']."</td>";
-echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
-echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
-echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
+if(strcmp($ligne['observation'],"")==0){
+$obs = "modifier";
+}
+else
+$obs = $ligne['observation'];
+
+echo "<td bgcolor = ".$couleurTmp.">".$ligne['idCourrier']."</td>";
+echo "<td bgcolor = ".$couleurTmp.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
+echo "<td bgcolor = ".$couleurTmp.">".$ligne['refFacture']."</td>";
+echo "<td bgcolor = ".$couleurTmp.">".$tmp."</td>";
+echo "<td bgcolor = ".$couleurTmp.">".$tmp2."</td>";
+echo "<td bgcolor = ".$couleurTmp."><a href=modifObservationFacture.php?idCourrier=".$ligne['idCourrier']."  style=\"text-decoration :none;font-weight:normal\">".$obs."</a></td>";
+echo "<td bgcolor=".$couleurTmp."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
+
+
+echo "<td bgcolor = ".$couleurTmp."><a href=refuse.php?idCourrier=".$ligne['idCourrier'].">refuse</a></td></tr>";
+
 }//fin while
 echo "</table>";
 

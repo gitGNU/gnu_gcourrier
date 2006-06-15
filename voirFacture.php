@@ -49,12 +49,11 @@ $order = $_GET['order'];
 
 if(!isset( $_GET['id'] )){
 
-$re = "select max(id)as id from facture;";
+$re = "select max(id) as id from facture;";
 $res = mysql_query( $re ) or die (mysql_error() );
-while($ligne = mysql_fetch_array( $res ) ){
-	$id = $ligne['id']; 
-}
-
+	while($ligne = mysql_fetch_array( $res ) ){
+		$id = $ligne['id']; 
+	}
 $idTmp = $id;
 }
 
@@ -76,7 +75,7 @@ else{
 <label>nombre de facture a afficher : </label>
 
 <?php
-echo"<input type = hidden name=type value=".$_GET['type']." size=2></input>";
+//echo"<input type = hidden name=type value=".$_GET['type']." size=2></input>";
 echo"<input type = text name=affiche value=".$nbAffiche." size=2></input>";
 echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
 ?>
@@ -95,6 +94,7 @@ echo"<center><div id= titre>Factures  / <a href=copieFacture.php >Copies de Fact
 
 if(strcmp($_SESSION['login'] , 'admin') == 0){
 $requeteFacture = "select facture.id as idFacture,
+			  facture.histo as histo,
   			  refFacture as refFacture,
 			  montant as montant,
 			  dateFacture as dateFacture,
@@ -115,6 +115,7 @@ $requeteFacture = "select facture.id as idFacture,
 }
 else{
 $requeteFacture = "select facture.id as idFacture,
+			  facture.histo as histo,
   			  facture.refFacture as refFacture,
 			  facture.dateFacture as dateFacture,
 			  facture.dateFactureOrigine as dateFactureOrigine,
@@ -155,7 +156,7 @@ if(strcmp($_SESSION['login'] , 'admin') != 0){
 	echo"</tr>";
 $boul = 0;
 while($ligne = mysql_fetch_array($resultatFacture)){
-	$idTmp = $ligne['idTmp'];
+	$idTmp = $ligne['idFacture']-1;
 	if($boul == 0){
 		$couleur = lightblue;
 		$boul = 1;
@@ -193,6 +194,8 @@ while($ligne = mysql_fetch_array($resultatFacture)){
 		$montant="modifier";
 	if(strcmp($dest,"") ==0)
 		$nomDestinataire="modifier";
+	if(strcmp($observation,"")==0)
+		$observation ="modifier";
 	
 
 	echo "<td bgcolor=".$couleur.">".$idCourrier."</td>";
@@ -201,9 +204,12 @@ while($ligne = mysql_fetch_array($resultatFacture)){
 	echo "<td bgcolor=".$couleur." style=\"text-align:right\"><a href=modifMontant.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$montant."</a></td>";
 	echo "<td bgcolor=".$couleur.">".$dateArrivee."</td>";
 	echo "<td bgcolor=".$couleur.">".$dateFacture."</td>";
-	echo "<td bgcolor=".$couleur.">".$observation."</td>";
-	echo"<td bgcolor=".$couleur."><a href=cheminFacture.php?idCourrier=".$idCourrier."><center><font color= ".$couleur."><img src=images/loupe.png></img></font></center></a></td>";
 
+	echo "<td bgcolor=".$couleur."><a href=modifObservationFacture.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$observation."</a></td>";
+
+
+
+	echo"<td bgcolor=".$couleur."><a href=cheminFacture.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$ligne['histo']."</center></a></td>";
 
 
 
@@ -222,7 +228,7 @@ if(strcmp($_SESSION['login'] , 'admin') != 0){
 		$moisActuel = substr($dateActuel,5,2);
 		$anneeActuel= substr($dateActuel,0,4);
 
-		$tmpDateArrivee = $ligne['dateFactureOrigine'];
+		$tmpDateArrivee = $ligne['dateFacture'];
 		$jourArrivee =substr($tmpDateArrivee,8,2);
 		$moisArrivee =substr($tmpDateArrivee,5,2);
 		$anneeArrivee =substr($tmpDateArrivee,0,4);
@@ -248,13 +254,11 @@ if(strcmp($_SESSION['login'] , 'admin') != 0){
 	
 }
 	echo"</table>";
-if(mysql_num_rows($resultatFacture) == 5) 
-	echo "<center><a href = voirFacture.php?id=".$idTmp.">page suivante</a></center>";
-
-
-
+if(mysql_num_rows($resultatFacture) == $nbAffiche) 
+	echo "<center><a href = voirFacture.php?id=".$idTmp."&nbAffiche=".$nbAffiche.">page suivante</a></center>";
 ?>	
 
+<center><a href="javascript:history.go(-1)"> <b>page precedente </b></a> &nbsp/</center>
 
 <center><br>
 <a href = index.php>index</a>

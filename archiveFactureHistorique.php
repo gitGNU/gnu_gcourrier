@@ -44,7 +44,6 @@ echo"<center>HISTORIQUE DE L'ARCHIVE FACTURE NUMERO : ".$idCourrier."</center><b
 $boul = 0;
 echo "<table align=center>";
 echo "<tr>";
-echo "<tr>";
 echo "<td align=center>service</td>";
 echo "<td align=center>date de transmission</td>";
 echo "<td align=center>date de retour</td>";
@@ -57,6 +56,7 @@ $requete ="SELECT estTransmisCopie.dateTransmission as dateTransmission,
 		  estTransmisCopie.id as idTransmis
 	   FROM facture,estTransmisCopie,service
            WHERE facture.id=".$idCourrier."
+	   AND facture.idServiceCreation = ".$_SESSION['idService']."
 	   AND facture.id = estTransmisCopie.idFacture
 	   AND estTransmisCopie.idService = service.id;";
 $result = mysql_query( $requete ) or die (mysql_error() );
@@ -83,6 +83,7 @@ while ( $ligne = mysql_fetch_array($result) ){
 	$service = $ligne['libelle']." ".$ligne['designation'];
 	$dateModif = $ligne['dateTransmission'];
 	$dateRetour = $ligne['dateRetour'];
+
 
 	echo "<td bgcolor=".$couleur.">".$service."</td>";
 	echo "<td bgcolor=".$couleur.">".$dateModif."</td>";

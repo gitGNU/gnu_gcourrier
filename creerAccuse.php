@@ -147,6 +147,7 @@ $param["font"] = "Helvetica";
 $param["rotation"] = 0;
 $pdf->draw_text($x, $y, substr($corps,$debut,$fin-$debut-1), $firstpage, $param);
 
+
 header("Content-Disposition: filename=accuseReception.pdf");
 header("Content-Type: application/pdf");
 $temp = $pdf->generate();

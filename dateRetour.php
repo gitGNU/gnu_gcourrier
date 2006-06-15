@@ -62,7 +62,7 @@ echo "<br><a href = index.php>index</a>";
 <?php
 }else{
 $date = $_POST['date'];
-
+//$date1 = $date;
 
 $tmp= substr($date, 6,4);
 $tmp.='-';
@@ -73,9 +73,23 @@ $tmp.=substr($date, 0,2);
 $date = $tmp;
 
 $idCourrier = $_POST['idCourrier'];
+/*
+$requete ="select histo from facture where id =".$idCourrier.";";
+$result = mysql_query($requete ) or die("1".mysql_error() );
+while($ligne = mysql_fetch_array($result)){
+	$histo = $ligne['histo'];
+}
+$tmpHisto = explode("-",$histo);
+$tmpHisto2 = $tmpHisto[0];
+$tmpHisto2 .= " - ".$date1; 
+
+
+$requete = "update facture set histo ='".$tmpHisto2."' where id=".$idCourrier.";";
+$result = mysql_query($requete) or die ("2".mysql_error( ) );
+*/
 
 $requete ="update estTransmisCopie set dateRetour = '".$date."' where id =".$idCourrier.";";
-$result = mysql_query($requete) or die (mysql_error( ) );
+$result = mysql_query($requete) or die ("3".mysql_error( ) );
 
 header("Location: voirFacture.php");
 

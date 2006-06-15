@@ -81,6 +81,18 @@ $date = date("Y-m-d");
 
 $requete = "insert into estTransmisCopie( idFacture, idService,dateTransmission ) values(".$idCourrier.",".$service.",'".$date."');";
 $result = mysql_query($requete ) or die(mysql_error() );
+
+$requete = "select service.libelle as libService
+            from service 
+	    where service.id = ".$service.";";	    
+
+$result = mysql_query($requete) or die(mysql_error());
+while($ligne = mysql_fetch_array($result)){
+	$libService = $ligne['libService'];
+}
+$requete = "update facture set histo = '".$libService."' where id = ".$idCourrier.";";
+$result = mysql_query($requete) or die(mysql_error());
+
  header("Location: voirFacture.php?id=".$idCourrier." ");
 //echo "<meta http-equiv=\"refresh\" content=\"0;url=voirFacture.php\">";
 }
