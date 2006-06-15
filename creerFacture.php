@@ -47,6 +47,22 @@ if(!isset($_POST["enregistrer"])){
 		}
 		?>
 	</select><a href=creerDestinataire.php>creer</a></td></tr>
+
+		<tr>
+		<td>Service Destinataire</td>
+		<td><select name = serviceDest>
+		<?php
+			$requete = "select * from service where libelle <>'admin' order by libelle;";
+			$result = mysql_query($requete) or die ( mysql_error() );
+			while( $ligne = mysql_fetch_array( $result ) ){
+				 echo "<option value = '".$ligne['id']."'>".$ligne['libelle']." ".$ligne['designation']."</option>";
+			}
+		?>
+		</td>
+		</tr>
+
+
+
 		<tr>
 		<td>Reference facture</td>
 		<td><input type = text name = numFacture></input></td></tr>
@@ -107,6 +123,8 @@ if(!isset($_POST["enregistrer"])){
 <?php
 
 }else{
+
+	$service = $_POST['serviceDest'];
 	$montant=$_POST["montant"];
 	$refFacture=$_POST["numFacture"];
 	$dateFacture=$_POST["dateFacture"];
@@ -131,14 +149,26 @@ if(!isset($_POST["enregistrer"])){
 	$tmp2.=substr($dateFactureOrigine, 0,2);
 	$dateFactureOrigine = $tmp2;
 
-$requeteCourrier = "insert into facture(montant,refFacture,dateFacture,dateFactureOrigine, observation,idServiceCreation,idPriorite,idFournisseur) values('".$montant."','".$refFacture."','".$dateFacture."','".$dateFactureOrigine."','".$observation."','".$idServiceCreation."','".$idPriorite."','".$idFournisseur."');";
+$requete = "select libelle from service where id = ".$service.";";
+$result = mysql_query($requete) or die(mysql_error() );
+while($ligne = mysql_fetch_array($result)){
+	$serviceLib = $ligne['libelle'];
+}
+
+$requeteCourrier = "insert into facture(montant,refFacture,dateFacture,dateFactureOrigine, observation,idServiceCreation,idPriorite,idFournisseur,histo) values('".$montant."','".$refFacture."','".$dateFacture."','".$dateFactureOrigine."','".$observation."','".$idServiceCreation."','".$idPriorite."','".$idFournisseur."','".$serviceLib."');";
 $resultatCourrier = mysql_query( $requeteCourrier ) or die ("erreur requete courrier :".mysql_error( ) );
 
-$requeteIdCourrier = "select id from courrier order by id;";
+$requeteIdCourrier = "select id from facture order by id;";
 $resultatIdCourrier = mysql_query( $requeteIdCourrier ) or die ("erreur requete idCourrier".mysql_error( ) );
 
 	while($ligne = mysql_fetch_array($resultatIdCourrier ))
 		$idCourrier = $ligne['id'];
+
+$date = date("Y-m-d");
+
+$requete = "insert into estTransmisCopie( idFacture, idService,dateTransmission ) values(".$idCourrier.",".$service.",'".$date."');";
+$result = mysql_query($requete ) or die(mysql_error() );
+
 	
 
 echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";

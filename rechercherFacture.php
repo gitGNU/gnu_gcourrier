@@ -80,7 +80,9 @@ echo"<form method = POST action = rechercherFacture.php>";
 		}
 		?></select></td>
 </tr>
-
+<td><label>courrier retard</label></td>
+<td><input type = "checkbox" name ="retard"/></td>
+</tr>
 
 </table>
 
@@ -190,7 +192,7 @@ $tmpdate.='-';
 $tmpdate.=substr($eDate2, 0,2);
 $eDate2 = $tmpdate;
 
-$requete.=" and facture.dateArrivee >='".$eDate1."' and facture.dateArrivee<='".$eDate2."' ";
+$requete.=" and facture.dateFacture >='".$eDate1."' and facture.dateFacture<='".$eDate2."' ";
 		
 }
 
@@ -226,6 +228,12 @@ if($boul == 0){
 
 echo "<tr>";	
 
+if(isset($_POST['retard'])){
+echo "Retard ! ";
+}//fin if retard
+
+
+else{
 $tmp= substr($ligne['dateArrivee'], 8,2);
 $tmp.='-';
 $tmp.=substr($ligne['dateArrivee'], 5,2);
@@ -245,6 +253,7 @@ echo "<td bgcolor = ".$couleur.">".$ligne['refFacture']."</td>";
 echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
 echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
 echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
+}//fin else retard
 }//fin while
 echo "</table>";
 
@@ -252,6 +261,7 @@ echo "<br><a href = rechercherFacture.php>nouvelle recherche</a>";
 echo "<br><a href = index.php>index</a>";
 
 echo "</center>";
+
 }//fin du premier else
 ?> 
 
