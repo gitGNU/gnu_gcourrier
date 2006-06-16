@@ -66,8 +66,6 @@ echo"<form method = POST action = rechercherFacture.php>";
 <td><input type = text name = eDate1 value="jj-mm-aaaa"></input>
  et <input type = text name = eDate2 value="jj-mm-aaaa"></input></td>
 </tr>
-
-
 <tr>
 <td>fournisseur</td>
 <td><select name = fournisseur>
@@ -80,6 +78,20 @@ echo"<form method = POST action = rechercherFacture.php>";
 		}
 		?></select></td>
 </tr>
+		<tr>
+		<td>service</td>
+		<td><select name = serviceDest>
+	<option value = "rien"></option>
+		<?php
+			$requete = "select * from service where libelle <>'admin' order by libelle;";
+			$result = mysql_query($requete) or die ( mysql_error() );
+			while( $ligne = mysql_fetch_array( $result ) ){
+				 echo "<option value = '".$ligne['id']."'>".$ligne['libelle']." ".$ligne['designation']."</option>";
+			}
+		?>
+		</td>
+		</tr>
+
 <td><label>courrier retard</label></td>
 <td><input type = "checkbox" name ="retard"/></td>
 </tr>
@@ -107,7 +119,7 @@ echo"<center>";
 echo "<div id = titre>RESULTAT DE LA RECHERCHE</div><br></b>";
 
 
-
+$serviceDest = $_POST['serviceDest'];
 $numero = $_POST['numero'];
 $refFacture = $_POST['refFacture'];
 $dateArrivee = $_POST['dateArrivee'];
@@ -122,11 +134,13 @@ $requetetmp = 	"SELECT	facture.id as idCourrier,
 			facture.dateFacture as dateArrivee,
 			facture.dateFactureOrigine as dateOrigine,
 			destinataire.nom as nomDest,
-			destinataire.prenom as prenomDest
+			destinataire.prenom as prenomDest,
+			priorite.nbJours as nbJours
 		";
 
-$from ="    FROM facture,destinataire ";
-$where =" WHERE facture.validite = 0 and facture.idServiceCreation=".$_SESSION['idService']."";
+$from ="    FROM facture,destinataire,priorite ";
+$where =" WHERE facture.validite = 0 and facture.idServiceCreation=".$_SESSION['idService']." and
+	  priorite.id = facture.idPriorite ";
 
 
 if(strcmp($numero,"")!=0){
@@ -164,6 +178,11 @@ if(strcmp($dateOrigine,"jj-mm-aaaa")!=0){
 
 }
 
+
+if(strcmp($serviceDest,"rien")!=0){
+	$requete .=" and facture.id = estTransmisCopie.idFacture and estTransmisCopie.idService = service.id and service.id =".$serviceDest." ";
+	$from.=" ,service,estTransmisCopie ";
+}
 
 if(strcmp($fournisseur,"rien")!=0){
 	$requete.=" and facture.idFournisseur = destinataire.id and destinataire.id = ".$fournisseur." ";
@@ -229,7 +248,54 @@ if($boul == 0){
 echo "<tr>";	
 
 if(isset($_POST['retard'])){
-echo "Retard ! ";
+
+		$dateActuel = date("Y-m-d");
+		$jourActuel = substr($dateActuel,8,2);
+		$moisActuel = substr($dateActuel,5,2);
+		$anneeActuel= substr($dateActuel,0,4);
+
+		$tmpDateArrivee = $ligne['dateArrivee'];
+		$jourArrivee =substr($tmpDateArrivee,8,2);
+		$moisArrivee =substr($tmpDateArrivee,5,2);
+		$anneeArrivee =substr($tmpDateArrivee,0,4);
+		
+
+
+		$nbJours = $ligne['nbJours'];
+		
+		$timestampActuel = mktime(0,0,0,$moisActuel,$jourActuel,$anneeActuel);
+		$timestampArrivee= mktime(0,0,0,$moisArrivee,$jourArrivee,$anneeArrivee);
+		$urgence = ($timestampActuel - $timestampArrivee ) / 86400;
+
+		$nbJoursRestant = $nbJours - $urgence;
+
+
+
+		if ($nbJoursRestant <= 5){
+
+
+
+$tmp= substr($ligne['dateArrivee'], 8,2);
+$tmp.='-';
+$tmp.=substr($ligne['dateArrivee'], 5,2);
+$tmp.='-';
+$tmp.=substr($ligne['dateArrivee'], 0,4);
+
+
+$tmp2= substr($ligne['dateOrigine'], 8,2);
+$tmp2.='-';
+$tmp2.=substr($ligne['dateOrigine'], 5,2);
+$tmp2.='-';
+$tmp2.=substr($ligne['dateOrigine'], 0,4);
+
+echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
+echo "<td bgcolor = ".$couleur.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
+echo "<td bgcolor = ".$couleur.">".$ligne['refFacture']."</td>";
+echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
+echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
+echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
+}
+
 }//fin if retard
 
 
