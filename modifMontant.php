@@ -64,7 +64,7 @@ echo"</center>";
 else{
 $montant = $_POST['montant'];
 $idCourrier = $_POST['idCourrier'];
-$requete = "update facture set montant=".$montant." where id=".$idCourrier.";";
+$requete = "update facture set montant='".$montant."' where id=".$idCourrier.";";
 $result = mysql_query($requete) or die(mysql_error());
 
 header("LOCATION:voirFacture.php");
