@@ -70,7 +70,7 @@ if(!isset($_POST["enregistrer"])){
 
 		<tr><td>Libelle</td>
 		<td><input type=text name = libelle></input></td></tr>
-		<tr><td>Date Arrivee</td>
+		<tr><td>Date Creation</td>
 		<td>
 			<?php
 			$dateToday = date("d-m-Y"); 
