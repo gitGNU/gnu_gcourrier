@@ -40,6 +40,15 @@ session_start();
 
 <?php
 
+$requeteInit = "Select id from facture Limit 1;";
+$result = mysql_query($requeteInit) or die(mysql_error());
+if(mysql_num_rows($result) == 0){
+echo "<center><br>aucune facture pour le moment<br><br>";
+echo "<a href = index.php>index</a></center>";
+exit();
+}
+
+
 if(!isset( $_GET['order'] )){
 $order = "facture.id";
 }

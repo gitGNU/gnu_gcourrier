@@ -75,7 +75,7 @@ if(!isset( $_POST['enregistrer'] ) ){
 	
 <center>
 <div id="fin_page">
-GCourrier 1.5
+GCourrier 1.6
 <a href="copyright.html">Licence</a></center>
 </div>
 </body>

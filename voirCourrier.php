@@ -53,6 +53,13 @@ else
 	echo " Depart";
 
 
+$requeteInit = "Select id from courrier Limit 1;";
+$result = mysql_query($requeteInit) or die(mysql_error());
+if(mysql_num_rows($result) == 0){
+echo "</div><br>aucun courrier pour le moment<br><br>";
+echo "<a href = index.php>index</a>";
+exit();
+}
 
 echo" <br/><i style=\"font-size:10px;font-weight:normal\">note :Ceci est le courrier de votre service uniquement</i></div></center><br>";
 

@@ -28,13 +28,14 @@ require("connexion.php");
 <html>
 <head>
 	<title>gCourrier</title>
+	
 </head>
-<body bgcolor = darkblue>
-<center><img src=images/banniere.jpg></img><br><br><br>
+<body>
+<center><img src=images/banniere2.jpg></img><br><br><br>
 
 <?php
-echo "<h3><font color = white><i>Installation en cours ...</i></font></h3>";
-echo "<h3><font color = white><i>Verification de la base de donnees ...</i></font></h3>";
+echo "<h3><i>Installation en cours ...</i></h3>";
+echo "<h3><i>Verification de la base de donnees ...</i></h3>";
 
 $requete = " DROP TABLE IF EXISTS courrier;";
 $result = mysql_query( $requete ) or die ("erreur1".mysql_error() );
@@ -66,7 +67,7 @@ $requete = " DROP TABLE IF EXISTS utilisateur;";
 $result = mysql_query( $requete ) or die ("erreur9". mysql_error() );
 
 
-echo "<h3><font color = white><i>Creation des tables ...</i></font></h3>";
+echo "<h3><i>Creation des tables ...</i></h3>";
 
 $requete = "CREATE TABLE `estTransmisCopie` (
   `id` int(11) NOT NULL auto_increment,
@@ -103,6 +104,7 @@ $requete = " CREATE TABLE `courrier` (
   `idPriorite` int(11) NOT NULL default '0',
   `serviceCourant` int(11) NOT NULL default '0',
   `type` int(11) NOT NULL default '0',
+  `url` varchar(255) NOT NULL default '', 
   PRIMARY KEY  (`id`)
 );";
 $result = mysql_query( $requete ) or die ("erreur12". mysql_error() );
@@ -119,6 +121,8 @@ $requete = " CREATE TABLE `facture` (
   `idFournisseur` int(11) NOT NULL default '0',
   `idServiceCreation` int(11) NOT NULL default '0',
   `idPriorite` int(11) NOT NULL default '0',
+  `histo` varchar( 255 ) DEFAULT 'consulter' NOT NULL,
+  `refuse` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 );";
 $result = mysql_query( $requete ) or die ("erreur13". mysql_error() );
@@ -181,22 +185,25 @@ CREATE TABLE `priorite` (
 
 $result = mysql_query( $requete ) or die ( "erreur18".mysql_error() );
 
-echo "<h3><font color = white><i>Creation du service ADMIN ...</i></font></h3>";
+echo "<h3><i>Creation du service ADMIN ...</i></h3>";
 $requete = "INSERT INTO service(libelle,designation) VALUES ('ADMIN', 'admin');";
 $result = mysql_query( $requete ) or die ( "erreur19".mysql_error() );
 
 
-echo "<h3><font color = b27e5e><i>Creation du compte admin ...</i></font></h3>";
-$requete="INSERT INTO utilisateur(login,idService) VALUES('admin',1);";
+echo "<h3><i>Creation du compte admin ...</i></h3>";
+$requete="INSERT INTO utilisateur(login,nom,prenom,idService) VALUES('admin','admin','admin',1);";
 $result = mysql_query( $requete ) or die ( "erreur20".mysql_error() );
 
 $requete="INSERT INTO accuse(id) VALUES(1);";
 $result = mysql_query( $requete ) or die ("erreur21". mysql_error() );
 
 
+$requete="Insert into priorite(designation,nbJours) values('normal',10)";
+$result = mysql_query( $requete ) or die ( "erreur22".mysql_error() );
+
 ?>
 
-<br><a href = login.php><font color = white>se connecter</font></a>
+<br><a href = login.php>se connecter</a>
 </center>
 
 </body>
