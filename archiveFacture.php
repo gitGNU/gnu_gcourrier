@@ -148,7 +148,7 @@ if(strcmp($dateArrivee,"jj-mm-aaaa")!=0){
 	$tmpdatearrivee.=substr($dateArrivee, 0,2);
 	$dateArrivee = $tmpdatearrivee;
 
-	$requete.= " and facture.dateArrivee = '".$dateArrivee."' ";
+	$requete.= " and facture.dateFacture = '".$dateArrivee."' ";
 
 }
 
@@ -195,7 +195,7 @@ $tmpdate.='-';
 $tmpdate.=substr($eDate2, 0,2);
 $eDate2 = $tmpdate;
 
-$requete.=" and facture.dateArrivee >='".$eDate1."' and facture.dateArrivee<='".$eDate2."' ";
+$requete.=" and facture.dateFacture >='".$eDate1."' and facture.dateFacture<='".$eDate2."' ";
 		
 }
 

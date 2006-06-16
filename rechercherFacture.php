@@ -162,7 +162,7 @@ if(strcmp($dateArrivee,"jj-mm-aaaa")!=0){
 	$tmpdatearrivee.=substr($dateArrivee, 0,2);
 	$dateArrivee = $tmpdatearrivee;
 
-	$requete.= " and facture.dateArrivee = '".$dateArrivee."' ";
+	$requete.= " and facture.dateFacture = '".$dateArrivee."' ";
 
 }
 
