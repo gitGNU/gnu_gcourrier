@@ -147,10 +147,29 @@ $param["font"] = "Helvetica";
 $param["rotation"] = 0;
 $pdf->draw_text($x, $y, substr($corps,$debut,$fin-$debut-1), $firstpage, $param);
 
-
+/*
 header("Content-Disposition: filename=accuseReception.pdf");
 header("Content-Type: application/pdf");
 $temp = $pdf->generate();
 header('Content-Length: ' . strlen($temp));
 echo $temp;
+*/
+
+$inF = fopen("accuse/".$objet.".pdf", "w");
+fputs($inF, $pdf->generate(0));
+fclose($inF);
+/*
+header("Content-Disposition: filename=accuseReception.pdf");
+header("Content-Type: application/pdf");
+header('Content-Length:'. filesize("accuse/".$objet.".pdf").' ');
+
+$outF = fopen("accuse/".$objet.".pdf", "r");
+while (!feof($outF )) {
+  fread($outF , 8192);
+}
+fclose($outF );
+*/
+echo "accuse reception enregistre sur le serveur";
+echo "<br><br><a href='accuse/".$objet.".pdf'>telecharger l'accuse reception</a>";
+echo "<br><a href=index.php>index</a>";
 ?>
