@@ -38,16 +38,16 @@ if(!isset($_GET['valider'])){
 	<img src = images/banniere2.jpg></img><br><br><br>
 <?
 echo "etes vous sur de vouloir archiver ce courrier ?<br>";
-echo "<a href=valider.php?idCourrier=".$_GET['idCourrier']."&valider='o'>oui</a> &nbsp; &nbsp; <a href=index.php>non</a><br><br>";
+echo "<a href=valider.php?idCourrier=".$_GET['idCourrier']."&valider='o'&type=".$_GET['type'].">oui</a> &nbsp; &nbsp; <a href=index.php>non</a><br><br>";
 }
 else{
 
-
+$type = $_GET['type'];
 $idCourrier = $_GET['idCourrier'];
 $date = date("Y-m-d");
 $requete = "update courrier set validite = 1, dateArchivage='".$date."' where id = ".$idCourrier." ;";
 $result = mysql_query( $requete ) or die (mysql_error( ));
 
-header("Location:index.php");
+header("Location:voirCourrier.php?type=".$type."");
 }
 //echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";

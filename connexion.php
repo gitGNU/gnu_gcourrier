@@ -22,6 +22,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
+	header("content-type: text/html; charset=UTF-8");
+
 
 	$base = "gcourrierHarnes";//nom de la base ou se trouve gcourrier
 	$user = "root";	     //utilisateur 
