@@ -76,7 +76,7 @@ echo"<form name = rechercheAvanceeForm method = POST action = archive.php?type="
 
 
 <tr>
-<td>emmeteur</td>
+<td>emetteur</td>
 <td><select name = ext>
 	<option value = "rien"></option>
 		<?php
