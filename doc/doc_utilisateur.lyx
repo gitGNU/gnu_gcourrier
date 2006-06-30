@@ -1,11 +1,12 @@
 #LyX 1.3 created this file. For more info see http://www.lyx.org/
 \lyxformat 221
 \textclass article
-\language english
+\language frenchb
 \inputencoding auto
 \fontscheme default
 \graphics default
 \paperfontsize default
+\spacing single 
 \papersize Default
 \paperpackage a4
 \use_geometry 0
@@ -211,7 +212,7 @@ mkdir public_html
 Déplacer ensuite votre dossier gcourrier dans le public html:
 \layout LyX-Code
 
-mv gcourrier1.6 public_html
+mv gcourrier-1.6 public_html
 \layout Itemize
 
 Il va vous falloir désormais installer sur votre système les paquets permettant
@@ -221,25 +222,42 @@ Il va vous falloir désormais installer sur votre système les paquets permettant
 su -
 \layout LyX-Code
 
-apt-get install apache2 php4 phpmyadmin php4-mysql libapache2-mod-php4 mysql-cli
-ent mysql-server
+apt-get install apache2 php4-mysql libapache2-mod-php4 mysql-server-4.1 phpmyadmi
+n
 \layout Itemize
 
 Créez ensuite une base de données nommée gcourrier à l'aide de phpmyadmin
- (ou mysql selon vos goûts).
+ (ou mysql selon vos goûts):
+\layout LyX-Code
+
+mysql> CREATE DATABASE gcourrier;
+\layout LyX-Code
+
+mysql> GRANT ALL PRIVILEGES ON gcourrier.* TO 'gcourrier'@'localhost' 
+\backslash 
+
+\layout LyX-Code
+
+  IDENTIFIED BY 'password';
 \layout Itemize
 
 Modifier ensuite le fichier connexion.php de GCourrier
 \layout LyX-Code
 
-$base='gcourrier';
+$base = 'gcourrier';
+\layout LyX-Code
+
+$user = 'gcourrier';
+\layout LyX-Code
+
+$mdp  = 'password'; 
 \layout Itemize
 
 Démarrez ensuite votre navigateur internet préféré et entrez l'adresse suivante
  :
 \layout LyX-Code
 
-http://localhost/~votrelogin/gcourrier1.6/install.php
+http://localhost/~votrelogin/gcourrier-1.6/install.php
 \layout Itemize
 
 Créez ensuite vos services, comptes utilisateurs, fournisseurs...
@@ -247,10 +265,11 @@ Créez ensuite vos services, comptes utilisateurs, fournisseurs...
 
 Cette installation suppose que vous désiriez utiliser un serveur Apache.
  Cependant GCourrier fonctionne avec n'importe quel type de serveur HTTP
- à partir du moment où il gère une version de PHP supèrieur à 4.
+ à partir du moment où il gère une version de PHP supérieur à 4.
 \newline 
 
-\newline 
+\layout Standard
+
 Il vous est également possible d'installer GCourrier dans votre /var/www
  (plutôt que le public_html).
 \layout Itemize
@@ -258,31 +277,7 @@ Il vous est également possible d'installer GCourrier dans votre /var/www
 Pour cela déplacez GCourrier dans /var/www
 \layout LyX-Code
 
-mv GCourrier1.6 /var/www/gcourrier
-\layout Itemize
-
-Copiez ensuite le fichier /etc/apache2/site-available/default en gcourrier
-\layout LyX-Code
-
-cd /etc/apache2/site-available/
-\layout LyX-Code
-
-cp default gcourrier
-\layout Itemize
-
-Modifiez ensuite le fichier gcourrier afin d'obtenir
-\layout LyX-Code
-
-<Directory /var/www/gcourrier> 
-\layout Itemize
-
-Activez le site
-\layout LyX-Code
-
-a2ensite gcourrier
-\layout LyX-Code
-
-/etc/init.d/apache2 reload
+mv gcourrier-1.6 /var/www/gcourrier
 \layout Itemize
 
 Augmentez la taille d'upload dans le php.ini
@@ -300,7 +295,20 @@ pico php.ini
 Accédez au site
 \layout LyX-Code
 
-firefox http://localhost/gcourrier/install
+firefox http://localhost/gcourrier/install.php
+\layout Standard
+
+Vous pouvez vous connecter initialement avec le compte 'admin', sans mot
+ de passe.
+ Une fois connecté, choisissez votre mot passe dans la partie 
+\begin_inset Quotes eld
+\end_inset 
+
+Profil
+\begin_inset Quotes erd
+\end_inset 
+
+.
 \layout Section
 
 Utilisation
