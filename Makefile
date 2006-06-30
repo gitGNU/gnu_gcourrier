@@ -12,3 +12,6 @@ dist:
 	make -C $(PACKAGE)/doc
 	tar czf $(PACKAGE).tar.gz $(PACKAGE)
 	rm -rf $(PACKAGE)
+
+send:
+	scp $(PACKAGE).tar.gz gcourrier@gcourrier.cliss21.com:www/fichier
