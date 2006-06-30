@@ -1,0 +1,496 @@
+#LyX 1.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 221
+\textclass article
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize default
+\papersize Default
+\paperpackage a4
+\use_geometry 0
+\use_amsmath 0
+\use_natbib 0
+\use_numerical_citations 0
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\quotes_times 2
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+
+\layout Title
+
+GCourrier1.6
+\layout Author
+
+Jonathan Velu, Cliss XXI
+\layout Date
+
+26 Juin 2006
+\layout Standard
+\pagebreak_top \pagebreak_bottom 
+
+\begin_inset LatexCommand \tableofcontents{}
+
+\end_inset 
+
+
+\layout Section
+
+Renseignements généraux
+\layout Subsection
+
+Présentation
+\layout Standard
+
+GCourrier1.6 est un logiciel libre sous licence GNU GPL créé par la société
+ Cliss XXI située dans le Pas de Calais.
+ Il permet d'établir une traçabilité de flux de courriers et de factures
+ dans une organisation.
+\layout Standard
+
+GCourrier gère 3 types de courrier:
+\layout Itemize
+
+Les courriers entrants, c'est à dire les courriers qui arrivent de l'extérieur,
+\layout Itemize
+
+Les courriers départs qui sont des courriers créés en interne en destination
+ de l'extérieur,
+\layout Itemize
+
+Les factures.
+\layout Standard
+
+GCourrier1.6 intègre des modules de recherche, d'archivage, de transmission,
+ d'historique, d'urgence de courrier, de génération d'accusé réception,
+ de pièces jointes, d'administration...
+\layout Subsection
+
+Exemple d'utilisation
+\layout Standard
+
+Cinématique des flux de courrier : nous prendrons l'exemple des courriers
+ entrants au sein d'une collectivité locale.
+\layout Subsubsection
+
+Arrivée au service courrier
+\layout Standard
+
+Chaque courrier arrivé au service courrier donne lieu à une création dans
+ GCourrier.
+ A ce stade, il convient de créer informatiquement l'expéditeur du courrier
+ (si cette création n'a pas déjà été réalisée précédemment), et de déterminer
+ quel service va prendre en charge le traitement du courrier.
+ A noter : GCourrier attribue automatiquement un identifiant unique pour
+ chaque courrier nouvellement créé.
+\layout Subsubsection
+
+Traitement du courrier par un service
+\layout Standard
+
+Chaque service utilisateur de GCourrier, quand il est connecté, à la vision
+ des courriers qu'il lui reste à traiter.
+ 3 possibilités de traitement d'offrent au service:
+\layout Itemize
+
+Accuser réception du courrier reçu.
+ Cette fonctionnalité est à utiliser quand le temps de traitement d'un courrier
+ nécessite de prévenir l'expéditeur que son courrier est pris en charge,
+ et qu'il sera recontacté ultérieurement, au fur et à mesure de l'avancée
+ du traitement de son courrier.
+ A noter: GCourrier vous permet de renseigner un 
+\begin_inset Quotes eld
+\end_inset 
+
+accusé réception type
+\begin_inset Quotes erd
+\end_inset 
+
+, qui reste néanmoins modifiable au coup par coup.
+ Par ailleurs, chaque accusé de réception est sauvegardé par GCourrier,
+ ce qui permet sa réémission, sa réimpression, ultérieurement.
+ Il s'agit d'un fichier au format PDF qui peut soit être renvoyé par courriel,
+ soit imprimé par un envoi papier.
+\layout Itemize
+
+Terminer un courrier : il convient alors d'utiliser le champs de saisie
+ 
+\begin_inset Quotes eld
+\end_inset 
+
+observations
+\begin_inset Quotes erd
+\end_inset 
+
+ pour indiquer à GCourrier le détail du traitement réalisé (réponse à l'expédite
+ur, démarche mise en oeuvre...).
+ A noter: GCourrier transfère aux archives chaque courrier terminé.
+\layout Itemize
+
+Transmettre le courrier à un autre service.
+ Il s'agit soit d'une erreur initiale (le courrier a été transmis à un mauvais
+ service), soit de la nécessité de traiter un courrier par plusieurs services.
+ A noter: au moment du transfert à un autre service, GCourrier fait disparaître
+ le courrier de la liste des courriers à traiter par le service pour le
+ faire apparaître dans la liste des courriers à traiter par le service destinata
+ire.
+ Un courrier peut ainsi être transmis de service en service, sans limitation.
+ Il convient, à chaque transmission, de renseigner le formulaire 
+\begin_inset Quotes eld
+\end_inset 
+
+Observations
+\begin_inset Quotes erd
+\end_inset 
+
+, pour que GCourrier mémorise les traitements effectués à chaque étape.
+\layout Subsubsection
+
+Gestion des utilisateurs et des services
+\layout Standard
+
+Un service peut être composé de plusieurs personnels, identifiés par leur
+ identifiant utilisateur (login) et leur mot de passe.
+ Cependant, la 
+\begin_inset Quotes eld
+\end_inset 
+
+brique de base
+\begin_inset Quotes erd
+\end_inset 
+
+ sur laquelle repose GCourrier, est le service et non l'utilisateur.
+ Ainsi :
+\layout Itemize
+
+Un courrier est transmis à un service, et non à une personne.
+\layout Itemize
+
+En se connectant (login + mot de passe), un utilisateur a une vue sur l'ensemble
+ des courriers en cours de traitement au sein du service, quel que soit
+ le personnel qui traite ou aura à traiter chaque courrier.
+\layout Section
+
+Installation
+\layout Standard
+
+GCourrier peut-être installé sur de nombreuses plate-formes, munies d'un
+ serveur HTTP, et du langage PHP4.
+ Nous détaillerons ici que l'installation et la configuration sous Debian
+ GNU/Linux
+\layout Subsection
+
+Installation sur Debian GNU/Linux
+\layout Itemize
+
+Téléchargez la dernière archive de GCourrier sur http://gcourrier.cliss21.com/
+\layout Itemize
+
+Décompressez-la à l'aide de la commande suivante:
+\layout LyX-Code
+
+tar -xzvf gcourrier.tar.gz
+\layout Itemize
+
+Crééz ensuite un répertoire nommé 
+\family typewriter 
+public_html
+\family default 
+ dans votre home:
+\layout LyX-Code
+
+mkdir public_html
+\layout Itemize
+
+Déplacer ensuite votre dossier gcourrier dans le public html:
+\layout LyX-Code
+
+mv gcourrier1.6 public_html
+\layout Itemize
+
+Il va vous falloir désormais installer sur votre système les paquets permettant
+ d'utiliser gcourrier.
+\layout LyX-Code
+
+su -
+\layout LyX-Code
+
+apt-get install apache2 php4 phpmyadmin php4-mysql libapache2-mod-php4 mysql-cli
+ent mysql-server
+\layout Itemize
+
+Créez ensuite une base de données nommée gcourrier à l'aide de phpmyadmin
+ (ou mysql selon vos goûts).
+\layout Itemize
+
+Modifier ensuite le fichier connexion.php de GCourrier
+\layout LyX-Code
+
+$base='gcourrier';
+\layout Itemize
+
+Démarrez ensuite votre navigateur internet préféré et entrez l'adresse suivante
+ :
+\layout LyX-Code
+
+http://localhost/~votrelogin/gcourrier1.6/install.php
+\layout Itemize
+
+Créez ensuite vos services, comptes utilisateurs, fournisseurs...
+\layout Standard
+
+Cette installation suppose que vous désiriez utiliser un serveur Apache.
+ Cependant GCourrier fonctionne avec n'importe quel type de serveur HTTP
+ à partir du moment où il gère une version de PHP supèrieur à 4.
+\newline 
+
+\newline 
+Il vous est également possible d'installer GCourrier dans votre /var/www
+ (plutôt que le public_html).
+\layout Itemize
+
+Pour cela déplacez GCourrier dans /var/www
+\layout LyX-Code
+
+mv GCourrier1.6 /var/www/gcourrier
+\layout Itemize
+
+Copiez ensuite le fichier /etc/apache2/site-available/default en gcourrier
+\layout LyX-Code
+
+cd /etc/apache2/site-available/
+\layout LyX-Code
+
+cp default gcourrier
+\layout Itemize
+
+Modifiez ensuite le fichier gcourrier afin d'obtenir
+\layout LyX-Code
+
+<Directory /var/www/gcourrier> 
+\layout Itemize
+
+Activez le site
+\layout LyX-Code
+
+a2ensite gcourrier
+\layout LyX-Code
+
+/etc/init.d/apache2 reload
+\layout Itemize
+
+Augmentez la taille d'upload dans le php.ini
+\layout LyX-Code
+
+cd /etc/php4/apache2/
+\layout LyX-Code
+
+pico php.ini
+\layout LyX-Code
+
+->upload_max_filesize = 8M 
+\layout Itemize
+
+Accédez au site
+\layout LyX-Code
+
+firefox http://localhost/gcourrier/install
+\layout Section
+
+Utilisation
+\layout Subsection
+
+Administrateur
+\layout Standard
+
+L'administrateur a pour but initial de créer les différentes données du
+ système.
+ C'est lui qui va créer les services, les priorités, les comptes et gérer
+ l'accusé de réception.
+ Mais il a aussi comme rôle la surveillance des flux de données de GCourrier.
+ Il pourra ainsi repérer si un courrier est en retard...
+ Il aura également accès à tous les comptes et pourra d'ailleurs les consulter
+ et les modifier à sa guise.
+\layout Subsection
+
+Utilisateur
+\layout Standard
+
+L'utilisateur à pour rôle de faire vivre le système.
+ C'est lui qui crée les courriers et les ventile.
+\layout Subsubsection
+
+La création de courrier
+\layout Standard
+
+Les courriers doivent comporter toujours un individu (fournisseur ou émetteur).
+ Vous pouvez transmettre les courriers à un service directement lors de
+ sa création.
+ Vous pouvez également ajouter des pièces jointes en ce qui concerne les
+ courriers entrants et départs.
+ Vous devez également leur spécifier une priorité, c'est à dire le délai
+ dans lequel le courrier doit être traité.
+\layout Subsubsection
+
+La transmission
+\layout Standard
+
+La transmission est la base et le but de GCourrier.
+ Pour transmettre un courrier, consultez-les selon leur type et cliquez
+ sur le lien transmettre.
+ Ensuite il vous suffit de choisir le service destinataire.
+ Cependant la transmission fonctionne différemment pour les courriers et
+ les factures.
+ Lorsque l'on transmet un courrier, on donne la main au service destinataire;
+ en ce qui concerne les factures, on transmet une copie de celle-ci, ainsi
+ le service destinataire de la facture sera juste informé qu'il doit la
+ traiter mais il ne pourra en aucun cas la retransmettre.
+ C'est le créateur de la facture qui gére tout.
+ Lorsqu'une facture lui revient, c'est le service qui l'a créé qui ajoute
+ une date de retour dans l'historique.
+\layout Standard
+
+En ce qui concerne les courriers, vous pouvez décider de forcer une transmission
+ à tranvers le module de recherche.
+ Cela permet de continuer à ventiler le courrier en cas d'erreur ou d'absence
+ du service par exemple.
+ Lors de cette manipulation un symbole de notification apparaîtra dans l'histori
+que afin de signaler que la transmission ne s'est pas faite de façon normale.
+\layout Subsubsection
+
+Les priorités
+\layout Standard
+
+Les priorités permettent d'attribuer un délai de traitement à un courrier.
+ Ainsi lorsque vous consulter vos courriers le système vous indique le nombre
+ de jours qu'il vous reste afin d'être dans les temps.
+\layout Subsubsection
+
+Refuser l'archivage d'une facture
+\layout Standard
+
+En ce qui concerne les factures vous pouvez refuser un archivage à l'aide
+ du module recherche/archive/facture.
+ Ceci à seulement un caractère indicatif.
+\layout Subsubsection
+
+Modifier son profil
+\layout Standard
+
+Chaque utilisateur peut modifier son profil.
+ Cependant faites attention à remettre un mot de passe lors de la modification.
+\layout Subsubsection
+
+L'historique
+\layout Standard
+
+L'historique permet de consulter le chemin qu'a effectué un courrier.
+ Il est accessible à l'aide du module voir mon courrier ou en effectuant
+ une recherche.
+ Le symbole ! vous indique que quelqu'un a forcé la transmission du courrier.
+\layout Section
+
+Cheminement
+\layout Subsection
+
+Les Courriers
+\layout Standard
+
+Les courriers (entrant ou sortant) se créent en cliquant sur le lien corresponda
+nt sur la page d'accueil.
+ Lors de sa création assurez-vous de bien avoir choisi un destinataire (ou
+ un émetteur, selon le type de courrier).
+ Notez qu'il vous est possible de transmettre directement votre courrier
+ à un service.
+ Par défaut, la priorité est normale : elle correspond à un délai de 10
+ jours.
+ 
+\layout Standard
+
+Pour accéder à vos courriers, cliquez sur 
+\begin_inset Quotes eld
+\end_inset 
+
+voir courrier
+\begin_inset Quotes erd
+\end_inset 
+
+ (pour les entrants) ou 
+\begin_inset Quotes eld
+\end_inset 
+
+voir départ
+\begin_inset Quotes erd
+\end_inset 
+
+ sur la page d'accueil.
+ Vous remarquez alors qu'il vous est possible de transmettre, consulter
+ l'historique, archiver, créer un accusé réception ou télécharger le fichier
+ attaché, de consulter le nombre de jours restant pour le traitement du
+ courrier.
+\layout Standard
+
+Pour transmettre un courrier, il vous suffit de cliquer sur transmettre
+ et de choisir ensuite le service destinataire.
+\layout Standard
+
+L'historique retrace le chemin qu'a effectué le courrier avant d'arriver
+ jusqu'à vous.
+\layout Standard
+
+L'accusé réception crée un fichier PDF stocké sur le serveur dans le dossier
+ accuse.
+ Il peut être paramétré à partir du compte admin.
+\layout Standard
+
+Les fichiers joints sont stockés dans le dossier upload.
+\layout Standard
+
+Lorsque vous archivez un courrier, il vous sera toujours possible de le
+ retrouver à l'aide d'une recherche sur les archives de courriers entrants
+ (ou départ) situé sur la page d'accueil.
+ Mais vous pouvez également rechercher des courriers en cours (non archivés)
+ afin de voir où se trouve un courrier donné.
+ Vous remarquez qu'il vous est possible de transmettre un courrier même
+ si vous n'en êtes pas le propriétaire.
+ Cette fonctionnalité a pour but de débloquer une situation.
+ Vous pourrez remarquer ensuite qu'un point d'exclamation apparaît alors
+ dans l'historique du courrier.
+ Cela signifie que quelqu'un a forcé une transmission.
+\layout Subsection
+
+Les Factures
+\layout Standard
+
+Les factures suivent le même parcours que les courriers mais possèdent quelques
+ differences.
+ Lorsque vous transmettez une facture, vous la transmettez en copie.
+ Ainsi le service destinataire pourra les consulter à partir de la page
+ 
+\begin_inset Quotes eld
+\end_inset 
+
+voir mes factures en copie
+\begin_inset Quotes erd
+\end_inset 
+
+.
+ Vous devez ainsi remplir à la main la date de retour de la facture au niveau
+ de l'historique.
+ Il vous est possible d'annuler un archivage de facture à l'aide des recherches
+ d'archives factures.
+ Cette fonctionnalité à uniquement un caractère indicatif mais rien ne vous
+ empêche de l'inscrire dans les observations lorsque vous créez une nouvelle
+ facture pour reprendre l'archivée.
+\layout LyX-Code
+
+\layout Description
+
+Licence: Cette documentation est sous licence GNU GPL.
+\the_end
