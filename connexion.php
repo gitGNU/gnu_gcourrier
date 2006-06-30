@@ -25,10 +25,10 @@ author VELU Jonathan
 	header("content-type: text/html; charset=UTF-8");
 
 
-	$base = "gcourrierHarnes";//nom de la base ou se trouve gcourrier
-	$user = "root";	     //utilisateur 
-	$mdp = "";   //mot de passe
-	$hote = "localhost"; //hote ou se trouve la base de donnees
+	$base = 'gcourrier'; //nom de la base ou se trouve gcourrier
+	$user = 'gcourrier'; //utilisateur 
+	$mdp  = '';          //mot de passe
+	$hote = 'localhost'; //hote ou se trouve la base de donnees
 	
 	$db = mysql_connect( $hote, $user, $mdp ) or 
 	die( "Connection impossible pour l'utilisateur " . $user . " sur l'hote " . $hote );
