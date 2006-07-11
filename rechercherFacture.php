@@ -55,6 +55,14 @@ echo"<form method = POST action = rechercherFacture.php>";
 <td><input type = text name = refFacture></input></td>
 </tr>
 <tr>
+<td>montant</td>
+<td><input type=text name=montant></td>
+</tr>
+<tr>
+<td>observation</td>
+<td><input type=text name=observation></td>
+</tr>
+<tr>
 <td>date arrivee</td>
 <td><input type = text name = dateArrivee value ="jj-mm-aaaa"></input></td>
 </tr>
@@ -127,7 +135,8 @@ $dateOrigine = $_POST['dateOrigine'];
 $eDate1 = $_POST['eDate1'];
 $eDate2 = $_POST['eDate2'];
 $fournisseur = $_POST['fournisseur'];
-
+$montant = $_POST['montant'];
+$observation = $_POST['observation'];
 
 $requetetmp = 	"SELECT	facture.id as idCourrier,
 			facture.refFacture as refFacture,
@@ -135,7 +144,9 @@ $requetetmp = 	"SELECT	facture.id as idCourrier,
 			facture.dateFactureOrigine as dateOrigine,
 			destinataire.nom as nomDest,
 			destinataire.prenom as prenomDest,
-			priorite.nbJours as nbJours
+			priorite.nbJours as nbJours,
+			facture.montant as montant,
+			facture.observation as observation
 		";
 
 $from ="    FROM facture,destinataire,priorite ";
@@ -147,6 +158,18 @@ if(strcmp($numero,"")!=0){
 	$requete.= " and facture.id = '".$numero."' ";
 
 }
+
+if(strcmp($montant,"")!=0){
+	$requete.= " and montant = '".$montant."' ";
+
+}
+
+if(strcmp($numero,"")!=0){
+	$requete.= " and observation = '".$observation."' ";
+
+}
+
+
 
 if(strcmp($refFacture,"")!=0){
 	$requete.= " and facture.refFacture = '".$refFacture."' ";

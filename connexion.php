@@ -26,7 +26,7 @@ author VELU Jonathan
 
 
 	$base = 'gcourrier'; //nom de la base ou se trouve gcourrier
-	$user = 'gcourrier'; //utilisateur 
+	$user = 'root'; //utilisateur 
 	$mdp  = '';          //mot de passe
 	$hote = 'localhost'; //hote ou se trouve la base de donnees
 	
