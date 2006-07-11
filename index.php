@@ -119,7 +119,8 @@ else{
 <a href=creerCourrier.php>creer courrier</a><br>
 <a href=creerFacture.php>creer facture</a><br>
 <a href=courrierDepart.php>creer depart</a><br>
-<a href=creerDestinataire.php>creer individu</a><br>
+<a href=creerDestinataire.php>creer un individu</a><br>
+<a href=modifierIndividu.php>modifier un individu</a>
 </td>
 </div>
 
