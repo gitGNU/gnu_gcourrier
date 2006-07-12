@@ -170,7 +170,10 @@ $requete = "insert into estTransmisCopie( idFacture, idService,dateTransmission 
 $result = mysql_query($requete ) or die(mysql_error() );
 
 	
+echo"<SCRIPT LANGUAGE=JavaScript>";
+echo" window.open('factureOk.html','info',  'width=200,height=120,directories=no,scrollbars=no');"; 
+echo"</SCRIPT>";
 
-echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
+echo "<meta http-equiv=\"refresh\" content=\"0;url=creerFacture.php\">";
 }
 ?>
