@@ -139,6 +139,7 @@ $montant = $_POST['montant'];
 $observation = $_POST['observation'];
 
 $requetetmp = 	"SELECT	facture.id as idCourrier,
+			facture.montant as montant,
 			facture.refFacture as refFacture,
 			facture.dateFacture as dateArrivee,
 			facture.dateFactureOrigine as dateOrigine,
@@ -249,8 +250,10 @@ echo "<tr>";
 echo "<td align=center>numero</td>";
 echo "<td aling=center>fournisseur</td>";
 echo "<td align=center>refFacture</td>";
-echo "<td align=center>date arrivee</td>";
-echo "<td align=center>date origine</td>";
+echo "<td align=center>montant</td>";
+echo "<td align=center>date mairie</td>";
+echo "<td align=center>date facture</td>";
+echo "<td align=center>observation</td>";
 echo "<td align=center>historique</td>";
 echo "</tr>";
 
@@ -314,8 +317,10 @@ $tmp2.=substr($ligne['dateOrigine'], 0,4);
 echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
 echo "<td bgcolor = ".$couleur.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
 echo "<td bgcolor = ".$couleur.">".$ligne['refFacture']."</td>";
+echo "<td bgcolor = ".$couleur.">".$ligne['montant']."</td>";
 echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
 echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
+echo "<td bgcolor = ".$couleur.">".$ligne['observation']."</td>";
 echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
 }
 
@@ -339,8 +344,10 @@ $tmp2.=substr($ligne['dateOrigine'], 0,4);
 echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
 echo "<td bgcolor = ".$couleur.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
 echo "<td bgcolor = ".$couleur.">".$ligne['refFacture']."</td>";
+echo "<td bgcolor = ".$couleur.">".$ligne['montant']."</td>";
 echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
 echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
+echo "<td bgcolor = ".$couleur.">".$ligne['observation']."</td>";
 echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
 }//fin else retard
 }//fin while
