@@ -255,6 +255,7 @@ echo "<td align=center>date mairie</td>";
 echo "<td align=center>date facture</td>";
 echo "<td align=center>observation</td>";
 echo "<td align=center>historique</td>";
+echo "<td align=center>archiver</td>";
 echo "</tr>";
 
 $boul = 0;
@@ -322,6 +323,7 @@ echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
 echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
 echo "<td bgcolor = ".$couleur.">".$ligne['observation']."</td>";
 echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
+echo "<td bgcolor = ".$couleur."><a href=validerFactureRecherche.php?idCourrier=".$ligne['idCourrier'].">archiver</a></td>";
 }
 
 }//fin if retard
@@ -349,6 +351,8 @@ echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
 echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
 echo "<td bgcolor = ".$couleur.">".$ligne['observation']."</td>";
 echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
+echo "<td bgcolor = ".$couleur."><a href=validerFactureRecherche.php?idCourrier=".$ligne['idCourrier'].">archiver</a></td>";
+
 }//fin else retard
 }//fin while
 echo "</table>";

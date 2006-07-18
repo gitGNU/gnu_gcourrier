@@ -39,7 +39,7 @@ session_start();
 <?php
 $log = $_SESSION['login'];
 $idCourrier =  $_GET['idCourrier'];
-echo"<center>HISTORIQUE DE LA FACTURE NUMERO : ".$idCourrier."</center><br><br>";
+echo"<center>HISTORIQUE DU COURRIER NUMERO : ".$idCourrier."</center><br><br>";
 
 $boul = 0;
 echo "<table align=center>";
@@ -87,15 +87,14 @@ while ( $ligne = mysql_fetch_array($result) ){
 	echo "<td bgcolor=".$couleur.">".$service."</td>";
 	echo "<td bgcolor=".$couleur.">".$dateModif."</td>";
 	if(strcmp($dateRetour , '0000-00-00') == 0)
-		$dateRetour = "non renseigne";
-	echo "<td bgcolor=".$couleur.">".$dateRetour."</td>";
+		echo "<td bgcolor=".$couleur."><a href=dateRetour.php?idCourrier=".$ligne['idTransmis']."&flag=1>ajouter</a></td>";
+	else
+		echo "<td bgcolor=".$couleur.">".$dateRetour."</td>";
 }
 echo "</table><br>";
 
-echo"<center><a href=\"javascript:history.go(-1)\"> <b>retourner au resultat</b></a>
-<br><br>";
-
 ?>
+<center><a href="javascript:history.go(-1)"> <b>retourner au resultat</b></a>
 </div>
 </body>
 </html>
