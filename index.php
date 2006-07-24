@@ -77,7 +77,8 @@ if(strcmp($_SESSION['login'] ,'admin')==0){
 <td>
 <div id="logo3">
 <a href = modifierProfil.php>profil</a><br>
-<a href = voirCompte.php>comptes</a>
+<a href = voirCompte.php>comptes</a><br>
+<a href = rechercherCompteService.php>CompServ</a>
 </div>
 </td>
 
