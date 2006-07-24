@@ -40,17 +40,20 @@ if(!isset( $_POST['enregistrer'] ) ){
 <table align=center>
 <?php
 $idUser = $_GET['id'];
-$requete = "select * from utilisateur where id=".$idUser.";";
-$result = mysql_query( $requete ) or die (mysql_error() );
+$requete = "select utilisateur.nom as nomUser,
+		   utilisateur.prenom as prenomUser,
+		   utilisateur.login as loginUser
+		   from utilisateur,service where utilisateur.id=".$idUser.";";
+$result = mysql_query( $requete ) or die ("1".mysql_error() );
 while($ligne = mysql_fetch_array( $result ) ){
-$nom = $ligne['nom'];
-$prenom = $ligne['prenom'];
-$login = $ligne['login'];
+$nom = $ligne['nomUser'];
+$prenom = $ligne['prenomUser'];
+$login = $ligne['loginUser'];
 }
 ?>
 
 
-			<form name = creerCompteForm method = POST action = modifierProfil.php>
+			<form name = creerCompteForm method = POST action = modifCompte.php>
 				<tr>
 				
 				<?php
@@ -67,7 +70,26 @@ $login = $ligne['login'];
 				<tr><td>prenom</td>
 				<?php
 				echo"<td><input type = text name = prenom value='".$prenom."'></input></td></tr>";
+if($login != 'admin'){
 				?>
+				<tr><td>service</td>
+				<td><select name = service>
+				<?php
+					$requete = "select libelle as libelle,
+						    id as idService,
+						    designation as designation
+						    from service 
+					   	    order by libelle;";
+					$result = mysql_query($requete) or die("2 : ".mysql_error());
+					while($ligne = mysql_fetch_array($result)){
+					if($ligne['libelle'] !='ADMIN')
+					echo "<option value = '".$ligne['idService']."'>".$ligne['libelle']." ".$ligne['designation']." </option>";
+					}
+				?>
+				</select></td></tr>
+<?
+}
+?>
 				<tr><td>password</td>
 				<td><input type = password name = password1></input></td></tr>
 				<tr><td>retaper le password</td>
@@ -106,10 +128,18 @@ if( $_POST['password1'] != $_POST['password2'] ){
 		$passwd = base64_encode( $_POST['password1'] );
 		$nom = $_POST['nom'];
 		$prenom = $_POST['prenom'];
-		
-		$requete = "update utilisateur set login='".$login."' ,passwd='".$passwd."', nom='".$nom."',prenom='".$prenom."'where login='".$_SESSION['login']."';";
-		$result = mysql_query($requete) or die("erreur: ".mysql_error() );		
-		echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
+if($login != 'admin'){
+		$service = $_POST['service'];
+		$requete = "update utilisateur set login='".$login."' ,passwd='".$passwd."', nom='".$nom."',prenom='".$prenom."', idService=".$service." where login ='".$login."';";
+		$result = mysql_query($requete) or die("3: ".mysql_error() );		
+}
+else{
+		$service = $_POST['service'];
+		$requete = "update utilisateur set login='".$login."' ,passwd='".$passwd."', nom='".$nom."',prenom='".$prenom."' where login ='".$login."';";
+		$result = mysql_query($requete) or die("4: ".mysql_error() );		
+
+}
+		echo "<meta http-equiv=\"refresh\" content=\"0;url=voirCompte.php\">";
 	
 	}
 

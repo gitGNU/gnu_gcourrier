@@ -105,6 +105,7 @@ if(strcmp($_SESSION['login'] , 'admin') == 0){
 $requeteFacture = "select facture.id as idFacture,
 			  facture.histo as histo,
   			  refFacture as refFacture,
+			  refuse as refuse,
 			  montant as montant,
 			  dateFacture as dateFacture,
 			  dateFactureOrigine as dateFactureOrigine,
@@ -125,6 +126,7 @@ $requeteFacture = "select facture.id as idFacture,
 else{
 $requeteFacture = "select facture.id as idFacture,
 			  facture.histo as histo,
+			  refuse as refuse,
   			  facture.refFacture as refFacture,
 			  facture.dateFacture as dateFacture,
 			  facture.dateFactureOrigine as dateFactureOrigine,
@@ -177,7 +179,7 @@ while($ligne = mysql_fetch_array($resultatFacture)){
 		echo "<tr>";
 
 //	echo "nbJours:".$ligne['nbJours'];
-	
+	$refuse=$ligne['refuse'];	
 	$dest=$ligne['nomFournisseur'];
 	$idCourrier = $ligne['idFacture'];
 	$nomDestinataire = $ligne['nomFournisseur']." ".$ligne['prenomFournisseur'];
@@ -206,6 +208,8 @@ while($ligne = mysql_fetch_array($resultatFacture)){
 	if(strcmp($observation,"")==0)
 		$observation ="modifier";
 	
+	if($refuse==1)
+		$couleur=red;
 
 	echo "<td bgcolor=".$couleur.">".$idCourrier."</td>";
 	echo "<td bgcolor=".$couleur."><a href=modifDestinataire.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$nomDestinataire."</a></td>";

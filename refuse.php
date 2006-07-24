@@ -44,7 +44,7 @@ else{
 
 $idCourrier = $_GET['idCourrier'];
 
-$requete = "update facture set refuse = 1 where id=".$idCourrier.";";
+$requete = "update facture set refuse = 1,validite=0 where id=".$idCourrier.";";
 $result = mysql_query($requete) or die(mysql_error());
 
 header("LOCATION:index.php");

@@ -36,12 +36,14 @@ session_start();
 		<img src= images/banniere2.jpg></img><br><br>
 <table>
 <tr>
+<td>login</td>
 <td>nom</td>
 <td>prenom</td>
+<td>service</td>
 <td>modifier</td>
 </tr>
 <?php
-$requete = "select id,nom,prenom from utilisateur;";
+$requete = "select utilisateur.login as login,utilisateur.id as idUser,utilisateur.nom as nomUser,utilisateur.prenom as prenomUser, service.designation as descService from utilisateur, service where utilisateur.idService = service.id;";
 $result = mysql_query($requete) or die(mysql_error());
 while($ligne = mysql_fetch_array($result)){
 if($boul == 0){
@@ -52,7 +54,7 @@ if($boul == 0){
 		$couleur = white;
 		$boul = 0;	
 	}
-	echo "<tr><td bgcolor=".$couleur.">".$ligne['nom']."</td><td bgcolor=".$couleur.">".$ligne['prenom']."</td><td style='text-align:center' bgcolor=".$couleur."><a href=modifCompte.php?id=".$ligne['id'].">m</a></td></tr>";
+	echo "<tr><td bgcolor=".$couleur.">".$ligne['login']."</td><td bgcolor=".$couleur.">".$ligne['nomUser']."</td><td bgcolor=".$couleur.">".$ligne['prenomUser']."</td><td bgcolor=".$couleur.">".$ligne['descService']."</td><td style='text-align:center' bgcolor=".$couleur."><a href=modifCompte.php?id=".$ligne['idUser'].">m</a></td></tr>";
 }
 ?>
 <table>
