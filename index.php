@@ -56,19 +56,19 @@ if(strcmp($_SESSION['login'] ,'admin')==0){
 </td>
 <div id="logo">
 <td>
-<a href = creerService.php>creer service</a><br>
-<a href = creerCompte.php>creer compte</a><br>
-<a href = creerPriorite.php>creer priorite</a><br>
-<a href = modifierAccuse.php>gerer l'accuse</a><br>
+<a href = creerService.php>Créer service</a><br>
+<a href = creerCompte.php>Créer compte</a><br>
+<a href = creerPriorite.php>Créer priorite</a><br>
+<a href = modifierAccuse.php>Gérer l'accusé</a><br>
 
 </td>
 </div>
 
 <td>
 <div id="logo2">
-<img src="images/enveloppe.png"></img>&nbsp&nbsp<a href= voirCourrier.php?type=1>voir entrant</a><br>
-<img src="images/enveloppeD.png"></img>&nbsp&nbsp<a href= voirCourrier.php?type=2>voir depart</a><br>
-<img src="images/euro.png"></img>&nbsp&nbsp<a href= voirFacture.php>voir facture</a><br>
+<img src="images/enveloppe.png"></img>&nbsp&nbsp<a href="voirCourrier.php?type=1">Voir entrant</a><br>
+<img src="images/enveloppeD.png"></img>&nbsp&nbsp<a href="voirCourrier.php?type=2">Voir départ</a><br>
+<img src="images/euro.png"></img>&nbsp&nbsp<a href="voirFacture.php">Voir facture</a><br>
 
 </div>
 </td>
@@ -77,16 +77,16 @@ if(strcmp($_SESSION['login'] ,'admin')==0){
 
 <td>
 <div id="logo3">
-<a href = modifierProfil.php>profil</a><br>
-<a href = voirCompte.php>comptes</a><br>
-<a href = rechercherCompteService.php>CompServ</a>
+<a href="modifierProfil.php">Profil</a><br>
+<a href="voirCompte.php">Comptes</a><br>
+<a href="rechercherCompteService.php">CompServ</a>
 </div>
 </td>
 
 
 </table>
 
-<br><br><br><div id="dco"><a href="logout.php">deconnexion</a></div><br>
+<br><br><br><div id="dco"><a href="logout.php">Déconnexion</a></div><br>
 </div>
 
 
