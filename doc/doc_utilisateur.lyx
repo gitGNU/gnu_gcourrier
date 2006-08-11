@@ -268,7 +268,7 @@ mysql> GRANT ALL PRIVILEGES ON gcourrier.* TO 'gcourrier'@'localhost'
 
 Indiquez dans 
 \family typewriter 
-connexion.php
+config.php
 \family default 
  les paramètres de connexion à la base de données:
 \layout LyX-Code
@@ -280,6 +280,9 @@ $mdp  = 'motdepasse';
 \layout LyX-Code
 
 $base = 'gcourrier';
+\layout LyX-Code
+
+$hote = 'localhost';
 \layout Itemize
 
 Donnez des permissions au serveur web sur les répertoires 
@@ -322,7 +325,7 @@ Téléchargez la dernière archive de GCourrier sur
 
 Modifiez le fichier 
 \family typewriter 
-connexion.php
+config.php
 \family default 
  en utilisant les paramètres d'accès MySQL de votre hébergeur:
 \layout LyX-Code
@@ -330,10 +333,13 @@ connexion.php
 $user = 'votre_login';
 \layout LyX-Code
 
-$mdp  = 'votre mot de passe';
+$mdp  = 'motdepasse';
 \layout LyX-Code
 
-$base = 'nom de la base';
+$base = 'nom_de_la_base';
+\layout LyX-Code
+
+$hote = 'nom_du_serveur_MySQL';
 \layout Itemize
 
 Envoyez ensuite le répertoire 

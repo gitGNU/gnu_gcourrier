@@ -10,6 +10,7 @@ all:
 dist:
 	tla export $(PACKAGE)
 	make -C $(PACKAGE)/doc
+	cp $(PACKAGE)/config.php.template $(PACKAGE)/config.php
 	tar czf $(PACKAGE).tar.gz $(PACKAGE)
 	rm -rf $(PACKAGE)
 
