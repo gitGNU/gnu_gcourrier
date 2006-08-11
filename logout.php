@@ -19,19 +19,18 @@ You should have received a copy of the GNU General Public License
 along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-author VELU Jonathan
+author Sylvain Beucler
 */
 
-header("content-type: text/html; charset=UTF-8");
+// Boilerplate (UTF8...)
+include_once("connexion.php");
 
-require_once('config.php');
+// On appelle session_start avant d'envoyer du HTML au navigateur
+session_start();
 
-$db = mysql_connect( $hote, $user, $mdp ) or 
-die( "Connection impossible pour l'utilisateur " . $user . " sur l'hôte " . $hote );
+// On supprime la session, y compris nos information de login
+session_destroy();
 
-$se = mysql_select_db( $base, $db ) or
-die( "Connection impossible sur la base " . $base . "(" . $user . ", " . $hote . ")" );
+echo "<div class='status'>Vous êtes déconnecté(e) de GCourrier.</div>";
 
-session_start( );
-
-?>
+include_once("login.php");

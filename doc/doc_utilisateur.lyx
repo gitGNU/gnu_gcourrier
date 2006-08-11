@@ -305,8 +305,19 @@ chgrp www-data upload/ accuse/
 \layout LyX-Code
 
 chown 755 upload/ accuse/
+\layout Itemize
+
+Minimisez les permissions sur 
+\family typewriter 
+config.php
+\family default 
+, qui contient les mots de passe:
 \layout LyX-Code
 
+chgrp www-data config.php
+\layout LyX-Code
+
+chmod 750 config.php
 \layout Subsection
 
 Sur un hébergement mutualisé
@@ -357,6 +368,14 @@ upload
 accuse
 \family default 
  car les hébergeurs utilisent souvent un système de type suPHP.
+\layout Itemize
+
+Assurez-vous par contre que les autres hébergés ne puissent pas lire votre
+ 
+\family typewriter 
+config.php
+\family default 
+: donnez les permissions 600 à ce fichier.
 \layout Subsection
 
 Configuration

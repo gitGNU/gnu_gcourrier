@@ -25,7 +25,8 @@ author VELU Jonathan
 require("connexion.php");
 session_start();
 if(!isset($_SESSION['login'])){
-echo "<meta http-equiv=\"refresh\" content=\"0;url=login.php\">";
+  include_once("login.php");
+  exit;
 }
 else{
 
@@ -85,7 +86,7 @@ if(strcmp($_SESSION['login'] ,'admin')==0){
 
 </table>
 
-<br><br><br><div id="dco"><a href=login.php>deconnexion</a></div><br>
+<br><br><br><div id="dco"><a href="logout.php">deconnexion</a></div><br>
 </div>
 
 

@@ -173,3 +173,11 @@ padding: 0;
 background: silver
 
 }
+
+.status {
+	text-align: center;
+	margin: auto 20% auto 20%;
+	border: solid 1px;
+	border-style: dashed;
+	background: lightgrey;
+}
