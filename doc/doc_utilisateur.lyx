@@ -1,13 +1,17 @@
 #LyX 1.3 created this file. For more info see http://www.lyx.org/
 \lyxformat 221
 \textclass article
+\begin_preamble
+\usepackage{a4wide}
+\usepackage{verbatim}
+\end_preamble
 \language frenchb
 \inputencoding auto
 \fontscheme default
 \graphics default
 \paperfontsize default
 \spacing single 
-\papersize Default
+\papersize a4paper
 \paperpackage a4
 \use_geometry 0
 \use_amsmath 0
@@ -26,7 +30,7 @@
 
 \layout Title
 
-GCourrier1.6
+GCourrier 1.6
 \layout Author
 
 Jonathan Velu, Cliss XXI
@@ -49,7 +53,7 @@ Renseignements généraux
 Présentation
 \layout Standard
 
-GCourrier1.6 est un logiciel libre sous licence GNU GPL créé par la société
+GCourrier est un logiciel libre sous licence GNU GPL créé par la société
  Cliss XXI située dans le Pas de Calais.
  Il permet d'établir une traçabilité de flux de courriers et de factures
  dans une organisation.
@@ -68,7 +72,7 @@ Les courriers départs qui sont des courriers créés en interne en destination
 Les factures.
 \layout Standard
 
-GCourrier1.6 intègre des modules de recherche, d'archivage, de transmission,
+GCourrier intègre des modules de recherche, d'archivage, de transmission,
  d'historique, d'urgence de courrier, de génération d'accusé réception,
  de pièces jointes, d'administration...
 \layout Subsection
@@ -179,55 +183,76 @@ En se connectant (login + mot de passe), un utilisateur a une vue sur l'ensemble
 \layout Section
 
 Installation
-\layout Standard
-
-GCourrier peut-être installé sur de nombreuses plate-formes, munies d'un
- serveur HTTP, et du langage PHP4.
- Nous détaillerons ici que l'installation et la configuration sous Debian
- GNU/Linux
 \layout Subsection
 
-Installation sur Debian GNU/Linux
+Sur un serveur dédié ou un ordinateur personnel
+\layout Subsubsection
+
+Prérequis
+\layout Standard
+
+GCourrier fonctionne est écrit dans le langage de programmation PHP et utilise
+ une base de données MySQL.
+\layout Standard
+
+Il vous faut donc PHP (version 4), MySQL et un serveur HTTP (par exemple,
+ Apache).
+\layout Standard
+
+phpMyAdmin fournira également une interface conviviable pour administrer
+ la base de données.
+\layout Standard
+
+Sous Debian GNU/Linux par exemple, vous pouvez installer tous les prérequis
+ avec la commande suivante:
+\layout LyX-Code
+
+aptitude install apache2 libapache2-mod-php4 
+\backslash 
+
+\layout LyX-Code
+
+                 php4-mysql phpmyadmin mysql-server-4.1
+\layout Standard
+
+Il vous faudra éventuellement augmenter la taille maximale d'envoi de fichiers
+ dans votre 
+\family typewriter 
+php.ini:
+\layout LyX-Code
+
+cd /etc/php4/apache2/
+\layout LyX-Code
+
+nano php.ini
+\layout LyX-Code
+
+->upload_max_filesize = 8M
+\layout Subsubsection
+
+Installation
 \layout Itemize
 
-Téléchargez la dernière archive de GCourrier sur http://gcourrier.cliss21.com/
+Téléchargez la dernière archive de GCourrier sur 
+\begin_inset LatexCommand \url{http://gcourrier.cliss21.com/}
+
+\end_inset 
+
+
 \layout Itemize
 
-Décompressez-la à l'aide de la commande suivante:
+Décomprimez-la dans un dossier accessible par le serveur HTTP:
+\layout LyX-Code
+
+cd /var/www
 \layout LyX-Code
 
 tar -xzvf gcourrier.tar.gz
 \layout Itemize
 
-Crééz ensuite un répertoire nommé 
-\family typewriter 
-public_html
-\family default 
- dans votre home:
-\layout LyX-Code
-
-mkdir public_html
-\layout Itemize
-
-Déplacer ensuite votre dossier gcourrier dans le public html:
-\layout LyX-Code
-
-mv gcourrier-1.6 public_html
-\layout Itemize
-
-Il va vous falloir désormais installer sur votre système les paquets permettant
- d'utiliser gcourrier.
-\layout LyX-Code
-
-su -
-\layout LyX-Code
-
-apt-get install apache2 php4-mysql libapache2-mod-php4 mysql-server-4.1 phpmyadmi
-n
-\layout Itemize
-
-Créez ensuite une base de données nommée gcourrier à l'aide de phpmyadmin
- (ou mysql selon vos goûts):
+Créez une base de données nommée gcourrier (par exemple, à l'aide de phpMyAdmin)
+ et créez un utilisateur gcourrier pour y accéder.
+ Avec mysql:
 \layout LyX-Code
 
 mysql> CREATE DATABASE gcourrier;
@@ -238,77 +263,124 @@ mysql> GRANT ALL PRIVILEGES ON gcourrier.* TO 'gcourrier'@'localhost'
 
 \layout LyX-Code
 
-  IDENTIFIED BY 'password';
+  IDENTIFIED BY 'motdepasse';
 \layout Itemize
 
-Modifier ensuite le fichier connexion.php de GCourrier
-\layout LyX-Code
-
-$base = 'gcourrier';
+Indiquez dans 
+\family typewriter 
+connexion.php
+\family default 
+ les paramètres de connexion à la base de données:
 \layout LyX-Code
 
 $user = 'gcourrier';
 \layout LyX-Code
 
-$mdp  = 'password'; 
+$mdp  = 'motdepasse';
+\layout LyX-Code
+
+$base = 'gcourrier';
 \layout Itemize
 
-Démarrez ensuite votre navigateur internet préféré et entrez l'adresse suivante
- :
-\layout LyX-Code
-
-http://localhost/~votrelogin/gcourrier-1.6/install.php
-\layout Itemize
-
-Créez ensuite vos services, comptes utilisateurs, fournisseurs...
-\layout Standard
-
-Cette installation suppose que vous désiriez utiliser un serveur Apache.
- Cependant GCourrier fonctionne avec n'importe quel type de serveur HTTP
- à partir du moment où il gère une version de PHP supérieur à 4.
-\newline 
-
-\layout Standard
-
-Il vous est également possible d'installer GCourrier dans votre /var/www
- (plutôt que le public_html).
-\layout Itemize
-
-Pour cela déplacez GCourrier dans /var/www
-\layout LyX-Code
-
-mv gcourrier-1.6 /var/www/gcourrier
-\layout Itemize
-
-Augmentez la taille d'upload dans le php.ini
-\layout LyX-Code
-
-cd /etc/php4/apache2/
-\layout LyX-Code
-
-pico php.ini
-\layout LyX-Code
-
-->upload_max_filesize = 8M 
-\layout Itemize
-
-Accédez au site
-\layout LyX-Code
-
-firefox http://localhost/gcourrier/install.php
-\layout Standard
-
-Vous pouvez vous connecter initialement avec le compte 'admin', sans mot
- de passe.
- Une fois connecté, choisissez votre mot passe dans la partie 
-\begin_inset Quotes eld
-\end_inset 
-
-Profil
-\begin_inset Quotes erd
-\end_inset 
-
+Donnez des permissions au serveur web sur les répertoires 
+\family typewriter 
+upload
+\family default 
+ (pour stocker les fichiers joints) et 
+\family typewriter 
+accuse
+\family default 
 .
+ Sous Debian GNU/Linux, l'utilisateur Apache se nomme 
+\family typewriter 
+www-data
+\family default 
+, adaptez en fonction de votre distribution:
+\layout LyX-Code
+
+chgrp www-data upload/ accuse/
+\layout LyX-Code
+
+chown 755 upload/ accuse/
+\layout LyX-Code
+
+\layout Subsection
+
+Sur un hébergement mutualisé
+\layout Standard
+
+Votre hébergeur doit vous fournir PHP 4 ainsi qu'une base MySQL.
+\layout Itemize
+
+Téléchargez la dernière archive de GCourrier sur 
+\begin_inset LatexCommand \url{http://gcourrier.cliss21.com/}
+
+\end_inset 
+
+ et décomprimez l'archive.
+\layout Itemize
+
+Modifiez le fichier 
+\family typewriter 
+connexion.php
+\family default 
+ en utilisant les paramètres d'accès MySQL de votre hébergeur:
+\layout LyX-Code
+
+$user = 'votre_login';
+\layout LyX-Code
+
+$mdp  = 'votre mot de passe';
+\layout LyX-Code
+
+$base = 'nom de la base';
+\layout Itemize
+
+Envoyez ensuite le répertoire 
+\family typewriter 
+gcourrier
+\family default 
+ chez votre hébergeur via FTP.
+ Il n'y a en général pas besoin de modifier les permissions des répertoires
+ 
+\family typewriter 
+upload
+\family default 
+ car 
+\family typewriter 
+accuse
+\family default 
+ car les hébergeurs utilisent souvent un système de type suPHP.
+\layout Subsection
+
+Configuration
+\layout Itemize
+
+Démarrez votre navigateur Internet préféré et entrez l'adresse suivante
+ et allez sur la page 
+\family typewriter 
+install.php
+\family default 
+.
+ Par exemple:
+\layout LyX-Code
+
+http://localhost/gcourrier/install.php
+\layout Itemize
+
+Vous pouvez vous connecter initialement avec le compte 
+\shape italic 
+admin
+\shape default 
+, sans mot de passe.
+ Une fois connecté, choisissez votre mot passe dans la partie 
+\shape italic 
+Profil
+\shape default 
+.
+\layout Itemize
+
+Vous êtes prêt à utilisez GCourrier!
 \layout Section
 
 Utilisation
@@ -498,7 +570,36 @@ voir mes factures en copie
  facture pour reprendre l'archivée.
 \layout LyX-Code
 
-\layout Description
+\layout Section
 
-Licence: Cette documentation est sous licence GNU GPL.
+Licence
+\layout Standard
+
+
+\begin_inset ERT
+status Open
+
+\layout Standard
+
+\backslash 
+verbatiminput{notices.txt}
+\end_inset 
+
+
+\layout Section
+
+GNU Free Documentation License
+\layout LyX-Code
+
+
+\begin_inset ERT
+status Open
+
+\layout Standard
+
+\backslash 
+input{fdl.tex}
+\end_inset 
+
+
 \the_end
