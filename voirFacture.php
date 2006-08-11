@@ -118,7 +118,7 @@ $requeteFacture = "select facture.id as idFacture,
 		   where facture.idFournisseur = destinataire.id
 		   and validite=0 
 		   and facture.idPriorite = priorite.id
-		   order by ".$order." DESC LIMIT 5
+		   order by ".$order." DESC
 	           LIMIT ".$nbAffiche.";";
 
 
