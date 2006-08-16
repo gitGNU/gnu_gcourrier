@@ -39,43 +39,45 @@ if(!isset( $_POST['enregistrer'] ) ){
 <br><br><br>
 <table align=center>
 <?php
-$requete = "select * from utilisateur where login='".$_SESSION['login']."';";
+$requete = "SELECT nom, prenom, login, idService, libelle, designation
+              FROM utilisateur, service
+              WHERE utilisateur.idService = service.id
+              AND login='{$_SESSION['login']}'";
 $result = mysql_query( $requete ) or die (mysql_error() );
 while($ligne = mysql_fetch_array( $result ) ){
-$nom = $ligne['nom'];
-$prenom = $ligne['prenom'];
-$login = $ligne['login'];
+  $id = $ligne['id'];
+  $nom = $ligne['nom'];
+  $prenom = $ligne['prenom'];
+  $login = $ligne['login'];
+  $service = $ligne['libelle'] . ' - ' . $ligne['designation'];
 }
+
 ?>
 
 
 			<form name = creerCompteForm method = POST action = modifierProfil.php>
 				<tr>
 				
-				<?php
-				if($_SESSION['login'] != 'admin')
-				echo"<td>login</td><td><input type = text name = login value ='".$login."'></input></td></tr>";
-				else
-				echo"<input type=hidden name=login value='".$_SESSION['login']."'></input>";
-				?>
-				<tr><td>nom</td>
+				<td>Identifiant</td><td><?php echo $_SESSION['login']?></td></tr>
+				<input type="hidden" name="login" value='<?php echo $_SESSION['login']?>'></input>
+				<tr><td>Nom</td>
 				<td>
 				<?php
 				echo"<input type = text name = nom value='".$nom."'></input></tr></td>";
 				?>
-				<tr><td>prenom</td>
+				<tr><td>Prénom</td>
 				<?php
 				echo"<td><input type = text name = prenom value='".$prenom."'></input></td></tr>";
 				?>
-				<tr><td>password</td>
+				<tr><td>Mot de passe</td>
 				<td><input type = password name = password1></input></td></tr>
-				<tr><td>retaper le password</td>
+				<tr><td>Confirmez le mot de passe</td>
 				<td><input type = password name = password2></input></td></tr>
-				
+				<tr><td>Service</td><td><?php echo $service ?></td></tr>
 				</table>
 				
 				<center>
-				<input type = submit name = enregistrer value=enregistrer>
+				<input type="submit" name="enregistrer" value="Enregistrer" />
 				<center>
 			</form> 
 

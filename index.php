@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-require("connexion.php");
+require_once("connexion.php");
 session_start();
 if(!isset($_SESSION['login'])){
   include_once("login.php");
@@ -167,7 +167,7 @@ $nbFacture = $ligne['nbFacture'];
 }
 echo"info : nbEntrant ".$nbEntrant.", nbDepart ".$nbDepart.", nbFactures ".$nbFacture;
 ?>
-<br><br><br><a href=login.php>deconnexion</a></div><br>
+<br><br><br><a href=logout.php>Déconnexion</a></div><br>
 
 </div>
 

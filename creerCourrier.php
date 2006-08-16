@@ -22,19 +22,90 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-require("connexion.php");
+require_once("connexion.php");
 session_start();
 
 
 
-if(!isset($_POST["enregistrer"])){
+if (isset($_POST["enregistrer"])) {
+    $content_dir = 'upload/'; // dossier où sera déplacé le fichier
+
+    $tmp_file = $_FILES['fichier']['tmp_name'];
+
+    if( !is_uploaded_file($tmp_file) )
+    {
+	$url = "";
+    }
+
+    else{
+        $url = "upload/".$_FILES['fichier']['name'];
+    }
+    // on copie le fichier dans le dossier de destination
+    $name_file = $_FILES['fichier']['name'];
+
+    if( !move_uploaded_file($tmp_file, $content_dir . $name_file) )
+    {
+//        exit("Impossible de copier le fichier dans $content_dir");
+    }
+
+  //  echo "Le fichier a bien été uploade";
+
+
+
+$destinataire = $_POST['destinataire'];
+$libelle = $_POST['libelle'];
+$observation = $_POST['observation'];
+$service = $_POST['serviceDest'];
+$priorite = $_POST['priorite'];
+
+$tmpDate = $_POST['dateArrivee'];
+$date= substr($tmpDate, 6,4);
+$date.='-';
+$date.=substr($tmpDate, 3,2);
+$date.='-';
+$date.=substr($tmpDate, 0,2);
+	
+$requeteCourrier = "insert into courrier(libelle,dateArrivee,observation,idPriorite,idServiceCreation,idDestinataire,serviceCourant,type,url) values('".$libelle."','".$date."','".$observation."','".$priorite."','".$_SESSION['idService']."','".$destinataire."','".$service."',1,'".$url."');";
+$resultatCourrier = mysql_query( $requeteCourrier ) or die ("erreur requete courrier :".mysql_error( ) );
+
+
+//Recuperation de l'id du courrier cree
+
+
+$requeteIdCourrier = "select id from courrier where idServiceCreation =".$_SESSION['idService']." order by id;";
+$resultatIdCourrier = mysql_query( $requeteIdCourrier ) or die ("erreur requete idCourrier".mysql_error( ) );
+while($ligne = mysql_fetch_array($resultatIdCourrier ) )
+	$idCourrier = $ligne['id'];
+
+
+
+//transmission du courrier
+
+
+$requeteTransmis = "insert into estTransmis( idService, idCourrier,dateTransmission ) values('".$service."','".$idCourrier."','".date("Y-m-d")."');";
+$resultatTransmis = mysql_query( $requeteTransmis ) or die ("erreur requete transmis ".mysql_error( ) );
+
+
+$adresse ="infoCourrier.php?idCourrier=".$idCourrier;
+
+$status = "Vous venez de créer le courrier numéro: <strong>$idCourrier</strong>.";
+}
+
 ?>
 
 <html>
-	<head> <title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet"></head>
-	<body>
+<head>
+  <title>gCourrier</title>
+  <link href="styles.css"  rel="stylesheet" />
+  <link href="styles2.css" rel="stylesheet" />
+</head>
 
+<body>
+<?php
+if (isset($status)) {
+  echo "<div class='status'>$status</div>";
+}
+?>
 
 <div id = pageTGd><br>
 	<center>
@@ -121,75 +192,3 @@ if(!isset($_POST["enregistrer"])){
 </div>
 </body>
 </html>
-<?php
-
-}else{
-
-
-    $content_dir = 'upload/'; // dossier où sera déplacé le fichier
-
-    $tmp_file = $_FILES['fichier']['tmp_name'];
-
-    if( !is_uploaded_file($tmp_file) )
-    {
-	$url = "";
-    }
-
-    else{
-        $url = "upload/".$_FILES['fichier']['name'];
-    }
-    // on copie le fichier dans le dossier de destination
-    $name_file = $_FILES['fichier']['name'];
-
-    if( !move_uploaded_file($tmp_file, $content_dir . $name_file) )
-    {
-//        exit("Impossible de copier le fichier dans $content_dir");
-    }
-
-  //  echo "Le fichier a bien été uploade";
-
-
-
-$destinataire = $_POST['destinataire'];
-$libelle = $_POST['libelle'];
-$observation = $_POST['observation'];
-$service = $_POST['serviceDest'];
-$priorite = $_POST['priorite'];
-
-$tmpDate = $_POST['dateArrivee'];
-$date= substr($tmpDate, 6,4);
-$date.='-';
-$date.=substr($tmpDate, 3,2);
-$date.='-';
-$date.=substr($tmpDate, 0,2);
-	
-$requeteCourrier = "insert into courrier(libelle,dateArrivee,observation,idPriorite,idServiceCreation,idDestinataire,serviceCourant,type,url) values('".$libelle."','".$date."','".$observation."','".$priorite."','".$_SESSION['idService']."','".$destinataire."','".$service."',1,'".$url."');";
-$resultatCourrier = mysql_query( $requeteCourrier ) or die ("erreur requete courrier :".mysql_error( ) );
-
-
-//Recuperation de l'id du courrier cree
-
-
-$requeteIdCourrier = "select id from courrier where idServiceCreation =".$_SESSION['idService']." order by id;";
-$resultatIdCourrier = mysql_query( $requeteIdCourrier ) or die ("erreur requete idCourrier".mysql_error( ) );
-while($ligne = mysql_fetch_array($resultatIdCourrier ) )
-	$idCourrier = $ligne['id'];
-
-
-
-//transmission du courrier
-
-
-$requeteTransmis = "insert into estTransmis( idService, idCourrier,dateTransmission ) values('".$service."','".$idCourrier."','".date("Y-m-d")."');";
-$resultatTransmis = mysql_query( $requeteTransmis ) or die ("erreur requete transmis ".mysql_error( ) );
-
-
-$adresse ="infoCourrier.php?idCourrier=".$idCourrier;
-
-echo"<SCRIPT LANGUAGE=JavaScript>";
-echo" window.open('".$adresse."','info',  'width=200,height=120,directories=no,scrollbars=no');"; 
-echo"</SCRIPT>";
-
-echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
-}
-?>

@@ -98,7 +98,7 @@ echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
 
 
 
-echo"<center><div id= titre>Factures  / <a href=copieFacture.php >Copies de Factures</a><br/><br/><i style=\"font-size:10px;font-weight:normal\">note :Ceci est les factures de votre service uniquement</i><br/><br/></div></center>";
+echo"<center><div id= titre>Factures  / <a href=copieFacture.php >Copies de Factures</a><br/><br/><i style=\"font-size:10px;font-weight:normal\">Note: Ceci est les factures de votre service uniquement</i><br/><br/></div></center>";
 
 
 if(strcmp($_SESSION['login'] , 'admin') == 0){

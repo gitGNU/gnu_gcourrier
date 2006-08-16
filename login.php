@@ -24,7 +24,7 @@ author VELU Jonathan
 
 require_once("connexion.php");
 
-if(!isset( $_POST['enregistrer'] ) ){
+if (!isset($_POST['login'])) {
 ?>
 <html>
 <head>
@@ -34,71 +34,51 @@ if(!isset( $_POST['enregistrer'] ) ){
 
 <body>
 
-<div id = "login"><br>
-<center> <img src = images/banniere2.jpg></img></center>
+<div id="login">
+  <img src="images/banniere2.jpg" />
 
-<table align=center>
-	<br>
-	<tr>
-		<td>
-		<table>
-			<form name = log method = POST action = login.php>
-
-			<tr>
-				<td>login</td>
-				<td><input type = text name = login></input></td>
-			</tr>
-			<tr>
-				<td>password</td>
-				<td><input type = password name = password></input></td>
-			</tr>
-		</table>
-		</td>
-
-		<td>
-		<table>
-			<tr>
-				<td><img src = images/password.png></img></td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-
-</table>
-	<center><br>
-	<input type = submit name = enregistrer value = connexion> <br><br>
-	</center>
-
-	</form>
+  <form method="POST" action="login.php">
+    <table style="margin: 30px 0px 20px 0px; margin-left:auto; margin-right:auto;">
+      <tr>
+        <td>Identifiant: </td>
+        <td><input type="text" name="login" /></td>
+        <td rowspan="2"><img src="images/password.png" /></td>
+      </tr>
+      <tr>
+        <td>Mot de passe: </td>
+        <td><input type="password" name="password" /></td>
+      </tr>
+    </table>
+    <input type="submit" value="Connexion">
+  </form>
 </div>
-	
-<center>
+
 <div id="fin_page">
-GCourrier 1.6
-<a href="copyright.html">Licence</a></center>
+  GCourrier 1.6
+  <a href="copyright.html">Licence</a></center>
 </div>
+
 </body>
 </html>
 <?php
-}else{
-	$login = $_POST['login'];
-	$password = base64_encode($_POST['password']);
-	
-	$requete = "select id,idService
-		 from utilisateur
-		 where login = '".$login."' and passwd ='".$password."'; ";
-	$result = mysql_query($requete) or die (mysql_error() );
-
-	$ligne = mysql_fetch_array($result);
-
-	if( $ligne != NULL ){
-		$_SESSION['id'] = $ligne['id'];
-		$_SESSION['login'] = $login;
-		$_SESSION['idService'] = $ligne['idService'];
-		echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
-	}else{
-	echo "<meta http-equiv=\"refresh\" content=\"0;url=login.php\">";
-	}		
-
+} else {
+  $login = $_POST['login'];
+  $password = base64_encode($_POST['password']);
+  
+  $requete = "select id,idService
+                from utilisateur
+                where login = '".$login."' and passwd ='".$password."'; ";
+  $result = mysql_query($requete) or die (mysql_error() );
+  
+  $ligne = mysql_fetch_array($result);
+  
+  if ($ligne != NULL) {
+    $_SESSION['id'] = $ligne['id'];
+    $_SESSION['login'] = $login;
+    $_SESSION['idService'] = $ligne['idService'];
+    echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
+  } else {
+    echo "<meta http-equiv=\"refresh\" content=\"0;url=login.php\">";
+  }
 }
 ?>
