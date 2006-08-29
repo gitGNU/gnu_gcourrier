@@ -47,11 +47,14 @@ echo"<body style='background:".$tmpCouleur."' >";
 
 <?php
 echo "<center><div id= titre>Courrier";
-if($_GET['type']==1)
+if($_GET['type']==1){
 	echo " Entrant";
-else
+	$affDate="arrivee";
+}
+else{
 	echo " Depart";
-
+	$affDate="depart";
+}
 
 $requeteInit = "Select id from courrier Limit 1;";
 $result = mysql_query($requeteInit) or die(mysql_error());
@@ -155,7 +158,7 @@ echo "<tr>";
 echo "<td align=center>num</td>";
 echo "<td align=center>libelle</td>";
 echo "<td align=center>emetteur </td>";
-echo "<td align=center>arrivee</td>";
+echo "<td align=center>".$affDate."</td>";
 echo "<td align=center>observation</td>";
 echo "<td align=center>historique</td>";
 	
@@ -192,12 +195,19 @@ while( $ligne = mysql_fetch_array($resultatEntrant) ){
 	$dateArrivee=substr($tmpdateArrivee,8,2)."-".substr($tmpdateArrivee,5,2)."-".substr($tmpdateArrivee,0,4);
 	$observation = $ligne['observation'];
 	$libelle = $ligne['libelleCourrier'];
+	
+	if(strcmp($observation,"") ==0)
+		$observation="modifier";
+	if(strcmp($libelle,"") ==0)
+		$libelle="modifier";
+	if(strcmp($destinataire,"") ==0)
+		$destinataire="modifier";
 
 	echo "<td bgcolor=".$couleur.">".$idCourrier."</td>";	
-	echo "<td bgcolor=".$couleur.">".$libelle."</td>";	
-	echo "<td bgcolor=".$couleur.">".$destinataire."</td>";	
+	echo "<td bgcolor=".$couleur."><a href=modifLibelleCourrier.php?idCourrier=".$idCourrier."&type=".$_GET['type']." style=\"text-decoration :none;font-weight:normal\">".$libelle."</td>";	
+	echo "<td bgcolor=".$couleur."><a href=modifDestinataireCourrier.php?idCourrier=".$idCourrier."&type=".$_GET['type']." style=\"text-decoration :none;font-weight:normal\">".$destinataire."</td>";	
 	echo "<td bgcolor=".$couleur.">".$dateArrivee."</td>";	
-	echo "<td bgcolor=".$couleur.">".$observation."</td>";	
+	echo "<td bgcolor=".$couleur."><a href=modifObservationCourrier.php?idCourrier=".$idCourrier."&type=".$_GET['type']." style=\"text-decoration :none;font-weight:normal\">".$observation."</td>";	
 	
 	
 	echo"<td bgcolor=".$couleur."><a href=chemin.php?idCourrier=".$idCourrier."&affiche=".$nbAffiche."&type=".$_GET['type'].">historique</a></td>";
