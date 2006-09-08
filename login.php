@@ -76,6 +76,10 @@ if (!isset($_POST['login'])) {
     $_SESSION['id'] = $ligne['id'];
     $_SESSION['login'] = $login;
     $_SESSION['idService'] = $ligne['idService'];
+    if (isset($_POST['remember'])) {
+      $session_hash = session_new();
+      setcookie('gcourrier_session', $session_hash);
+    }
     echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
   } else {
     echo "<meta http-equiv=\"refresh\" content=\"0;url=login.php\">";

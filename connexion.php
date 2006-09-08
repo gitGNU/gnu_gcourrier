@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005,2006 CLISS XXI
+Copyright (C) 2005,2006 Cliss XXI
 
 This file is part of GCourrier.
 
@@ -25,13 +25,25 @@ author VELU Jonathan
 header("content-type: text/html; charset=UTF-8");
 
 require_once('config.php');
+require_once('include/session.php');
+require_once('include/user.php');
 
-$db = mysql_connect( $hote, $user, $mdp ) or 
-die( "Connection impossible pour l'utilisateur " . $user . " sur l'hôte " . $hote );
+$db = mysql_connect($hote, $user, $mdp) or 
+die("Connection impossible pour l'utilisateur " . $user . " sur l'hôte " . $hote);
 
-$se = mysql_select_db( $base, $db ) or
-die( "Connection impossible sur la base " . $base . "(" . $user . ", " . $hote . ")" );
+$se = mysql_select_db($base, $db) or
+die("Connection impossible sur la base " . $base . "(" . $user . ", " . $hote . ")");
 
-session_start( );
+session_start();
 
-?>
+$session_hash = $_COOKIES['gcourrier_session'];
+if (!isset($_SESSION['id']) and isset($session_hash)) {
+  $id = session_get($_COOKIES['gcourrier_session']);
+  if ($id != -1) {
+    session_renew($id, $session_hash);
+    ($ignored, $login, $idService) = user_getbyid($id);
+    $_SESSION['id'] = $id;
+    $_SESSION['login'] = $login;
+    $_SESSION['idService'] = $idService;
+  }
+}
