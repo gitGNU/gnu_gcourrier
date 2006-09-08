@@ -19,6 +19,7 @@ send:        # Publish to gcourrier.cliss21.com
 	scp $(PACKAGE).tar.gz gcourrier@gcourrier.cliss21.com:www/fichier
 
 permissions: # Set file permissions (chmod)
+	chown root:root -R .
 	find -type d | xargs chmod 755
 	find -type f | xargs chmod 644
 	chgrp $(HTTPD_USER) accuse/ upload/ config.php
