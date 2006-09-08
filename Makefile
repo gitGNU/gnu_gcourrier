@@ -24,4 +24,4 @@ permissions: # Set file permissions (chmod)
 	find -type f | xargs chmod 644
 	chgrp $(HTTPD_USER) accuse/ upload/ config.php
 	chmod 775 accuse/ upload/
-	chmod 640 config.php
+	-chmod 640 config.php
