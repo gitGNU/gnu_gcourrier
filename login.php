@@ -57,12 +57,8 @@ if (!isset($_POST['login'])) {
     header("Location: index.php");
   } else {
     include("templates/header.php");
-?>
-
-<div class='status'>Vous vous êtes trompé
-  dans le nom d'utilisateur ou dans le mot de passe.</div>
-
-<?php
+    echo "<div class='status'>Vous vous êtes trompé(e) dans "
+      . "le nom d'utilisateur ou dans le mot de passe.</div>";
     include("templates/login.php");
     include("templates/footer.php");
   }
