@@ -185,6 +185,30 @@ CREATE TABLE `priorite` (
 
 $result = mysql_query( $requete ) or die ( "erreur18".mysql_error() );
 
+# User sessions, to stay connected even if the browser is closed
+$requete = "
+CREATE TABLE `sessions` (
+  `hash` varchar(32) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `expiration` date NOT NULL,
+  PRIMARY KEY (`hash`)
+);";
+$result = mysql_query($requete) or die("erreur en créant la table 'session': ".mysql_error());
+
+# Completed upgrades
+$requete = "
+CREATE TABLE `upgrades` (
+  `version` varchar(255) NOT NULL,
+  `upgrade_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`version`, `upgrade_name`)
+);";
+$result = mysql_query($requete) or die("erreur en créant la table 'upgrades': ".mysql_error());
+
+
+##
+# Initial values
+##
+
 echo "<h3><i>Creation du service ADMIN ...</i></h3>";
 $requete = "INSERT INTO service(libelle,designation) VALUES ('ADMIN', 'admin');";
 $result = mysql_query( $requete ) or die ( "erreur19".mysql_error() );
