@@ -22,15 +22,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author Sylvain Beucler
 */
 
-// Boilerplate (UTF8...)
-include_once("connexion.php");
+require_once('connexion.php');
+require_once('functions/longsession.php');
 
 // On appelle session_start avant d'envoyer du HTML au navigateur
 session_start();
 
 // On supprime la session, y compris nos information de login
 session_destroy();
+longsession_delete();
+setcookie('gcourrier_session', '', time() - 3600);
+include('templates/header.php');
+?>
 
-echo "<div class='status'>Vous êtes déconnecté(e) de GCourrier.</div>";
+<div class='status'>Vous êtes déconnecté(e) de GCourrier.</div>
 
-include_once("login.php");
+<?php
+include("templates/login.php");
+include("templates/footer.php");

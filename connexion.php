@@ -22,28 +22,43 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-header("content-type: text/html; charset=UTF-8");
+header("Content-Type: text/html;charset=UTF-8");
 
 require_once('config.php');
-require_once('include/session.php');
-require_once('include/user.php');
+require_once('functions/longsession.php');
+require_once('functions/user.php');
 
 $db = mysql_connect($hote, $user, $mdp) or 
-die("Connection impossible pour l'utilisateur " . $user . " sur l'hôte " . $hote);
+die("Connection MySQL impossible pour l'utilisateur " . $user . " sur l'hôte " . $hote);
 
 $se = mysql_select_db($base, $db) or
 die("Connection impossible sur la base " . $base . "(" . $user . ", " . $hote . ")");
 
 session_start();
 
-$session_hash = $_COOKIES['gcourrier_session'];
+$session_hash = $_COOKIE['gcourrier_session'];
 if (!isset($_SESSION['id']) and isset($session_hash)) {
-  $id = session_get($_COOKIES['gcourrier_session']);
-  if ($id != -1) {
-    session_renew($id, $session_hash);
-    ($ignored, $login, $idService) = user_getbyid($id);
-    $_SESSION['id'] = $id;
-    $_SESSION['login'] = $login;
-    $_SESSION['idService'] = $idService;
+  if (ctype_alnum($session_hash)) {
+    $id = longsession_getid($session_hash);
+    if ($id != -1) {
+      longsession_renew();
+      list($id, $login, $idService) = user_getbyid($id);
+      if ($id != -1) {
+	$_SESSION['id'] = $id;
+	$_SESSION['login'] = $login;
+	$_SESSION['idService'] = $idService;
+      } else {
+	// No such user. Maybe it was deleted?
+	// -> No login.
+	echo "No such user: $id";
+      }
+    } else {
+      // No such session. It probably expired.
+      // -> No login.
+      echo "No such session: $session_hash";
+    }
+  } else {
+    // Invalid hash. Probably a crack attempt.
+    echo "Invalid hash: $session_hash";
   }
 }

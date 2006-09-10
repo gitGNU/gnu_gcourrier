@@ -23,6 +23,18 @@ author Sylvain Beucler
 */
 
 function user_getbyid($id) {
-  // MySQL lookup
-  return array($id, $login, $service);
+  $req = "SELECT id, login, idService
+          FROM utilisateur
+          WHERE id = '$id'";
+  $result = mysql_query($req) or die(mysql_error());
+  $line = mysql_fetch_array($result);
+  
+  if ($line != NULL) {
+    $id = $line['id'];
+    $login = $line['login'];
+    $idService = $line['idService'];
+    return array($id, $login, $idService);
+  } else {
+    return array(-1, "", -1);
+  }
 }

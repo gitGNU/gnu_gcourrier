@@ -22,44 +22,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-require_once("connexion.php");
+require_once('connexion.php');
+require_once('functions/longsession.php');
+
+if (isset($_SESSION['id'])) {
+  header("Location: index.php");
+}
 
 if (!isset($_POST['login'])) {
+  include("templates/header.php");
+  include("templates/login.php");
+  include("templates/footer.php");
 ?>
-<html>
-<head>
-<title>gCourrier</title>
-<LINK HREF="styles.css" REL="stylesheet">
-</head>
-
-<body>
-
-<div id="login">
-  <img src="images/banniere2.jpg" />
-
-  <form method="POST" action="login.php">
-    <table style="margin: 30px 0px 20px 0px; margin-left:auto; margin-right:auto;">
-      <tr>
-        <td>Identifiant: </td>
-        <td><input type="text" name="login" /></td>
-        <td rowspan="2"><img src="images/password.png" /></td>
-      </tr>
-      <tr>
-        <td>Mot de passe: </td>
-        <td><input type="password" name="password" /></td>
-      </tr>
-    </table>
-    <input type="submit" value="Connexion">
-  </form>
-</div>
-
-<div id="fin_page">
-  GCourrier 1.6
-  <a href="copyright.html">Licence</a></center>
-</div>
-
-</body>
-</html>
 <?php
 } else {
   $login = $_POST['login'];
@@ -77,12 +51,10 @@ if (!isset($_POST['login'])) {
     $_SESSION['login'] = $login;
     $_SESSION['idService'] = $ligne['idService'];
     if (isset($_POST['remember'])) {
-      $session_hash = session_new();
-      setcookie('gcourrier_session', $session_hash);
+      $session_hash = longsession_new();
+      setcookie('gcourrier_session', $session_hash, strtotime("now + 1 week"));
     }
-    echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
-  } else {
-    echo "<meta http-equiv=\"refresh\" content=\"0;url=login.php\">";
   }
+  header("Location: index.php");
 }
 ?>

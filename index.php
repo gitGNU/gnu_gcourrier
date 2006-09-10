@@ -23,12 +23,11 @@ author VELU Jonathan
 */
 
 require_once("connexion.php");
-session_start();
-if(!isset($_SESSION['login'])){
-  include_once("login.php");
+
+if(!isset($_SESSION['login'])) {
+  header("Location: login.php");
   exit;
-}
-else{
+} else {
 
 ?>
 <html>
@@ -174,5 +173,3 @@ echo"info : nbEntrant ".$nbEntrant.", nbDepart ".$nbDepart.", nbFactures ".$nbFa
 <?php
 }
 }
-
-?>
