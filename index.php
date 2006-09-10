@@ -40,7 +40,7 @@ if(!isset($_SESSION['login'])) {
 <?php
 
 
-if(strcmp($_SESSION['login'] ,'admin')==0){
+if (strcmp($_SESSION['login'], 'admin') == 0) {
 ?>
 
 <div id = "page">
@@ -51,23 +51,23 @@ if(strcmp($_SESSION['login'] ,'admin')==0){
 <tr>
 
 <td>
-<div id="logoimage"><img src = "images/logo.png"></div>
+<div id="logoimage"><img src="images/logo.png"></div>
 </td>
 <div id="logo">
 <td>
-<a href = creerService.php>Créer service</a><br>
-<a href = creerCompte.php>Créer compte</a><br>
-<a href = creerPriorite.php>Créer priorite</a><br>
-<a href = modifierAccuse.php>Gérer l'accusé</a><br>
+<a href="creerService.php">Créer service</a><br>
+<a href="creerCompte.php">Créer compte</a><br>
+<a href="creerPriorite.php">Créer priorite</a><br>
+<a href="modifierAccuse.php">Gérer l'accusé</a><br>
 
 </td>
 </div>
 
 <td>
 <div id="logo2">
-<img src="images/enveloppe.png"></img>&nbsp&nbsp<a href="voirCourrier.php?type=1">Voir entrant</a><br>
-<img src="images/enveloppeD.png"></img>&nbsp&nbsp<a href="voirCourrier.php?type=2">Voir départ</a><br>
-<img src="images/euro.png"></img>&nbsp&nbsp<a href="voirFacture.php">Voir facture</a><br>
+<img src="images/enveloppe.png"></img>&nbsp;&nbsp;<a href="voirCourrier.php?type=1">Voir entrant</a><br>
+<img src="images/enveloppeD.png"></img>&nbsp;&nbsp;<a href="voirCourrier.php?type=2">Voir départ</a><br>
+<img src="images/euro.png"></img>&nbsp;&nbsp;<a href="voirFacture.php">Voir facture</a><br>
 
 </div>
 </td>

@@ -47,8 +47,14 @@ function longsession_getid($session_hash) {
 /* Create a new one-week session for the current user */
 function longsession_new() {
   $user_id = $_SESSION['id'];
-  $session_hash = md5(mt_rand() . microtime() . $_SERVER['REMOTE_ADDR']);
   $expiration = strtotime("now + 1 week");
+
+  // Find a unique session hash
+  $req = "SELECT NULL FROM sessions WHERE hash='$session_hash'";
+  do {
+    // Compute a long, random, changing text:
+    $session_hash = md5(mt_rand() . microtime() . $_SERVER['REMOTE_ADDR']);
+  } while (mysql_num_rows(mysql_query($req)) > 0);
 
   $req = "INSERT INTO sessions (hash, user_id, expiration)
           VALUES ('$session_hash', '$user_id', FROM_UNIXTIME('$expiration'))";

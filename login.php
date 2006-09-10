@@ -54,7 +54,16 @@ if (!isset($_POST['login'])) {
       $session_hash = longsession_new();
       setcookie('gcourrier_session', $session_hash, strtotime("now + 1 week"));
     }
-  }
-  header("Location: index.php");
-}
+    header("Location: index.php");
+  } else {
+    include("templates/header.php");
 ?>
+
+<div class='status'>Vous vous êtes trompé
+  dans le nom d'utilisateur ou dans le mot de passe.</div>
+
+<?php
+    include("templates/login.php");
+    include("templates/footer.php");
+  }
+}

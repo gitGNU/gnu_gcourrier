@@ -50,15 +50,15 @@ if (!isset($_SESSION['id']) and isset($session_hash)) {
       } else {
 	// No such user. Maybe it was deleted?
 	// -> No login.
-	echo "No such user: $id";
+	// echo "No such user: $id";
       }
     } else {
       // No such session. It probably expired.
       // -> No login.
-      echo "No such session: $session_hash";
+      // echo "No such session: $session_hash";
     }
   } else {
     // Invalid hash. Probably a crack attempt.
-    echo "Invalid hash: $session_hash";
+    // echo "Invalid hash: $session_hash";
   }
 }
