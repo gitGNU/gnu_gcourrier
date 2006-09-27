@@ -122,7 +122,8 @@ $requetetmp = 	"SELECT	facture.refuse as refuse,
 			facture.dateFacture as dateArrivee,
 			facture.dateFactureOrigine as dateOrigine,
 			destinataire.nom as nomDest,
-			destinataire.prenom as prenomDest
+			destinataire.prenom as prenomDest,
+                        montant
 		";
 
 $from ="    FROM facture,destinataire ";
@@ -205,17 +206,18 @@ $requete = $requetetmp;
 
 
 $result = mysql_query( $requete ) or die ( mysql_error() ) ;
-echo "<table align=center font-color ='white'>";
-echo "<tr>";
-echo "<td align=center>numero</td>";
-echo "<td align=center>fournisseur</td>";
-echo "<td align=center>refFacture</td>";
-echo "<td align=center>date arrivee</td>";
-echo "<td align=center>date origine</td>";
-echo "<td align=center>observation</td>";
-echo "<td align=center>historique</td>";
-echo "<td align=center>refuser</td>";
-echo "</tr>";
+echo '<table align=center font-color ="white">';
+echo '<tr>';
+echo '<td align="center">numero</td>';
+echo '<td align="center">fournisseur</td>';
+echo '<td align="center">refFacture</td>';
+echo '<td align="center">date arrivee</td>';
+echo '<td align="center">date origine</td>';
+echo '<td align="center">montant</td>';
+echo '<td align="center">observation</td>';
+echo '<td align="center">historique</td>';
+echo '<td align="center">refuser</td>';
+echo '</tr>';
 
 $boul = 0;
 
@@ -262,6 +264,7 @@ echo "<td bgcolor = ".$couleurTmp.">".$ligne['nomDest']." ".$ligne['prenomDest']
 echo "<td bgcolor = ".$couleurTmp.">".$ligne['refFacture']."</td>";
 echo "<td bgcolor = ".$couleurTmp.">".$tmp."</td>";
 echo "<td bgcolor = ".$couleurTmp.">".$tmp2."</td>";
+echo "<td bgcolor = ".$couleurTmp.">".$ligne['montant']."</td>";
 echo "<td bgcolor = ".$couleurTmp."><a href=modifObservationFacture.php?idCourrier=".$ligne['idCourrier']."  style=\"text-decoration :none;font-weight:normal\">".$obs."</a></td>";
 echo "<td bgcolor=".$couleurTmp."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
 
