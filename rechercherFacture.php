@@ -155,7 +155,7 @@ $where =" WHERE facture.validite = 0 and facture.idServiceCreation=".$_SESSION['
 	  priorite.id = facture.idPriorite ";
 
 
-if(strcmp($numero," ")!=0){
+if(strcmp($numero,"")!=0){
 	$requete.= " and facture.id = '".$numero."' ";
 
 }
