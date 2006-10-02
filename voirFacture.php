@@ -72,7 +72,7 @@ else{
 
 
 if(!isset( $_GET['nbAffiche'] )){
-        $nbAffiche=5;
+        $nbAffiche=100;
 }
 
 else{
@@ -90,9 +90,16 @@ echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
 ?>
 
 <input type=submit name=ok value=ok></input>
-</td></tr></table>
+</td></tr>
+</table>
 </form>
 
+<form method = POST action=rechercheRapideFacture.php>
+<table align=center style="border:1px dotted black;"><tr><td>
+<label>rechercher la facture numero : </label>
+<input type=text name=numero value=1 size=2></input>
+<input type=submit name=ok value=ok></input>
+</tr></td></table></form>
 
 <?php
 
@@ -124,6 +131,8 @@ $requeteFacture = "select facture.id as idFacture,
 
 }
 else{
+
+if(!isset($_GET['idFactureRecherche'])){
 $requeteFacture = "select facture.id as idFacture,
 			  facture.histo as histo,
 			  refuse as refuse,
@@ -144,6 +153,31 @@ $requeteFacture = "select facture.id as idFacture,
 			   and facture.idFournisseur = destinataire.id
 		           order by ".$order." DESC
 			   LIMIT ".$nbAffiche.";";
+}
+else{
+$requeteFacture = "select facture.id as idFacture,
+			  facture.histo as histo,
+			  refuse as refuse,
+  			  facture.refFacture as refFacture,
+			  facture.dateFacture as dateFacture,
+			  facture.dateFactureOrigine as dateFactureOrigine,
+			  facture.observation as observation,			  
+			  facture.montant as montant,
+			  destinataire.nom as nomFournisseur,
+			  destinataire.id as idDest,
+			  destinataire.prenom as prenomFournisseur,
+			  priorite.nbJours as nbJours
+ 		    from facture,destinataire,priorite
+		    where facture.id=".$_GET['idFactureRecherche']." 
+             		   and facture.validite = 0
+			   and facture.idServiceCreation = ".$_SESSION['idService']."
+			   and facture.idPriorite = priorite.id
+			   and facture.idFournisseur = destinataire.id
+		           order by ".$order." DESC
+			   LIMIT ".$nbAffiche.";";
+}
+
+
 }
 
 $resultatFacture = mysql_query($requeteFacture) or die("erreur facture ".mysql_error() );
