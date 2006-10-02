@@ -104,6 +104,16 @@ echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
 </td></tr></table>
 </form>
 
+<?php
+echo"<form method = POST action=rechercheRapideCourrier.php?type=".$_GET['type'].">";
+?>
+<table align=center style="border:1px dotted black;"><tr><td>
+<label>rechercher le courrier numero : </label>
+<input type=text name=numero value=1 size=2></input>
+<input type=submit name=ok value=ok></input>
+</tr></td></table></form>
+
+
 
 
 
@@ -127,9 +137,7 @@ if(strcmp($_SESSION['login'] , 'admin') == 0){
 			   LIMIT ".$nbAffiche.";";}
 else{
 
-
-
-
+	if(!isset($_GET['idCourrierRecherche'])){
 	$requeteEntrant = "select courrier.id as idCourrier,
                                   priorite.nbJours as nbJours,
 				  courrier.dateArrivee,
@@ -147,6 +155,27 @@ else{
 			   and courrier.type = ".$_GET['type']."
 		           order by courrier.id DESC
 			   LIMIT ".$nbAffiche.";";
+	}
+	else{
+	$requeteEntrant = "select courrier.id as idCourrier,
+                                  priorite.nbJours as nbJours,
+				  courrier.dateArrivee,
+				  courrier.observation as observation,
+				  destinataire.nom as nomDestinataire,
+				  destinataire.prenom as prenomDestinataire,
+				  courrier.libelle as libelleCourrier,
+				  courrier.url as url
+		   	   from courrier,priorite,destinataire
+		           where courrier.id=".$_GET['idCourrierRecherche']." 
+             		   and courrier.validite = 0
+			   and courrier.serviceCourant = ".$_SESSION['idService']."
+			   and courrier.idPriorite = priorite.id
+			   and courrier.idDestinataire = destinataire.id
+			   and courrier.type = ".$_GET['type']."
+		           order by courrier.id DESC
+			   LIMIT ".$nbAffiche.";";
+	
+	}
 
 }
 
