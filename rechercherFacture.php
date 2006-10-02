@@ -155,7 +155,7 @@ $where =" WHERE facture.validite = 0 and facture.idServiceCreation=".$_SESSION['
 	  priorite.id = facture.idPriorite ";
 
 
-if(strcmp($numero,"")!=0){
+if(strcmp($numero," ")!=0){
 	$requete.= " and facture.id = '".$numero."' ";
 
 }
@@ -165,7 +165,7 @@ if(strcmp($montant,"")!=0){
 
 }
 
-if(strcmp($numero,"")!=0){
+if(strcmp($observation,"")!=0){
 	$requete.= " and observation = '".$observation."' ";
 
 }
@@ -242,7 +242,6 @@ $requete.=" and facture.dateFacture >='".$eDate1."' and facture.dateFacture<='".
 
 $requetetmp .= " ".$from." ".$where." ".$requete." ";
 $requete = $requetetmp;
-
 
 $result = mysql_query( $requete ) or die ( mysql_error() ) ;
 echo "<table align=center font-color ='white'>";
