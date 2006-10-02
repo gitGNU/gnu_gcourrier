@@ -171,6 +171,7 @@ CREATE TABLE `utilisateur` (
   `prenom` varchar(32) NOT NULL default '',
   `passwd` varchar(60) NOT NULL default '',
   `idService` int(11) NOT NULL,
+  `preferenceNbCourrier` int(11) NOT NULL default '5',
   PRIMARY KEY  (`id`)
 );";
 $result = mysql_query( $requete ) or die ( "erreur17".mysql_error() );

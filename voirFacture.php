@@ -72,7 +72,13 @@ else{
 
 
 if(!isset( $_GET['nbAffiche'] )){
-        $nbAffiche=100;
+$requete = "select * from utilisateur where login = '".$_SESSION['login']."';";
+$result = mysql_query($requete) or die(mysql_error());
+while($ligne = mysql_fetch_array($result)){
+$nbAffiche = $ligne['preferenceNbCourrier'];
+
+}
+
 }
 
 else{
@@ -99,6 +105,7 @@ echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
 <label>rechercher la facture numero : </label>
 <input type=text name=numero value=1 size=2></input>
 <input type=submit name=ok value=ok></input>
+<br><a href=rechercherFacture.php><font size=1px><center>rechercheAvancee</center></font></a>
 </tr></td></table></form>
 
 <?php

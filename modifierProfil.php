@@ -39,12 +39,13 @@ if(!isset( $_POST['enregistrer'] ) ){
 <br><br><br>
 <table align=center>
 <?php
-$requete = "SELECT nom, prenom, login, idService, libelle, designation
+$requete = "SELECT nom, prenom, login, idService, libelle, designation, preferenceNbCourrier as nb
               FROM utilisateur, service
               WHERE utilisateur.idService = service.id
               AND login='{$_SESSION['login']}'";
 $result = mysql_query( $requete ) or die (mysql_error() );
 while($ligne = mysql_fetch_array( $result ) ){
+  $nb = $ligne['nb'];
   $id = $ligne['id'];
   $nom = $ligne['nom'];
   $prenom = $ligne['prenom'];
@@ -69,11 +70,15 @@ while($ligne = mysql_fetch_array( $result ) ){
 				<?php
 				echo"<td><input type = text name = prenom value='".$prenom."'></input></td></tr>";
 				?>
+				<tr><td>Nombre de courrier a afficher</td><?php 				echo"<td><input type = text name = nb value='".$nb."'></input></td></tr>";
+ ?>
 				<tr><td>Mot de passe</td>
 				<td><input type = password name = password1></input></td></tr>
 				<tr><td>Confirmez le mot de passe</td>
 				<td><input type = password name = password2></input></td></tr>
 				<tr><td>Service</td><td><?php echo $service ?></td></tr>
+
+
 				</table>
 				
 				<center>
@@ -104,8 +109,9 @@ if( $_POST['password1'] != $_POST['password2'] ){
 		$passwd = base64_encode( $_POST['password1'] );
 		$nom = $_POST['nom'];
 		$prenom = $_POST['prenom'];
+		$nb = $_POST['nb'];
 		
-		$requete = "update utilisateur set login='".$login."' ,passwd='".$passwd."', nom='".$nom."',prenom='".$prenom."'where login='".$_SESSION['login']."';";
+		$requete = "update utilisateur set login='".$login."' ,passwd='".$passwd."', nom='".$nom."',prenom='".$prenom."',preferenceNbCourrier=".$nb." where login='".$_SESSION['login']."';";
 		$result = mysql_query($requete) or die("erreur: ".mysql_error() );		
 		echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
 	
