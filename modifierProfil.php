@@ -21,84 +21,24 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 author VELU Jonathan
 */
-
-require("connexion.php");
-session_start( );
+require_once('connexion.php');
+session_start();
 
 if(!isset( $_POST['enregistrer'] ) ){
-?>
-<html>
-<head>
-<title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet">
-</head>
-
-<body>
-<div id = pageGd><br>
-<center> <img src = images/banniere2.jpg></img></center>
-<br><br><br>
-<table align=center>
-<?php
-$requete = "SELECT nom, prenom, login, idService, libelle, designation, preferenceNbCourrier as nb
-              FROM utilisateur, service
-              WHERE utilisateur.idService = service.id
-              AND login='{$_SESSION['login']}'";
-$result = mysql_query( $requete ) or die (mysql_error() );
-while($ligne = mysql_fetch_array( $result ) ){
-  $nb = $ligne['nb'];
-  $id = $ligne['id'];
-  $nom = $ligne['nom'];
-  $prenom = $ligne['prenom'];
-  $login = $ligne['login'];
-  $service = $ligne['libelle'] . ' - ' . $ligne['designation'];
+  include("templates/header2.php");
+  include("templates/modifierProfil.php");
 }
 
-?>
+else{
 
-
-			<form name = creerCompteForm method = POST action = modifierProfil.php>
-				<tr>
-				
-				<td>Identifiant</td><td><?php echo $_SESSION['login']?></td></tr>
-				<input type="hidden" name="login" value='<?php echo $_SESSION['login']?>'></input>
-				<tr><td>Nom</td>
-				<td>
-				<?php
-				echo"<input type = text name = nom value='".$nom."'></input></tr></td>";
-				?>
-				<tr><td>Prénom</td>
-				<?php
-				echo"<td><input type = text name = prenom value='".$prenom."'></input></td></tr>";
-				?>
-				<tr><td>Nombre de courrier a afficher</td><?php 				echo"<td><input type = text name = nb value='".$nb."'></input></td></tr>";
- ?>
-				<tr><td>Mot de passe</td>
-				<td><input type = password name = password1></input></td></tr>
-				<tr><td>Confirmez le mot de passe</td>
-				<td><input type = password name = password2></input></td></tr>
-				<tr><td>Service</td><td><?php echo $service ?></td></tr>
-
-
-				</table>
-				
-				<center>
-				<input type="submit" name="enregistrer" value="Enregistrer" />
-				<center>
-			</form> 
-
-<center><br>
-<a href = index.php>index</a><br><br>
-</center>
-</div>
-</body>
-</html>
-<?php
-}else{
-
+if(strcmp($_POST['password1'],"")!=0){
 //test de verification des passwords
 if( $_POST['password1'] != $_POST['password2'] ){
-		echo "<meta http-equiv=\"refresh\" content=\"0;url=modifierProfil.php\">";
-		exit();
+//		echo "<meta http-equiv=\"refresh\" content=\"0;url=modifierProfil.php\">";
+	    include("templates/header2.php");
+	    echo "<div class='status'>Les mots de passes sont différents.</div>";
+	    include("templates/modifierProfil.php");
+	    exit();
 	}
 
 
@@ -116,6 +56,17 @@ if( $_POST['password1'] != $_POST['password2'] ){
 		echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
 	
 	}
+}
+else{
+		$login = $_POST['login'];
+		$nom = $_POST['nom'];
+		$prenom = $_POST['prenom'];
+		$nb = $_POST['nb'];
+		
+		$requete = "update utilisateur set login='".$login."', nom='".$nom."',prenom='".$prenom."',preferenceNbCourrier=".$nb." where login='".$_SESSION['login']."';";
+		$result = mysql_query($requete) or die("erreur: ".mysql_error() );		
+		echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
+}
 
 }
 ?>

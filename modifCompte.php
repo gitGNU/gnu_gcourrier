@@ -22,126 +22,69 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-require("connexion.php");
-session_start( );
+require_once('connexion.php');
+session_start();
 
 if(!isset( $_POST['enregistrer'] ) ){
-?>
-<html>
-<head>
-<title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet">
-</head>
-
-<body>
-<div id = pageGd><br>
-<center> <img src = images/banniere2.jpg></img></center>
-<br><br><br>
-<table align=center>
-<?php
-$idUser = $_GET['id'];
-$requete = "select utilisateur.nom as nomUser,
-		   utilisateur.prenom as prenomUser,
-		   utilisateur.login as loginUser
-		   from utilisateur,service where utilisateur.id=".$idUser.";";
-$result = mysql_query( $requete ) or die ("1".mysql_error() );
-while($ligne = mysql_fetch_array( $result ) ){
-$nom = $ligne['nomUser'];
-$prenom = $ligne['prenomUser'];
-$login = $ligne['loginUser'];
+  include("templates/header2.php");
+  include("templates/modifCompte.php");
 }
-?>
 
+else{
+  $idUser = $_POST['idUser'];
+  
+  if(strcmp($_POST['password1'],"")!=0){
+  
+      if( $_POST['password1'] != $_POST['password2'] ){
+	  
+          echo "<meta http-equiv=\"refresh\" content=\"0;url=modifCompte.php?id=".$idUser."&mdp=1\">";	  
+//	  include("templates/header2.php");
+//	  echo "<div class='status'>Les mots de passes sont différents.</div>";
+//	  include("templates/modifCompte.php?id=".$idUser."");
+	  exit();
+      }
 
-			<form name = creerCompteForm method = POST action = modifCompte.php>
-				<tr>
-				
-				<?php
-				if($login != 'admin')
-				echo"<td>login</td><td><input type = text name = login value ='".$login."'></input></td></tr>";
-				else
-				echo"<input type=hidden name=login value='".$_SESSION['login']."'></input>";
-				?>
-				<tr><td>nom</td>
-				<td>
-				<?php
-				echo"<input type = text name = nom value='".$nom."'></input></tr></td>";
-				?>
-				<tr><td>prenom</td>
-				<?php
-				echo"<td><input type = text name = prenom value='".$prenom."'></input></td></tr>";
-if($login != 'admin'){
-				?>
-				<tr><td>service</td>
-				<td><select name = service>
-				<?php
-					$requete = "select libelle as libelle,
-						    id as idService,
-						    designation as designation
-						    from service 
-					   	    order by libelle;";
-					$result = mysql_query($requete) or die("2 : ".mysql_error());
-					while($ligne = mysql_fetch_array($result)){
-					if($ligne['libelle'] !='ADMIN')
-					echo "<option value = '".$ligne['idService']."'>".$ligne['libelle']." ".$ligne['designation']." </option>";
-					}
-				?>
-				</select></td></tr>
-<?
-}
-?>
-				<tr><td>password</td>
-				<td><input type = password name = password1></input></td></tr>
-				<tr><td>retaper le password</td>
-				<td><input type = password name = password2></input></td></tr>
-				
-				</table>
-<?php
-echo"<input type = hidden name=idUser value=".$idUser.">";
-?>
-				<center>
-				<input type = submit name = enregistrer value=enregistrer>
-				<center>
-			</form> 
-
-<center><br>
-<a href = index.php>index</a><br><br>
-</center>
-</div>
-</body>
-</html>
-<?php
-}else{
-
-$idUser = $_POST['idUser'];
-//test de verification des passwords
-if( $_POST['password1'] != $_POST['password2'] ){
-	echo "<meta http-equiv=\"refresh\" content=\"0;url=modifCompte.php?id=".$idUser."\">";
-		exit();
-	}
-
-
-	else{
-
-	//insertion des données dans la table utilisateur
-		$login = $_POST['login'];
-		$passwd = base64_encode( $_POST['password1'] );
-		$nom = $_POST['nom'];
-		$prenom = $_POST['prenom'];
-if($login != 'admin'){
+      else{
+        //insertion des données dans la table utilisateur
+	$login = $_POST['login'];
+	$passwd = base64_encode( $_POST['password1'] );
+	$nom = $_POST['nom'];
+	$prenom = $_POST['prenom'];
+	
+	if($login != 'admin'){
 		$service = $_POST['service'];
 		$requete = "update utilisateur set login='".$login."' ,passwd='".$passwd."', nom='".$nom."',prenom='".$prenom."', idService=".$service." where login ='".$login."';";
 		$result = mysql_query($requete) or die("3: ".mysql_error() );		
-}
-else{
+	}
+
+	else{
 		$service = $_POST['service'];
 		$requete = "update utilisateur set login='".$login."' ,passwd='".$passwd."', nom='".$nom."',prenom='".$prenom."' where login ='".$login."';";
 		$result = mysql_query($requete) or die("4: ".mysql_error() );		
+	}
+      }//fin else si mauvais passwd
+  }//fin if str
 
-}
-		echo "<meta http-equiv=\"refresh\" content=\"0;url=voirCompte.php\">";
+  else{
+	//insertion des données dans la table utilisateur hors mdp
+	$login = $_POST['login'];
+	$nom = $_POST['nom'];
+	$prenom = $_POST['prenom'];
 	
+	if($login != 'admin'){
+		$service = $_POST['service'];
+		$requete = "update utilisateur set login='".$login."', nom='".$nom."',prenom='".$prenom."', idService=".$service." where login ='".$login."';";
+		$result = mysql_query($requete) or die("3: ".mysql_error() );		
 	}
 
-}
+	else{
+		$service = $_POST['service'];
+		$requete = "update utilisateur set login='".$login."', nom='".$nom."',prenom='".$prenom."' where login ='".$login."';";
+		$result = mysql_query($requete) or die("4: ".mysql_error() );		
+  
+       }
+    }//fin else
+
+echo "<meta http-equiv=\"refresh\" content=\"0;url=voirCompte.php\">";	
+}//fin 1er else
 ?>

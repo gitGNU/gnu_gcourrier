@@ -20,6 +20,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 author VELU Jonathan
 */
+
+.status {
+	text-align: center;
+	margin: auto 20% auto 20%;
+	border: solid 1px;
+	border-style: dashed;
+	background: lightgrey;
+}
 input{
 border:2px solid black;
 background:white;
