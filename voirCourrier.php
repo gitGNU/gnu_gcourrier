@@ -118,7 +118,7 @@ echo"<form method = POST action=rechercheRapideCourrier.php?type=".$_GET['type']
 <label>rechercher le courrier numero : </label>
 <input type=text name=numero value=1 size=2></input>
 <input type=submit name=ok value=ok></input>
-<br><a href=rechercherFacture.php><font size=1px><center>rechercheAvancee</center></font></a>
+<br><a href=rechercher.php><font size=1px><center>rechercheAvancee</center></font></a>
 </tr></td></table></form>
 
 
