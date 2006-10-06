@@ -41,7 +41,7 @@ if(!isset( $_POST["rechercher"] ) ){
 ?>
 <div id =pageTGd><br>
 <center><img src = images/banniere2.jpg></center><br><br>
-<center><b>RECHERCHE FACTURE</b><br><br>
+<center><b>RECHERCHE FACTURE ARCHIVEE</b><br><br>
 <?php
 echo"<form method = POST action = archiveFacture.php>";
 ?>
