@@ -32,16 +32,16 @@ if(!isset( $_POST["enregistrer"])){
 <LINK HREF="styles2.css" REL="stylesheet">
 </head>
 <body>
-<div id = page><br>
-	<center><img src =images/banniere2.jpg><br><br>
+<div id="page"><br />
+	<center><img src="images/banniere2.jpg"><br><br>
 	
-	<i style="font-size:10px;font-weight:normal">note : les services sont crees par l'administrateur</i>
+	<i style="font-size: x-small">Note: les services sont crées par l'administrateur</i>
 </center>
 	<br>
 	
 	<table align = center>
 
-	<form name = transmettreForm method = POST action = transmettreFacture.php>
+	<form name = transmettreForm method="POST" action="transmettreFacture.php">
 	<tr><td>service</td><td>
 	<select name = service>
 		<?php

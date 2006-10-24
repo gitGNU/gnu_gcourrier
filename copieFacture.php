@@ -27,7 +27,7 @@ require("connexion.php");
 ?>
 <html>
 <head><title>gCourrier</title></head>
-<link rel="stylesheet" href=styles3.css type="text/css">
+<link rel="stylesheet" href=estyles3.csse type="text/css">
 
 <body>
 
@@ -113,11 +113,11 @@ $boul = 0;
 while($ligne = mysql_fetch_array($resultatFacture)){
   $idTmp = $ligne['idFacture'];
   if($boul == 0){
-    $couleur = lightblue;
+    $couleur = 'lightblue';
     $boul = 1;
   }
   else{
-    $couleur = white;
+    $couleur = 'white';
     $boul = 0;	
   }
   echo "<tr>";
@@ -158,12 +158,10 @@ echo"</table>";
 if(mysql_num_rows($resultatFacture) == 5) {
   echo "<center><a href='copieFacture.php?id=".$idTmp."'>page suivante</a></center>";
 }
-     
 ?>	
 
-
 <center><br>
-<a href = index.php>index</a>
+<a href="index.php">index</a>
 </center>
 <br><br>
 </div>
