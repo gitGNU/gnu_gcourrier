@@ -23,7 +23,6 @@ author VELU Jonathan
 */
 
 require("connexion.php");
-session_start();
 
 
 if(!isset( $_POST["enregistrer"])){

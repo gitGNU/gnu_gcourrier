@@ -23,7 +23,7 @@ author VELU Jonathan
 */
 
 require("connexion.php");
-session_start();
+
 $type = $_POST['type'];
 $affiche = $_POST['affiche'];
 $idTmp = $_POST['idTmp'];

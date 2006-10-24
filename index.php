@@ -22,34 +22,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-require_once("connexion.php");
+require_once('connexion.php');
 
-if(!isset($_SESSION['login'])) {
-  header("Location: login.php");
-  exit;
-} else {
+include('templates/header.php');
 
-?>
-<html>
-	<head>
-		<title>GCourrier</title>
-		<LINK HREF="styles.css" REL="stylesheet">
-	</head>
-	<body>
-
-<?php
-
-
-if (strcmp($_SESSION['login'], 'admin') == 0) {
+if ($_SESSION['login'] == 'admin')
+  {
 ?>
 
-<div id = "page">
+<div id="page">
 <br><br><br>
 
 <table>
-
 <tr>
-
 <td>
 <div id="logoimage"><img src="images/logo.png"></div>
 </td>
@@ -90,86 +75,66 @@ if (strcmp($_SESSION['login'], 'admin') == 0) {
 
 
 <?php
-}//fin if admin
-else{
-
+  } //fin if admin
+else
+  {
 ?>
+<div id="page">
+Rechercher:
+  <a href="rechercher.php?type=1">Entrant</a>
+  <a href="rechercher.php?type=2">Départ</a>
+  <a href="rechercherFacture.php">Facture</a>
+-
+Archive:
+  <a href="archive.php?type=1">Entrant</a>
+  <a href="archive.php?type=2">Départ</a>
+  <a href="archiveFacture.php">Facture</a>
 
-
-<div id = "page">
-<br>
-<table align = center  style="font-size:10px" >
-<tr>
-<td>rechercher :</td><td><a href="rechercher.php?type=1">entrant</a></td><td><a href="rechercher.php?type=2">depart</a></td></td><td><a href="rechercherFacture.php">facture</a></td>
-
-<td> </td><td> </td><td> </td>
-<td>archive :</td><td><a href="archive.php?type=1">entrant</a></td><td><a href="archive.php?type=2">depart</a></td></td><td><a href="archiveFacture.php">facture</a></td>
-</tr>
-
+<table style="width: 100%">
+  <tr>
+    <td id="logoimage"><img src = "images/logo.png"></td>
+    <td id="logo1">
+      <a href=creerCourrier.php>Créer courrier</a><br />
+      <a href=creerFacture.php>Créer facture</a><br />
+      <a href=courrierDepart.php>Créer depart</a><br />
+      <a href=creerDestinataire.php>Créer un individu</a><br />
+      <a href=modifierIndividu.php>Modifier un individu</a>
+    </td>
+    <td id="logo2">
+      <img src="images/enveloppe.png"></img>&nbsp&nbsp<a href= voirCourrier.php?type=1>Voir entrant</a><br />
+      <img src="images/enveloppeD.png"></img>&nbsp&nbsp<a href= voirCourrier.php?type=2>Voir départ</a><br />
+      <img src="images/euro.png"></img>&nbsp&nbsp<a href= voirFacture.php>Voir facture</a><br />
+    </td>
+    <td id="logo3">
+      <a href = modifierProfil.php>Profil</a><br>
+    </td>
+  </tr>
 </table>
-<br><br>
 
-
-<table>
-<tr>
-<td>
-<div id="logoimage"><img src = "images/logo.png"></div>
-</td>
-<div id="logo">
-<td>
-<a href=creerCourrier.php>creer courrier</a><br>
-<a href=creerFacture.php>creer facture</a><br>
-<a href=courrierDepart.php>creer depart</a><br>
-<a href=creerDestinataire.php>creer un individu</a><br>
-<a href=modifierIndividu.php>modifier un individu</a>
-</td>
-</div>
-
-<td>
-<div id="logo2">
-
-<img src="images/enveloppe.png"></img>&nbsp&nbsp<a href= voirCourrier.php?type=1>voir entrant</a><br>
-<img src="images/enveloppeD.png"></img>&nbsp&nbsp<a href= voirCourrier.php?type=2>voir depart</a><br>
-<img src="images/euro.png"></img>&nbsp&nbsp<a href= voirFacture.php>voir facture</a><br>
-
-
-</div>
-</td>
-
-
-
-<td>
-<div id="logo3">
-
-<a href = modifierProfil.php>profil</a><br>
-</div>
-</td>
-
-
-</table>
-<div id="dco">
+<div id="stats">
 <?php
-$requete = "Select count(*) as nbEntrant from courrier where courrier.serviceCourant=".$_SESSION['idService']." and type=1 and validite = 0;";
+$requete = "SELECT count(*) AS nbEntrant FROM courrier WHERE courrier.serviceCourant={$_SESSION['idService']} AND type=1 AND validite=0";
 $result = mysql_query($requete) or die(mysql_error());
-while($ligne = mysql_fetch_array($result)){
+$ligne = mysql_fetch_array($result);
 $nbEntrant = $ligne['nbEntrant'];
-}
-$requete = "Select count(*) as nbDepart from courrier where courrier.serviceCourant=".$_SESSION['idService']." and type=2 and validite = 0;";
-$result = mysql_query($requete) or die(mysql_error());
-while($ligne = mysql_fetch_array($result)){
-$nbDepart = $ligne['nbDepart'];
-}
-$requete = "Select count(*) as nbFacture from facture where facture.idServiceCreation=".$_SESSION['idService']." and validite = 0;";
-$result = mysql_query($requete) or die(mysql_error());
-while($ligne = mysql_fetch_array($result)){
-$nbFacture = $ligne['nbFacture'];
-}
-echo"info : nbEntrant ".$nbEntrant.", nbDepart ".$nbDepart.", nbFactures ".$nbFacture;
-?>
-<br><br><br><a href=logout.php>Déconnexion</a></div><br>
 
+$requete = "SELECT count(*) AS nbDepart FROM courrier WHERE courrier.serviceCourant={$_SESSION['idService']} AND type=2 and validite=0";
+$result = mysql_query($requete) or die(mysql_error());
+$ligne = mysql_fetch_array($result);
+$nbDepart = $ligne['nbDepart'];
+
+$requete = "SELECT count(*) AS nbFacture FROM facture WHERE facture.idServiceCreation={$_SESSION['idService']} AND validite=0";
+$result = mysql_query($requete) or die(mysql_error());
+$ligne = mysql_fetch_array($result);
+$nbFacture = $ligne['nbFacture'];
+
+echo "Info : $nbEntrant courriers entrants - $nbDepart courriers départ - $nbFacture factures\n";
+?>
 </div>
 
+<div><a href=logout.php>Déconnexion</a></div>
+
+</div> <!-- id="page" -->
+
 <?php
-}
 }

@@ -63,7 +63,7 @@ function longsession_new() {
 }
 
 function longsession_renew() {
-  $session_hash = $_COOKIES['gcourrier_session'];
+  $session_hash = $_COOKIE['gcourrier_session'];
   $expiration = strtotime("now + 1 week");
   $req = "UPDATE sessions
           SET expiration = FROM_UNIXTIME($expiration)

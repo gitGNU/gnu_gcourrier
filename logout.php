@@ -25,9 +25,6 @@ author Sylvain Beucler
 require_once('connexion.php');
 require_once('functions/longsession.php');
 
-// On appelle session_start avant d'envoyer du HTML au navigateur
-session_start();
-
 // On supprime la session, y compris nos information de login
 session_destroy();
 longsession_delete();

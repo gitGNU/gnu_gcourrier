@@ -23,7 +23,7 @@ author VELU Jonathan
 */
 
 require("connexion.php");
-session_start();
+
 if($_GET['type']==1){
 	$tmpCouleur ="white";
 }

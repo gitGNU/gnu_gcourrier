@@ -23,7 +23,6 @@ author VELU Jonathan
 */
 
 require("connexion.php");
-session_start();
 
 ?>
 <html>
@@ -210,11 +209,11 @@ $boul = 0;
 while($ligne = mysql_fetch_array($resultatFacture)){
 	$idTmp = $ligne['idFacture']-1;
 	if($boul == 0){
-		$couleur = lightblue;
+		$couleur = 'lightblue';
 		$boul = 1;
 	}
 	else{
-		$couleur = white;
+		$couleur = 'white';
 		$boul = 0;	
 	}
 		echo "<tr>";

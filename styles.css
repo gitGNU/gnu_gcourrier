@@ -47,47 +47,51 @@ border : 2px solid black;
 
 #page
 {
-color:black;
-background:white;
-border-left:5px solid black;
-border-right: 5px solid black;
-border-top : 5px solid black;
-border-bottom: 5px solid black;
-margin-left: 10%;
-margin-right:10%;
-margin-top:10%;//2.9%;//1.4%;
+  color:black;
+  background:white;
+
+  border-left:5px solid black;
+  border-right: 5px solid black;
+  border-top : 5px solid black;
+  border-bottom: 5px solid black;
+
+  margin-left: 10%;
+  margin-right:10%;
+  margin-top:10%;//2.9%;//1.4%;
+
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  text-align: center;
+  font-size: x-small;
 }
 
-
-#dco{
-text-align:center;
-font-size:7pt;
-
+#page table {
+  margin: 30px auto 30px auto;
 }
 
-
-
-#logo{
-margin-left:20%;
+#logoimage {
+  width: 1px;
 }
-#logo2{
-margin-left:30%;
+#logo1 {
+  padding-left: 10px;
+  width: 30%;
 }
-#logo3{
-margin-left:40%;
+#logo2 {
+  padding-left: 10px;
+  width: 30%;
+}
+#logo3 {
+  padding-left: 10px;
+  width: 30%;
 }
 
-#logoimage img{
-margin-left:2%;
-padding : 0% 0% 0% 0%
+#stats {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-
-
-
-
-#fin_page
-{
+#fin_page {
   text-align: center;
   color: white;
   font-size: small;
@@ -95,8 +99,7 @@ padding : 0% 0% 0% 0%
   font-weight: bold;
 }
 
-#login
-{
+#login {
   text-align: center;
   background: white;
   border: 5px solid black;

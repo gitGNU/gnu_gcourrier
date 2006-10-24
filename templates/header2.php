@@ -1,6 +1,7 @@
 <html>
-<head>
-<title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet">
-</head>
-<body>
+  <head>
+    <title>GCourrier</title>
+    <link href="styles2.css" rel="stylesheet">
+  </head>
+
+  <body>

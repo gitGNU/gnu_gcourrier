@@ -23,7 +23,6 @@ author VELU Jonathan
 */
 
 require("connexion.php");
-session_start();
 
 $affiche = $_GET['affiche'];
 if(!isset( $_POST["enregistrer"])){

@@ -28,6 +28,15 @@ require_once('config.php');
 require_once('functions/longsession.php');
 require_once('functions/user.php');
 
+if (!extension_loaded('mysql')) {
+  echo "Please install the MySQL extension for PHP:
+    <ul>
+      <li>Debian: <code>aptitude install php4-mysql</code></li>
+      <li>FC5: <code>yum install php-mysql</code></li>
+    </ul>";
+  exit;
+}
+
 $db = mysql_connect($hote, $user, $mdp) or 
 die("Connection MySQL impossible pour l'utilisateur " . $user . " sur l'hôte " . $hote);
 
@@ -36,7 +45,12 @@ die("Connection impossible sur la base " . $base . "(" . $user . ", " . $hote . 
 
 session_start();
 
-$session_hash = $_COOKIE['gcourrier_session'];
+if (isset($_COOKIE['gcourrier_session'])) {
+  $session_hash = $_COOKIE['gcourrier_session'];
+} else {
+  unset($session_hash);
+}
+
 if (!isset($_SESSION['id']) and isset($session_hash)) {
   if (ctype_alnum($session_hash)) {
     $id = longsession_getid($session_hash);
@@ -61,4 +75,9 @@ if (!isset($_SESSION['id']) and isset($session_hash)) {
     // Invalid hash. Probably a crack attempt.
     // echo "Invalid hash: $session_hash";
   }
+}
+
+if (!isset($_SESSION['login']) && basename($_SERVER['PHP_SELF']) != 'login.php') {
+  header("Location: login.php");
+  exit;
 }

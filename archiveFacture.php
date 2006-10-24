@@ -23,7 +23,6 @@ author VELU Jonathan
 */
 
 require("connexion.php");
-session_start();
 
 ?>
 <html>
@@ -41,7 +40,7 @@ if(!isset( $_POST["rechercher"] ) ){
 ?>
 <div id =pageTGd><br>
 <center><img src = images/banniere2.jpg></center><br><br>
-<center><b>RECHERCHE FACTURE ARCHIVEE</b><br><br>
+<center><b>Recherche facture archivée</b><br><br>
 <?php
 echo"<form method = POST action = archiveFacture.php>";
 ?>
@@ -129,7 +128,7 @@ $requetetmp = 	"SELECT	facture.refuse as refuse,
 $from ="    FROM facture,destinataire ";
 $where =" WHERE facture.validite = 1 and facture.idServiceCreation=".$_SESSION['idService']."";
 
-
+$requete = '';
 if(strcmp($numero,"")!=0){
 	$requete.= " and facture.id = '".$numero."' ";
 
@@ -169,13 +168,8 @@ if(strcmp($dateOrigine,"jj-mm-aaaa")!=0){
 if(strcmp($fournisseur,"rien")!=0){
 //	$from .= " ,destinataire";
 	$requete.=" and facture.idFournisseur = destinataire.id and destinataire.id = ".$fournisseur." ";
-
-}
-
-
-else{
+} else{
 	$requete.=" and facture.idFournisseur = destinataire.id ";
-
 }
 
 
@@ -224,16 +218,16 @@ $boul = 0;
 while($ligne = mysql_fetch_array( $result ) ){
 
 if($boul == 0){
-		$couleur = lightblue;
+		$couleur = 'lightblue';
 		$boul = 1;
 	}
 	else{
-		$couleur = white;
+		$couleur = 'white';
 		$boul = 0;	
 	}
 
 if($ligne["refuse"] == 1)
-	$couleurTmp = "red";
+	$couleurTmp = 'red';
 else
 	$couleurTmp = $couleur;
 

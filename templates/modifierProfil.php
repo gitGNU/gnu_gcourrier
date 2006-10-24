@@ -22,23 +22,22 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 ?>
-<div id = pageGd><br>
-<center> <img src = images/banniere2.jpg></img></center>
-<br><br><br>
-<table align=center>
+<div id="pageGd"><br />
+<center><img src="images/banniere2.jpg"></img></center>
+<br /><br /><br />
+<table align="center">
 <?php
-$requete = "SELECT nom, prenom, login, idService, libelle, designation, preferenceNbCourrier as nb
+$requete = "SELECT nom, prenom, login, libelle, designation, preferenceNbCourrier as nb
               FROM utilisateur, service
               WHERE utilisateur.idService = service.id
               AND login='{$_SESSION['login']}'";
 $result = mysql_query( $requete ) or die (mysql_error() );
 while($ligne = mysql_fetch_array( $result ) ){
-  $nb = $ligne['nb'];
-  $id = $ligne['id'];
   $nom = $ligne['nom'];
   $prenom = $ligne['prenom'];
   $login = $ligne['login'];
   $service = $ligne['libelle'] . ' - ' . $ligne['designation'];
+  $nb = $ligne['nb'];
 }
 
 ?>
