@@ -50,10 +50,11 @@ function longsession_new() {
   $expiration = strtotime("now + 1 week");
 
   // Find a unique session hash
-  $req = "SELECT NULL FROM sessions WHERE hash='$session_hash'";
+  $req = '';
   do {
     // Compute a long, random, changing text:
     $session_hash = md5(mt_rand() . microtime() . $_SERVER['REMOTE_ADDR']);
+    $req = "SELECT NULL FROM sessions WHERE hash='$session_hash'";
   } while (mysql_num_rows(mysql_query($req)) > 0);
 
   $req = "INSERT INTO sessions (hash, user_id, expiration)

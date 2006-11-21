@@ -31,7 +31,7 @@ require_once('functions/user.php');
 if (!extension_loaded('mysql')) {
   echo "Please install the MySQL extension for PHP:
     <ul>
-      <li>Debian: <code>aptitude install php4-mysql</code></li>
+      <li>Debian: <code>aptitude install php4-mysql</code> or <code>aptitude install php5-mysql</code></li>
       <li>FC5: <code>yum install php-mysql</code></li>
     </ul>";
   exit;
