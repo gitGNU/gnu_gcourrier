@@ -1,0 +1,7 @@
+Create a release branch::
+
+  tla tag devel@patapouf.org--patapouf-arch/gcourrier--mainline--1.0 \
+    gcourrier--release--1.7
+
+Then commit security and bug fixes on that branch, and continue the
+normal work on --mainline.

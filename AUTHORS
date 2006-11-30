@@ -1,0 +1,10 @@
+* Jonathan Velu
+
+Implemented and maintained GCourrier up to v1.7 (design,
+  authentication, user preferences, mails and then bills support, moves
+  between services).
+
+* Sylvain Beucler
+
+Bugfixes, long sessions support, release system, documentation
+  legalese.

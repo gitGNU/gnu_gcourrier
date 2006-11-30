@@ -153,7 +153,7 @@ $from ="    FROM facture,destinataire,priorite ";
 $where =" WHERE facture.validite = 0 and facture.idServiceCreation=".$_SESSION['idService']." and
 	  priorite.id = facture.idPriorite ";
 
-
+$requete = '';
 if(strcmp($numero,"")!=0){
 	$requete.= " and facture.id = '".$numero."' ";
 
@@ -261,11 +261,11 @@ $boul = 0;
 while($ligne = mysql_fetch_array( $result ) ){
 
 if($boul == 0){
-		$couleur = lightblue;
+		$couleur = 'lightblue';
 		$boul = 1;
 	}
 	else{
-		$couleur = white;
+		$couleur = 'white';
 		$boul = 0;	
 	}
 

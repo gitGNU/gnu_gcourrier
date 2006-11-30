@@ -167,6 +167,7 @@ $requetetmp = "SELECT courrier.id as idCourrier,
 $from =" FROM courrier ".$fromTransmission.$fromRetard;
 $where =" WHERE courrier.validite = 0 and courrier.type=".$_GET['type']."";
 $where .= $reqTmpTransmission.$whereRetard;
+$requete = '';
 if(strcmp($libelle,"")!=0){
 	$requete.= " and courrier.libelle = '".$libelle."' ";
 
@@ -240,11 +241,11 @@ $boul = 0;
 
 while($ligne = mysql_fetch_array( $result ) ){
 if($boul == 0){
-	$couleur = lightblue;
+	$couleur = 'lightblue';
 	$boul = 1;	
 }
 else{
-	$couleur = white;
+	$couleur = 'white';
 	$boul = 0;	
 }
 if(isset($_POST['retard'])){
