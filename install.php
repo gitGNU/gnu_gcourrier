@@ -22,15 +22,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-require("connexion.php");
+require('connexion.php');
 ?>
 <html>
 <head>
 	<title>gCourrier</title>
 	
 </head>
-<body>
-<center><img src=images/banniere2.jpg></img><br><br><br>
+<body style="text-align: center">
+<img src="images/banniere2.jpg" />
 
 <?php
 echo "<h3><i>Installation en cours ...</i></h3>";
@@ -227,8 +227,9 @@ $result = mysql_query( $requete ) or die ( "erreur22".mysql_error() );
 
 ?>
 
-<br><a href = login.php>se connecter</a>
-</center>
+<h3>OK!</h3>
+
+<p><a href="login.php">Se connecter</a></p>
 
 </body>
 </html>

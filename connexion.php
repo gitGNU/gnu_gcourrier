@@ -22,7 +22,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 header("Content-Type: text/html;charset=UTF-8");
 
-require_once('config.php');
+if (!file_exists('config.php')) {
+  echo "<code>config.php</code> not found!
+Please create <code>config.php</code> using <code>config.php.dist</code>
+as model.";
+  exit(1);
+} else {
+  require_once('config.php');
+}
 require_once('functions/longsession.php');
 require_once('functions/user.php');
 
@@ -75,7 +82,9 @@ if (!isset($_SESSION['id']) and isset($session_hash)) {
   }
 }
 
-if (!isset($_SESSION['login']) && basename($_SERVER['PHP_SELF']) != 'login.php') {
+if (!isset($_SESSION['login'])
+    && basename($_SERVER['PHP_SELF']) != 'login.php'
+    && basename($_SERVER['PHP_SELF']) != 'install.php') {
   header("Location: login.php");
   exit;
 }
