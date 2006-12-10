@@ -18,14 +18,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-author Sylvain Beucler
 */
 
 function user_getbyid($id) {
-  $req = "SELECT id, login, idService
-          FROM utilisateur
-          WHERE id = '$id'";
+  $req = "SELECT id, login, idService FROM utilisateur
+          WHERE id = '" . mysql_real_escape_string($id) . "'";
   $result = mysql_query($req) or die(mysql_error());
   $line = mysql_fetch_array($result);
   
@@ -35,6 +32,26 @@ function user_getbyid($id) {
     $idService = $line['idService'];
     return array($id, $login, $idService);
   } else {
-    return array(-1, "", -1);
+    return array(-1, '', -1);
   }
+}
+
+function user_exists($login) {
+  $req = "SELECT * FROM utilisateur
+          WHERE login='" . mysql_real_escape_string($login) . "'";
+  $result = mysql_query($req) or die(mysql_error());
+  return (mysql_num_rows($result) > 0);
+}
+/* Variant to be used as QuickForm callback */
+function user_exists_not($login) {
+  return !user_exists($login);
+}
+
+function user_getbyid_assoc($id) {
+  $req = "SELECT id, login, nom AS lastname, prenom AS firstname, idService FROM utilisateur
+          WHERE id = '" . mysql_real_escape_string($id) . "'";
+  $result = mysql_query($req) or die(mysql_error());
+  $line = mysql_fetch_assoc($result);
+  
+  return $line;
 }

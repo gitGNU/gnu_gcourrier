@@ -18,68 +18,43 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-author VELU Jonathan
 */
 
 require_once('connexion.php');
-
 include('templates/header.php');
 
 if ($_SESSION['login'] == 'admin')
-  {
+{
 ?>
+<table id="menu_index">
+  <tr>
+    <td>
+      <a href="creerService.php">Créer service</a><br />
+      <a href="account.php">Gestion des comptes</a><br />
+      <a href="creerPriorite.php">Créer priorite</a><br />
+      <a href="modifierAccuse.php">Gérer l'accusé</a><br />
+    </td>
 
-<div id="page">
-<br><br><br>
+    <td>
+      <img src="images/enveloppe.png" /> <a href="voirCourrier.php?type=1">Voir entrant</a><br />
+      <img src="images/enveloppeD.png" /> <a href="voirCourrier.php?type=2">Voir départ</a><br />
+      <img src="images/euro.png" /> <a href="voirFacture.php">Voir facture</a><br />
+    </td>
 
-<table>
-<tr>
-<td>
-<div id="logoimage"><img src="images/logo.png"></div>
-</td>
-<div id="logo">
-<td>
-<a href="creerService.php">Créer service</a><br>
-<a href="creerCompte.php">Créer compte</a><br>
-<a href="creerPriorite.php">Créer priorite</a><br>
-<a href="modifierAccuse.php">Gérer l'accusé</a><br>
-
-</td>
-</div>
-
-<td>
-<div id="logo2">
-<img src="images/enveloppe.png"></img>&nbsp;&nbsp;<a href="voirCourrier.php?type=1">Voir entrant</a><br>
-<img src="images/enveloppeD.png"></img>&nbsp;&nbsp;<a href="voirCourrier.php?type=2">Voir départ</a><br>
-<img src="images/euro.png"></img>&nbsp;&nbsp;<a href="voirFacture.php">Voir facture</a><br>
-
-</div>
-</td>
-
-
-
-<td>
-<div id="logo3">
-<a href="modifierProfil.php">Profil</a><br>
-<a href="voirCompte.php">Comptes</a><br>
-<a href="rechercherCompteService.php">CompServ</a>
-</div>
-</td>
-
-
+    <td>
+      <a href="rechercherCompteService.php">CompServ</a>
+    </td>
 </table>
 
-<br><br><br><div id="dco"><a href="logout.php">Déconnexion</a></div><br>
-</div>
+<div id="dco"><a href="logout.php">Déconnexion</a></div>
 
 
 <?php
-  } //fin if admin
+#'
+} //fin if admin
 else
-  {
+{
 ?>
-<div id="page">
 Rechercher:
   <a href="rechercher.php?type=1">Entrant</a>
   <a href="rechercher.php?type=2">Départ</a>
@@ -90,23 +65,22 @@ Archive:
   <a href="archive.php?type=2">Départ</a>
   <a href="archiveFacture.php">Facture</a>
 
-<table style="width: 100%">
+<table id="menu_index">
   <tr>
-    <td id="logoimage"><img src = "images/logo.png"></td>
-    <td id="logo1">
+    <td>
       <a href=creerCourrier.php>Créer courrier</a><br />
       <a href=creerFacture.php>Créer facture</a><br />
       <a href=courrierDepart.php>Créer depart</a><br />
       <a href=creerDestinataire.php>Créer un individu</a><br />
       <a href=modifierIndividu.php>Modifier un individu</a>
     </td>
-    <td id="logo2">
-      <img src="images/enveloppe.png"></img>&nbsp&nbsp<a href= voirCourrier.php?type=1>Voir entrant</a><br />
-      <img src="images/enveloppeD.png"></img>&nbsp&nbsp<a href= voirCourrier.php?type=2>Voir départ</a><br />
-      <img src="images/euro.png"></img>&nbsp&nbsp<a href= voirFacture.php>Voir facture</a><br />
+    <td>
+      <img src="images/enveloppe.png" /> <a href= voirCourrier.php?type=1>Voir entrant</a><br />
+      <img src="images/enveloppeD.png" /> <a href= voirCourrier.php?type=2>Voir départ</a><br />
+      <img src="images/euro.png" /> <a href= voirFacture.php>Voir facture</a><br />
     </td>
-    <td id="logo3">
-      <a href = modifierProfil.php>Profil</a><br>
+    <td>
+      <a href="modifierProfil.php">Profil</a><br>
     </td>
   </tr>
 </table>
@@ -133,8 +107,6 @@ echo "Info : $nbEntrant courriers entrants - $nbDepart courriers départ - $nbFa
 </div>
 
 <div><a href=logout.php>Déconnexion</a></div>
-
-</div> <!-- id="page" -->
 
 <?php
 }

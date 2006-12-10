@@ -40,6 +40,9 @@ body {
 
 #page
 {
+  /* for absolution pos. in #greeting: */
+  position: relative;
+
   color: black;
   background: white;
 
@@ -53,20 +56,30 @@ body {
   margin: 30px auto 30px auto;
 }
 
-#logoimage {
-  width: 1px;
+#top_logo {
+  margin-bottom: 10px;
 }
-#logo1 {
+
+#menu_index {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#menu_index td {
   padding-left: 10px;
   width: 30%;
 }
-#logo2 {
-  padding-left: 10px;
-  width: 30%;
+
+#greeting {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: small;
 }
-#logo3 {
-  padding-left: 10px;
-  width: 30%;
+
+img {
+  border: 0;
 }
 
 #stats {
@@ -74,11 +87,16 @@ body {
   margin-bottom: 10px;
 }
 
-#fin_page {
+#bottom_navbar {
+  margin-top: 5px;
+  text-align: center;
+  font-size: small;
+}
+
+#version {
   text-align: center;
   color: white;
   font-size: small;
-  margin-top: 10%;
   font-weight: bold;
 }
 
@@ -86,14 +104,17 @@ body {
   text-align: center;
   background: white;
   border: 5px solid black;
-  margin-left: 20%;
-  margin-right: 20%;
-  margin-top: 10%;
-  padding-top: 3%;
-  padding-bottom: 0%;
-  padding-left: 5%;
+  margin: 15%;
+  padding: 20px;
 }
 
+
+td.odd {
+  background-color: lightblue;
+}
+td.even {
+  background-color: white;
+}
 
 #page A {
 color: darkblue ;

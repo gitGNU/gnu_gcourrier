@@ -29,7 +29,7 @@ require_once('functions/longsession.php');
 session_destroy();
 longsession_delete();
 setcookie('gcourrier_session', '', time() - 3600);
-include('templates/header.php');
+include('templates/header_login.php');
 ?>
 
 <div class='status'>Vous êtes déconnecté(e) de GCourrier.</div>

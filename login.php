@@ -30,7 +30,7 @@ if (isset($_SESSION['id'])) {
 }
 
 if (!isset($_POST['login'])) {
-  include("templates/header.php");
+  include("templates/header_login.php");
   include("templates/login.php");
   include("templates/footer.php");
 ?>
@@ -54,12 +54,12 @@ if (!isset($_POST['login'])) {
       $session_hash = longsession_new();
       setcookie('gcourrier_session', $session_hash, strtotime("now + 1 week"));
     }
-    header("Location: index.php");
+    header('Location: index.php');
   } else {
-    include("templates/header.php");
+    include('templates/header_login.php');
     echo "<div class='status'>Vous vous êtes trompé(e) dans "
       . "le nom d'utilisateur ou dans le mot de passe.</div>";
-    include("templates/login.php");
-    include("templates/footer.php");
+    include('templates/login.php');
+    include('templates/footer.php');
   }
 }

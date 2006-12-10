@@ -1,6 +1,3 @@
-<div id="login"
-  <img src="images/banniere2.jpg" />
-
   <form method="POST" action="login.php">
     <table style="margin: 30px 0px 20px 0px; margin-left:auto; margin-right:auto;">
       <tr>
@@ -14,8 +11,7 @@
       </tr>
     </table>
     <input type="checkbox" name="remember" checked="checked" value="1">
-    Se souvenir de moi pendant une semaine</input><br />
+    Se souvenir de moi pendant une semaine (cookies)</input><br />
     <br />
     <input type="submit" value="Connexion">
   </form>
-</div>
