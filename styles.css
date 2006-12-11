@@ -53,7 +53,20 @@ body {
 }
 
 #page table {
-  margin: 30px auto 30px auto;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+caption {
+  margin: auto;
+  font-weight: bold;
+}
+
+tr.odd {
+  background-color: lightblue;
+}
+tr.even {
+  background-color: white;
 }
 
 #top_logo {
@@ -106,14 +119,6 @@ img {
   border: 5px solid black;
   margin: 15%;
   padding: 20px;
-}
-
-
-td.odd {
-  background-color: lightblue;
-}
-td.even {
-  background-color: white;
 }
 
 #page A {

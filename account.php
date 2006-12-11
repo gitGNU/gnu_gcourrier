@@ -23,9 +23,12 @@ author VELU Jonathan
 */
 
 
+require_once('HTML/QuickForm.php');
+require_once('HTML/Table.php');
+require_once('Structures/DataGrid.php');
+
 require_once('connexion.php');
 require_once('functions/user.php');
-require_once('HTML/QuickForm.php');
 
 function can_modify($login) {
   if ($_SESSION['login'] == 'admin')
@@ -122,6 +125,7 @@ if ($form->validate()) {
 $param_user = new HTML_QuickForm('modify_user', 'get');
 $param_user->addElement('text', 'id');
 $param_user->addRule('id', NULL, 'numeric');
+$param_user->addRule('id', NULL, 'required');
 if ($param_user->validate()) {
   $id = $param_user->exportValue('id');
   $form->setDefaults(user_getbyid_assoc($id));
@@ -129,7 +133,7 @@ if ($param_user->validate()) {
 }
 
 if ($display_mode == 'modify') {
-  $form->getElement('title')->setText("Modifier un compte");
+  $form->getElement('title')->setText("Modifier le compte");
   $form->getElement('password1')->setLabel("Changer de mot de passe");
   $form->getElement('login')->freeze();
   $form->setConstants(array('mode' => 'modify'));
@@ -141,40 +145,46 @@ if ($_SESSION['login'] == 'admin') {
  if ($display_mode != 'create') {
    echo "<a href='?'>Nouveau Compte</a>";
  }
-?>
 
-<table class="userlist">
-<tr><th colspan="5">Comptes existants</th></tr>
-<tr>
-<th>Login</th>
-<th>Nom</th>
-<th>Prénom</th>
-<th>Service</th>
-<th>Modifier</th>
-</tr>
+// Instantiate the DataGrid
+$dg = new Structures_DataGrid();
+$dg->setDefaultSort(array('login' => 'ASC'));
+$test= $dg->bind('SELECT utilisateur.id AS id, login,
+  nom AS lastname, prenom AS firstname,
+  service.designation AS service
+  FROM utilisateur, service WHERE idService=service.id',
+  array('dsn' => 'mysql://root@localhost/gcourrier'));
+if (PEAR::isError($test)) echo $test->getMessage();
 
-<?php
-$req = "SELECT utilisateur.login AS login, utilisateur.id AS idUser,
-               utilisateur.nom AS nomUser, utilisateur.prenom AS prenomUser,
-               service.designation AS descService
-        FROM utilisateur, service WHERE utilisateur.idService=service.id";
-$result = mysql_query($req) or die(mysql_error());
-$boul = 0;
-while($ligne = mysql_fetch_array($result)){
-if($boul == 0) {
-  $class = 'odd';
-  $boul = 1;
-} else {
-  $class = 'even';
-  $boul = 0;	
+function printModify($params) {
+  return "<a href='?id={$params['record']['id']}'>M</a>";
 }
- echo "<tr><td class='$class'>{$ligne['login']}</td>
-           <td class='$class'>{$ligne['nomUser']}</td>
-           <td class='$class'>{$ligne['prenomUser']}</td>
-           <td class='$class'>{$ligne['descService']}</td>
-           <td style='text-align:center' class='$class'><a href='?id={$ligne['idUser']}'>m</a></td>
-       </tr>";
+
+$dg->addColumn(new Structures_DataGrid_Column('Identifiant', 'login', 'login'));
+$dg->addColumn(new Structures_DataGrid_Column('Nom', 'lastname', 'lastname'));
+$dg->addColumn(new Structures_DataGrid_Column('Prénom', 'firstname', 'firstname'));
+$dg->addColumn(new Structures_DataGrid_Column('Service', 'service', 'service'));
+$dg->addColumn(new Structures_DataGrid_Column('Modifier', null,null,
+					      array('style' => 'text-align: center'),
+					      null, 'printModify'));
+
+$table = new HTML_Table();
+$rendererOptions = array(
+    'sortIconASC' => '&uArr;',
+    'sortIconDESC' => '&dArr;'
+);
+$dg->fill($table, $rendererOptions);
+
+$table->setCaption("Comptes existants");
+$tableHeader =& $table->getHeader();
+$tableBody =& $table->getBody();
+$tableHeader->setRowAttributes(0, array('style' => 'background: #CCCCCC;'));
+$tableBody->altRowAttributes(0, array('class' => 'odd'), array('class' => 'even'), true);
+
+echo $table->toHtml();
+
+$test = $dg->render(DATAGRID_RENDER_PAGER);
+if (PEAR::isError($test)) echo $test->getMessage();
 }
- echo "</table>"; 
-}
+
 include('templates/footer.php');

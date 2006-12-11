@@ -40,10 +40,6 @@ if ($_SESSION['login'] == 'admin')
       <img src="images/enveloppeD.png" /> <a href="voirCourrier.php?type=2">Voir départ</a><br />
       <img src="images/euro.png" /> <a href="voirFacture.php">Voir facture</a><br />
     </td>
-
-    <td>
-      <a href="rechercherCompteService.php">CompServ</a>
-    </td>
 </table>
 
 <div id="dco"><a href="logout.php">Déconnexion</a></div>
@@ -78,9 +74,6 @@ Archive:
       <img src="images/enveloppe.png" /> <a href= voirCourrier.php?type=1>Voir entrant</a><br />
       <img src="images/enveloppeD.png" /> <a href= voirCourrier.php?type=2>Voir départ</a><br />
       <img src="images/euro.png" /> <a href= voirFacture.php>Voir facture</a><br />
-    </td>
-    <td>
-      <a href="modifierProfil.php">Profil</a><br>
     </td>
   </tr>
 </table>
