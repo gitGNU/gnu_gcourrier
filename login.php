@@ -39,9 +39,9 @@ if (!isset($_POST['login'])) {
   $login = $_POST['login'];
   $password = base64_encode($_POST['password']);
   
-  $requete = "select id,idService
-                from utilisateur
-                where login = '".$login."' and passwd ='".$password."'; ";
+  $requete = "SELECT id,idService, preferenceNbCourrier AS pagersize
+                FROM utilisateur
+                WHERE login = '".$login."' AND passwd ='".$password."'; ";
   $result = mysql_query($requete) or die (mysql_error() );
   
   $ligne = mysql_fetch_array($result);
@@ -50,6 +50,7 @@ if (!isset($_POST['login'])) {
     $_SESSION['id'] = $ligne['id'];
     $_SESSION['login'] = $login;
     $_SESSION['idService'] = $ligne['idService'];
+    $_SESSION['pagersize'] = $ligne['pagersize'];
     if (isset($_POST['remember'])) {
       $session_hash = longsession_new();
       setcookie('gcourrier_session', $session_hash, strtotime("now + 1 week"));

@@ -54,9 +54,11 @@ while($ligne = mysql_fetch_array($result))
      $services[$ligne['id']] = $ligne['description'];
 $form->addElement('select', 'idService', 'Service', $services);
 
-$form->addElement('password', 'password1', 'Mot de passe');
-$form->addElement('password', 'password2', 'Confirmez le mot de passe');
-$form->addElement('submit', 'enregistrer', 'Enregistrer');
+$form->addElement('password', 'password1', _("Mot de passe"));
+$form->addElement('password', 'password2', _("Confirmez le mot de passe"));
+$form->addElement('text', 'pagersize', _("Nombre d'éléments par page"));
+$form->setDefaults(array('pagersize' => 50));
+$form->addElement('submit', 'save', _("Enregistrer"));
 $form->addElement('hidden', 'mode', 'create');
 
 $form->applyFilter('login', 'trim');
@@ -75,7 +77,10 @@ $form->addRule('idService', NULL, 'required');
 $form->addRule(array('password1', 'password2'),
 	       'Les mots de passe ne correspondent pas.',
 	       'compare', 'eq', 'client');
-$form->addRule('mode', NULL, 'regexp', 'create|update');
+$form->addRule('mode', NULL, 'regex', '/^(create|modify)/');
+$form->addRule('pagersize', _("Entrez un nombre entier."), 'required');
+$form->addRule('pagersize', _("Entrez un nombre entier."), 'regex', '/^[0-9]+$/');
+$form->addRule('pagersize', _("Entrez un nombre entier."), 'nonzero');
 
 include('templates/header.php');
 
@@ -97,10 +102,11 @@ if ($form->validate()) {
       echo "<div class='status'>"
 	. _("Il faut être administrateur pour pouvoir créer un compte.") . "</div>";
     } else {
-      $requete = "INSERT INTO utilisateur (login, passwd, nom, prenom, idService)
+      $requete = "INSERT INTO utilisateur (login, passwd, nom, prenom, idService,
+                                           preferencesNbCourrier)
                     VALUES ('{$values['login']}', '{$values['password1']}',
                             '{$values['lastname']}', '{$values['firstname']}',
-                            '{$values['idService']}')";
+                            '{$values['idService']}', '{$values['pagersize']}')";
       $result = mysql_query($requete) or die(mysql_error());
       echo "<div class='status'>" . _("Compte créé.") . "</div>";
     }
@@ -108,7 +114,8 @@ if ($form->validate()) {
     $req = "UPDATE utilisateur SET
               nom = '{$values['lastname']}',
               prenom = '{$values['firstname']}',
-              idService = '{$values['idService']}'";
+              idService = '{$values['idService']}',
+              preferenceNbCourrier = '{$values['pagersize']}'";
     # Don't change the password if it's left empty.
     if ($values['password1'] != '') {
       $pass = base64_encode($values['password1']);
@@ -147,11 +154,12 @@ if ($_SESSION['login'] == 'admin') {
  }
 
 // Instantiate the DataGrid
-$dg = new Structures_DataGrid();
+$dg = new Structures_DataGrid($_SESSION['pagersize']);
 $dg->setDefaultSort(array('login' => 'ASC'));
 $test= $dg->bind('SELECT utilisateur.id AS id, login,
   nom AS lastname, prenom AS firstname,
-  service.designation AS service
+  service.designation AS service,
+  preferenceNbCourrier AS pagersize
   FROM utilisateur, service WHERE idService=service.id',
   array('dsn' => 'mysql://root@localhost/gcourrier'));
 if (PEAR::isError($test)) echo $test->getMessage();
@@ -164,6 +172,7 @@ $dg->addColumn(new Structures_DataGrid_Column('Identifiant', 'login', 'login'));
 $dg->addColumn(new Structures_DataGrid_Column('Nom', 'lastname', 'lastname'));
 $dg->addColumn(new Structures_DataGrid_Column('Prénom', 'firstname', 'firstname'));
 $dg->addColumn(new Structures_DataGrid_Column('Service', 'service', 'service'));
+$dg->addColumn(new Structures_DataGrid_Column('Nb', 'pagersize', 'pagersize'));
 $dg->addColumn(new Structures_DataGrid_Column('Modifier', null,null,
 					      array('style' => 'text-align: center'),
 					      null, 'printModify'));
