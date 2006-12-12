@@ -18,17 +18,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-author VELU Jonathan
 */
 
 require("connexion.php");
 
-$type = $_POST['type'];
 $affiche = $_POST['affiche'];
 $idTmp = $_POST['idTmp'];
 
-header("Location: voirFacture.php?id=".$idTmp."&nbAffiche=".$_POST['affiche']."&type=".$_POST['type']." ");
+header("Location: voirFacture.php?id=".$idTmp."&nbAffiche=".$_POST['affiche']);
 
 //echo "<meta http-equiv=\"refresh\" content=\"0;url=voirCourrier.php?id=".$idTmp."&nbAffiche=".$affiche."\">";
 ?>

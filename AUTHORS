@@ -8,3 +8,5 @@ Implemented and maintained GCourrier up to v1.7 (design,
 
 Bugfixes, long sessions support, release system, documentation
   legalese.
+
+Code clean-up (functions, input sanitizing).

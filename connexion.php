@@ -63,11 +63,10 @@ if (!isset($_SESSION['id']) and isset($session_hash)) {
       longsession_renew();
       $user_params = user_getbyid($id);
       if ($user_params != NULL) {
-	list($id, $login, $idService, $pagersize) = $user_params;
-	$_SESSION['id'] = $id;
-	$_SESSION['login'] = $login;
-	$_SESSION['idService'] = $idService;
-	$_SESSION['pagersize'] = $pagersize;
+	$_SESSION['id'] = $user_params['id'];
+	$_SESSION['login'] = $user_params['login'];
+	$_SESSION['idService'] = $user_params['idService'];
+	$_SESSION['pagersize'] = $user_params['pagersize'];
       } else {
 	// No such user. Maybe it was deleted?
 	// -> No login.

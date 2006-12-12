@@ -21,21 +21,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 function user_getbyid($id) {
-  $req = "SELECT id, login, idService, preferenceNbCourriers AS pagersize
-          FROM utilisateur
+  $req = "SELECT id, login, nom AS lastname, prenom AS firstname,
+            idService, preferenceNbCourrier AS pagersize FROM utilisateur
           WHERE id = '" . mysql_real_escape_string($id) . "'";
   $result = mysql_query($req) or die(mysql_error());
-  $line = mysql_fetch_array($result);
+  $line = mysql_fetch_assoc($result);
   
-  if ($line != NULL) {
-    $id = $line['id'];
-    $login = $line['login'];
-    $idService = $line['idService'];
-    $pagersize = $line['pagersize'];
-    return array($id, $login, $idService, $pagersize);
-  } else {
-    return NULL;
-  }
+  return $line;
 }
 
 function user_exists($login) {
@@ -47,14 +39,4 @@ function user_exists($login) {
 /* Variant to be used as QuickForm callback */
 function user_exists_not($login) {
   return !user_exists($login);
-}
-
-function user_getbyid_assoc($id) {
-  $req = "SELECT id, login, nom AS lastname, prenom AS firstname,
-            idService, preferenceNbCourrier AS pagersize FROM utilisateur
-          WHERE id = '" . mysql_real_escape_string($id) . "'";
-  $result = mysql_query($req) or die(mysql_error());
-  $line = mysql_fetch_assoc($result);
-  
-  return $line;
 }
