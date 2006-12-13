@@ -1,7 +1,66 @@
+Basic concepts
+~~~~~~~~~~~~~~
+
+There are many users in the system.
+Each user belongs to one and only one service.
+
+We track 3 different kinds of objects:
+- incoming snail mail
+- outgoing snail mail
+- bills validation
+Each object belongs to an initial service.
+
+Objects can be active or archived. When archived, they are not shown
+in the main page but still can be browsed through the
+archives. Objects cannot be un-archived.
+
+Mails can be transmitted to another service later on. In this case
+they are not visible anymore for the previous owner - you do not need
+to care about it anymore.
+
+Bills can also be transmitted to a different service, but you still
+can see where your transmitted bills are, so that you can ask people
+about validating the bills you send them before the legal delay.
+
+The history of transmissions is kept and one can analyse an object's
+journey through services later on.
+
+Bills can be refused, in which case they are not showed anymore,
+though they still exist somewhere in the system.
+
+
+Tools
+~~~~~
+
+We currently use HTML_QuickForm as a generic input validation
+framework. Structure_DataGrid is used to display the content of the
+database.
+
+Both can be found at http://pear.php.net
+
+
+Internationalization - i18n
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We plan to use gettext to provide translations, even though this is
+not available yet. That's why translatable strings are marked with
+gettext's _() function.
+
+Keep marking translatable strings that way, we'll be able to use PO
+tools to extract those strings and easily manage them. Check the
+https://gna.org/p/savane project for an sample implementation.
+
+
+Version control
+~~~~~~~~~~~~~~~
+
 Create a release branch::
 
   tla tag devel@patapouf.org--patapouf-arch/gcourrier--mainline--1.0 \
     gcourrier--release--1.7
 
-Then commit security and bug fixes on that branch, and continue the
-normal work on --mainline.
+That branch will be stable only get security and bug fixes. Main
+developpement will continue the --mainline branch.
+
+This allows people to follow that branch without worrying about
+disruptive / backward-incompatible changes.
