@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-require("connexion.php");
+require_once('init.php');
 
 if($_GET['type']==1){
 	$tmpCouleur ="white";

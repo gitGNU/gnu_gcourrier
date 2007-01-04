@@ -18,9 +18,13 @@ Mails can be transmitted to another service later on. In this case
 they are not visible anymore for the previous owner - you do not need
 to care about it anymore.
 
-Bills can also be transmitted to a different service, but you still
-can see where your transmitted bills are, so that you can ask people
-about validating the bills you send them before the legal delay.
+Bills can also be transmitted to a different service, but "in
+copy". Currently this is implemented differently than with mails:
+you're still the owner of the bill, but there's a special page where
+you can see which bills were copied to your service - this is done by
+looking at the bill's transmission history. This way you still can see
+where your transmitted bills are, and you keep track of who needs
+to get back to you.
 
 The history of transmissions is kept and one can analyse an object's
 journey through services later on.

@@ -24,7 +24,7 @@ require_once('HTML/QuickForm.php');
 require_once('HTML/Table.php');
 require_once('Structures/DataGrid.php');
 
-require_once('connexion.php');
+require_once('init.php');
 include('functions/grid.php');
 
 include('templates/header.php');

@@ -1,6 +1,6 @@
 <?php
 /*
-GCourrier
+User accounts management
 Copyright (C) 2005,2006 CLISS XXI
 
 This file is part of GCourrier.
@@ -18,8 +18,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-author VELU Jonathan
 */
 
 
@@ -27,7 +25,8 @@ require_once('HTML/QuickForm.php');
 require_once('HTML/Table.php');
 require_once('Structures/DataGrid.php');
 
-require_once('connexion.php');
+require_once('init.php');
+require_once('functions/db.php');
 require_once('functions/user.php');
 require_once('functions/grid.php');
 
@@ -95,35 +94,42 @@ if ($form->validate()) {
   $display_mode = 'modify';
 
   // Insertion des données dans la table utilisateur
-  $form->applyFilter('__ALL__', 'mysql_real_escape_string');
-  $values = $form->exportValues();
+  $form_values = $form->exportValues();
   
-  if ($values['mode'] == 'create') {
+  if ($form_values['mode'] == 'create') {
     if ($_SESSION['login'] != 'admin') {
       echo "<div class='status'>"
 	. _("Il faut être administrateur pour pouvoir créer un compte.") . "</div>";
     } else {
-      $requete = "INSERT INTO utilisateur (login, passwd, nom, prenom, idService,
-                                           preferenceNbCourrier)
-                    VALUES ('{$values['login']}', '{$values['password1']}',
-                            '{$values['lastname']}', '{$values['firstname']}',
-                            '{$values['idService']}', '{$values['pagersize']}')";
-      $result = mysql_query($requete) or die(mysql_error());
+      db_execute("INSERT INTO utilisateur
+                    (login, passwd,
+                     nom, prenom,
+                     idService, preferenceNbCourrier)
+                  VALUES (?, ?,
+                          ?, ?,
+                          ?, ?)",
+		 array($form_values['login'], $form_values['password1'],
+		       $form_values['lastname'], $form_values['firstname'],
+		       $form_values['idService'], $form_values['pagersize']));
       echo "<div class='status'>" . _("Compte créé.") . "</div>";
     }
   } else {
     $req = "UPDATE utilisateur SET
-              nom = '{$values['lastname']}',
-              prenom = '{$values['firstname']}',
-              idService = '{$values['idService']}',
-              preferenceNbCourrier = '{$values['pagersize']}'";
+              nom = ?,
+              prenom = ?,
+              idService = ?,
+              preferenceNbCourrier = ?";
+    $sql_values = array($form_values['lastname'], $form_values['firstname'],
+		    $form_values['idService'], $form_values['pagersize']);
     # Don't change the password if it's left empty.
-    if ($values['password1'] != '') {
-      $pass = base64_encode($values['password1']);
-      $req .= ", passwd = '$pass'";
+    if ($form_values['password1'] != '') {
+      $pass = base64_encode($form_values['password1']);
+      $req .= ", passwd = ?";
+      $sql_values[] = $pass;
     }
-    $req .= " WHERE login = '{$values['login']}'";
-    mysql_query($req) or die(mysql_error());
+    $req .= " WHERE login = ?";
+    $sql_values[] = $form_values['login'];
+    db_execute($req, $sql_values);
     echo "<div class='status'>" . _("Compte modifié.") . "</div>";    
   }
 }
@@ -155,24 +161,27 @@ $form->display();
 
 if ($_SESSION['login'] == 'admin') {
   if ($display_mode != 'create') {
-    echo "<a href='?'>Nouveau Compte</a>";
+    echo "<div><a href='?'>Nouveau Compte</a></div>";
   }
   
   
-  // Instantiate the DataGrid
   function printModify($params) {
     return "<a href='?id={$params['record']['id']}'>M</a>";
   }
   
+  // Instantiate the DataGrid
   $dg = new Structures_DataGrid($_SESSION['pagersize']);
   $dg->setDefaultSort(array('login' => 'ASC'));
-  $test= $dg->bind('SELECT utilisateur.id AS id, login,
+  $test = $dg->bind('SELECT utilisateur.id AS id, login,
     nom AS lastname, prenom AS firstname,
     service.designation AS service,
     preferenceNbCourrier AS pagersize
     FROM utilisateur, service WHERE idService=service.id',
-		   array('dsn' => 'mysql://root@localhost/gcourrier'));
-  if (PEAR::isError($test)) echo $test->getMessage();
+		   array('dsn' => $db_dsn));
+  if (PEAR::isError($test)) {
+    echo $test->getMessage();
+    exit;
+  }
   
   $dg->addColumn(new Structures_DataGrid_Column('Identifiant', 'login', 'login'));
   $dg->addColumn(new Structures_DataGrid_Column('Nom', 'lastname', 'lastname'));

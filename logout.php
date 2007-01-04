@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author Sylvain Beucler
 */
 
-require_once('connexion.php');
+require_once('init.php');
 require_once('functions/longsession.php');
 
 // On supprime la session, y compris nos information de login

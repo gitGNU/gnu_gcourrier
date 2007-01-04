@@ -18,11 +18,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-author VELU Jonathan
 */
 
-require("connexion.php");
+require_once('init.php');
 
 
 if(!isset( $_POST["enregistrer"])){
@@ -44,7 +42,7 @@ if(!isset( $_POST["enregistrer"])){
 	<form name = transmettreForm method="POST" action="transmettreFacture.php">
 	<tr><td>service</td><td>
 	<select name = service>
-		<?php
+		<?php //'
 		$requete = "select * from service order by libelle; ";
 		$result = mysql_query($requete) or die( mysql_error() );
 		while( $ligne = mysql_fetch_array( $result ) ){
@@ -72,27 +70,25 @@ echo"<a href = voirFacture.php?id=".$idCourrier.">voir mes factures</a>";
 </body>
 </html>
 <?php
-}else{
-$service = $_POST["service"];
-$idCourrier = $_POST["idCourrier"];
-
-$date = date("Y-m-d");
-
-$requete = "insert into estTransmisCopie( idFacture, idService,dateTransmission ) values(".$idCourrier.",".$service.",'".$date."');";
-$result = mysql_query($requete ) or die(mysql_error() );
-
-$requete = "select service.libelle as libService
-            from service 
-	    where service.id = ".$service.";";	    
-
-$result = mysql_query($requete) or die(mysql_error());
-while($ligne = mysql_fetch_array($result)){
-	$libService = $ligne['libService'];
+} else {
+  $service = $_POST['service'];
+  $idCourrier = $_POST['idCourrier'];
+  
+  $date = date("Y-m-d");
+  
+  $requete = "INSERT INTO estTransmisCopie(idFacture,idService,dateTransmission)
+              VALUES ($idCourrier,$service,'$date')";
+  $result = mysql_query($requete) or die(mysql_error());
+  
+  $requete = "SELECT service.libelle AS libService
+              FROM service 
+	      WHERE service.id=$service";
+  
+  $result = mysql_query($requete) or die(mysql_error());
+  while ($ligne = mysql_fetch_array($result))
+    $libService = $ligne['libService'];
+  $requete = "UPDATE facture SET histo='$libService' WHERE id='$idCourrier'";
+  $result = mysql_query($requete) or die(mysql_error());
+  
+  header("Location: voirFacture.php?id=$idCourrier");
 }
-$requete = "update facture set histo = '".$libService."' where id = ".$idCourrier.";";
-$result = mysql_query($requete) or die(mysql_error());
-
- header("Location: voirFacture.php?id=".$idCourrier." ");
-//echo "<meta http-equiv=\"refresh\" content=\"0;url=voirFacture.php\">";
-}
-?>

@@ -33,7 +33,7 @@
 GCourrier 1.6
 \layout Author
 
-Jonathan Velu, Cliss XXI
+Cliss XXI
 \layout Date
 
 26 Juin 2006
@@ -89,7 +89,7 @@ Arrivée au service courrier
 
 Chaque courrier arrivé au service courrier donne lieu à une création dans
  GCourrier.
- A ce stade, il convient de créer informatiquement l'expéditeur du courrier
+ À ce stade, il convient de créer informatiquement l'expéditeur du courrier
  (si cette création n'a pas déjà été réalisée précédemment), et de déterminer
  quel service va prendre en charge le traitement du courrier.
  A noter : GCourrier attribue automatiquement un identifiant unique pour
@@ -482,14 +482,14 @@ Refuser l'archivage d'une facture
 
 En ce qui concerne les factures vous pouvez refuser un archivage à l'aide
  du module recherche/archive/facture.
- Ceci à seulement un caractère indicatif.
+ Ceci a seulement un caractère indicatif.
 \layout Subsubsection
 
 Modifier son profil
 \layout Standard
 
-Chaque utilisateur peut modifier son profil.
- Cependant faites attention à remettre un mot de passe lors de la modification.
+Chaque utilisateur peut modifier son profil, notamment son nom, mot de passe,
+ et nombre d'éléments (courrier ou facture) à afficher par page.
 \layout Subsubsection
 
 L'historique
@@ -550,11 +550,19 @@ L'historique retrace le chemin qu'a effectué le courrier avant d'arriver
 \layout Standard
 
 L'accusé réception crée un fichier PDF stocké sur le serveur dans le dossier
- accuse.
- Il peut être paramétré à partir du compte admin.
+ 
+\family typewriter 
+accuse/
+\family default 
+.
+ Votre adresse peut être paramétrée à partir du compte admin.
 \layout Standard
 
-Les fichiers joints sont stockés dans le dossier upload.
+Les fichiers joints sont stockés dans le dossier 
+\family typewriter 
+upload/
+\family default 
+.
 \layout Standard
 
 Lorsque vous archivez un courrier, il vous sera toujours possible de le
@@ -574,7 +582,7 @@ Les Factures
 \layout Standard
 
 Les factures suivent le même parcours que les courriers mais possèdent quelques
- differences.
+ différences.
  Lorsque vous transmettez une facture, vous la transmettez en copie.
  Ainsi le service destinataire pourra les consulter à partir de la page
  
@@ -586,11 +594,11 @@ voir mes factures en copie
 \end_inset 
 
 .
- Vous devez ainsi remplir à la main la date de retour de la facture au niveau
+ Vous devrez remplir à la main la date de retour de la facture au niveau
  de l'historique.
  Il vous est possible d'annuler un archivage de facture à l'aide des recherches
  d'archives factures.
- Cette fonctionnalité à uniquement un caractère indicatif mais rien ne vous
+ Cette fonctionnalité a uniquement un caractère indicatif mais rien ne vous
  empêche de l'inscrire dans les observations lorsque vous créez une nouvelle
  facture pour reprendre l'archivée.
 \layout LyX-Code

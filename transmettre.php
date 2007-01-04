@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-require("connexion.php");
+require_once('init.php');
 
 $affiche = $_GET['affiche'];
 if(!isset( $_POST["enregistrer"])){
@@ -81,23 +81,24 @@ echo"<a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$affiche."&type="
 </body>
 </html>
 <?php
-}else{
-$service = $_POST["service"];
-$idCourrier = $_POST["idCourrier"];
+} else {
+  $service = $_POST['service'];
+  $idCourrier = $_POST['idCourrier'];
 
-$requete = "select * from estTransmis where idCourrier = ".$idCourrier.";";
-$result = mysql_query($requete) or die(mysql_error() );
-
-
-$requete="insert into estTransmis(dateTransmission,idCourrier,idService) values('".date("Y-m-d")."','".$idCourrier."','".$service."');";
+  $requete = "SELECT * FROM estTransmis WHERE idCourrier=$idCourrier";
+  $result = mysql_query($requete) or die(mysql_error());
 
 
-$result=mysql_query($requete) or die(mysql_error());
+  $requete = "INSERT INTO estTransmis (dateTransmission,idCourrier,idService)
+              VALUES ('".date("Y-m-d")."','$idCourrier','$service')";
 
-$observation = $_POST['observation'];
-$requete = "update courrier set observation ='".$observation."',serviceCourant=".$service." where id =".$idCourrier.";";
-$result = mysql_query($requete) or die( mysql_error() );
 
-header("Location: voirCourrier.php?id=".$idCourrier."&nbAffiche=".$_POST['nbAffiche']."&type=".$_POST['type']." ");
+  $result = mysql_query($requete) or die(mysql_error());
+
+  $observation = $_POST['observation'];
+  $requete = "UPDATE courrier SET observation='$observation', serviceCourant='$service'
+              WHERE id=$idCourrier";
+  $result = mysql_query($requete) or die(mysql_error());
+  
+  header("Location: voirCourrier.php?id=$idCourrier&nbAffiche={$_POST['nbAffiche']}&type={$_POST['type']}");
 }
-?>

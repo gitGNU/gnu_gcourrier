@@ -20,7 +20,7 @@ along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-require_once('connexion.php');
+require_once('init.php');
 include('templates/header.php');
 
 if ($_SESSION['login'] == 'admin')

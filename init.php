@@ -20,9 +20,10 @@ along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-header("Content-Type: text/html;charset=UTF-8");
+setlocale(LC_ALL, 'fr_FR.UTF-8');
+header('Content-Type: text/html;charset=UTF-8');
 
-if (!file_exists('config.php')) {
+if (!file_exists(dirname(__FILE__).'/config.php')) {
   echo "<code>config.php</code> not found!
 Please create <code>config.php</code> using <code>config.php.dist</code>
 as model.";
@@ -42,11 +43,14 @@ if (!extension_loaded('mysql')) {
   exit;
 }
 
-$db = mysql_connect($hote, $user, $mdp) or 
-die("Connection MySQL impossible pour l'utilisateur " . $user . " sur l'hôte " . $hote);
+mysql_connect($db_host, $db_user, $db_pass) or 
+die("Connection MySQL impossible pour l'utilisateur " . $db_user . " sur l'hôte " . $db_host);
 
-$se = mysql_select_db($base, $db) or
-die("Connection impossible sur la base " . $base . "(" . $user . ", " . $hote . ")");
+mysql_select_db($db_base) or
+die("Connection impossible sur la base " . $db_base . "(" . $db_user . ", " . $db_host . ")");
+
+// For PEAR::MDB2
+$db_dsn = "mysql://$db_user:$db_pass@$db_host/$db_base";
 
 session_start();
 
@@ -64,6 +68,9 @@ if (!isset($_SESSION['id']) and isset($session_hash)) {
       $user_params = user_getbyid($id);
       if ($user_params != NULL) {
 	$_SESSION['id'] = $user_params['id'];
+	// This is not good because this is cached for the duration of
+	// the session - and this may change meanwhile. Use
+	// $CURRENT_USER instead.
 	$_SESSION['login'] = $user_params['login'];
 	$_SESSION['idService'] = $user_params['idService'];
 	$_SESSION['pagersize'] = $user_params['pagersize'];
@@ -83,9 +90,11 @@ if (!isset($_SESSION['id']) and isset($session_hash)) {
   }
 }
 
-if (!isset($_SESSION['login'])
-    && basename($_SERVER['PHP_SELF']) != 'login.php'
-    && basename($_SERVER['PHP_SELF']) != 'install.php') {
+if (isset($_SESSION['id'])) {
+  // Cache current user's information
+  $CURRENT_USER = user_getbyid($_SESSION['id']);
+} else if (basename($_SERVER['PHP_SELF']) != 'login.php'
+	   && basename($_SERVER['PHP_SELF']) != 'install.php') {
   header("Location: login.php");
   exit;
 }

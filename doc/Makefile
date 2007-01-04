@@ -1,12 +1,15 @@
 .PHONY: clean all
+LYX=lyx
+# or: LYX=lyx-qt
+# dynamic override: make sthing.pdf LYX=lyx-qt
 
 all: doc_utilisateur.ps doc_utilisateur.pdf
 
 %.pdf: %.lyx
-	lyx $< -e pdf
+	$(LYX) $< -e pdf
 
 %.ps: %.lyx
-	lyx $< -e ps
+	$(LYX) $< -e ps
 
 clean:
 	rm *.ps *.pdf

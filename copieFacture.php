@@ -22,12 +22,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-require("connexion.php");
+require_once('init.php');
 
 ?>
 <html>
 <head><title>gCourrier</title></head>
-<link rel="stylesheet" href=estyles3.csse type="text/css">
+<link rel="stylesheet" href="styles3.css" type="text/css">
 
 <body>
 
