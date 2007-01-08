@@ -1,5 +1,6 @@
 # Code linting - PHP6-compliant:
-php_flag magic_quotes_gpc Off
+# Not yet - we need to review all SQL queries first
+#php_flag magic_quotes_gpc Off
 php_flag register_globals Off
 # UTF-8:
 php_value mbstring.language Neutral

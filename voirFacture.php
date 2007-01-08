@@ -255,8 +255,12 @@ while($ligne = mysql_fetch_array($resultatFacture)){
 	echo "<td bgcolor=".$couleur."><a href=modifDestinataire.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$nomDestinataire."</a></td>";
 	echo "<td bgcolor=".$couleur." style=\"text-align:center\"><a href=modifRef.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$refFacture."</a></td>";
 	echo "<td bgcolor=".$couleur." style=\"text-align:right\"><a href=modifMontant.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$montant."</a></td>";
-	echo "<td bgcolor=".$couleur.">".$dateArrivee."</td>";
-	echo "<td bgcolor=".$couleur.">".$dateFacture."</td>";
+	echo "<td bgcolor='$couleur'>".
+	  (((time() - strtotime($ligne['dateFacture'])) < 86400)
+	   ? "<a href='editBillDate.php?id=$idCourrier'>$dateArrivee</a>"
+	   : "$dateArrivee")
+	  . "</td>";
+	echo "<td bgcolor='$couleur'><a href='editBillDate.php?id=$idCourrier'>$dateFacture</a></td>";
 
 	echo "<td bgcolor=".$couleur."><a href=modifObservationFacture.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$observation."</a></td>";
 

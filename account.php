@@ -30,6 +30,8 @@ require_once('functions/db.php');
 require_once('functions/user.php');
 require_once('functions/grid.php');
 
+require_once('classes/HTML/QuickForm/FR.php');
+
 function can_modify($login) {
   if ($_SESSION['login'] == 'admin')
     return true;
@@ -38,9 +40,7 @@ function can_modify($login) {
   return false;
 }
 
-$form = new HTML_QuickForm('creerCompteForm');
-$form->setRequiredNote('<span style="font-size:80%; color:#ff0000;">*</span><span style="font-size:80%;"> champ requis</span>');
-$form->setJsWarnings("Le formulaire n'est pas valide:", '');
+$form = new HTML_QuickForm_FR('creerCompteForm');
 $form->addElement('header', 'title', 'Créer un compte');
 $form->addElement('text', 'login', 'Identifiant');
 $form->addElement('text', 'firstname', 'Nom');

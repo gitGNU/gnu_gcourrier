@@ -12,7 +12,9 @@ Each object belongs to an initial service.
 
 Objects can be active or archived. When archived, they are not shown
 in the main page but still can be browsed through the
-archives. Objects cannot be un-archived.
+archives. Objects cannot be un-archived. The goal of the archive is to
+check the status of a given object months later, or show statistics on
+the average internal processing time.
 
 Mails can be transmitted to another service later on. In this case
 they are not visible anymore for the previous owner - you do not need
