@@ -1,0 +1,3 @@
+pear install Structures_DataGrid-beta Structures_DataGrid_DataSource_DBTable-beta Structures_DataGrid_DataSource_MDB2-beta Structures_DataGrid_Renderer_HTMLSortForm-beta Structures_DataGrid_Renderer_HTMLTable-beta Structures_DataGrid_Renderer_Pager-beta
+pear install --alldeps Validate-beta
+pear install --alldeps HTML_QuickForm
