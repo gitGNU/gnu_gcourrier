@@ -23,7 +23,8 @@ require_once('HTML/QuickForm.php');
 
 class HTML_QuickForm_FR extends HTML_QuickForm {
   function HTML_QuickForm_FR($formName='', $method='post', $action='', $target='', $attributes=null, $trackSubmit = false) {
-    parent::__construct($formName, $method, $action, $target, $attributes, $trackSubmit);
+#    parent::__construct($formName, $method, $action, $target, $attributes, $trackSubmit);
+    $this->HTML_QuickForm($formName, $method, $action, $target, $attributes, $trackSubmit);
     $this->setRequiredNote('<span style="font-size:80%; color:#ff0000;">*</span><span style="font-size:80%;"> champ requis</span>');
     $this->setJsWarnings("Le formulaire n'est pas valide:", '');
   }
