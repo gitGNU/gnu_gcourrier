@@ -1,0 +1,6 @@
+Changes in the configuration file:
+
+$base -> $db_base
+$user -> $db_user
+$mdp -> $db_pass
+$hote -> $db_host
