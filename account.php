@@ -151,9 +151,12 @@ if ($param_user->validate()) {
 }
 
 if ($display_mode == 'modify') {
-  $form->getElement('title')->setText("Modifier le compte");
-  $form->getElement('password1')->setLabel("Changer de mot de passe");
-  $form->getElement('login')->freeze();
+  $elt = $form->getElement('title');
+  $elt->setText("Modifier le compte");
+  $elt = $form->getElement('password1');
+  $elt->setLabel("Changer de mot de passe");
+  $elt = $form->getElement('login');
+  $elt->freeze();
   $form->setConstants(array('mode' => 'modify'));
 }
 
