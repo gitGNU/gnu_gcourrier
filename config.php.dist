@@ -2,7 +2,7 @@
 // Paramètres de connexion à la base de données MySQL:
 // TODO: créer un installateur
 
-$base = 'gcourrier'; // nom de la base
-$user = 'root';      // nom d'utilisateur 
-$mdp  = '';          // mot de passe
-$hote = 'localhost'; // nom du serveur MySQL
+$db_base = 'gcourrier'; // nom de la base
+$db_user = 'root';      // nom d'utilisateur 
+$db_pass = '';          // mot de passe
+$db_host = 'localhost'; // nom du serveur MySQL
