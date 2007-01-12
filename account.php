@@ -21,8 +21,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 
-require_once('HTML/QuickForm.php');
-require_once('HTML/Table.php');
+require_once('classes/HTML/QuickForm/FR.php');
 require_once('Structures/DataGrid.php');
 
 require_once('init.php');
@@ -30,7 +29,7 @@ require_once('functions/db.php');
 require_once('functions/user.php');
 require_once('functions/grid.php');
 
-require_once('classes/HTML/QuickForm/FR.php');
+include('templates/header.php');
 
 function can_modify($login) {
   if ($_SESSION['login'] == 'admin')
@@ -81,8 +80,6 @@ $form->addRule('mode', NULL, 'regex', '/^(create|modify)/');
 $form->addRule('pagersize', _("Entrez un nombre entier."), 'required');
 $form->addRule('pagersize', _("Entrez un nombre entier."), 'callback', 'ctype_digit');
 $form->addRule('pagersize', _("Entrez un nombre entier."), 'nonzero');
-
-include('templates/header.php');
 
 if ($form->exportValue('mode') == 'create')
      $display_mode = 'create';

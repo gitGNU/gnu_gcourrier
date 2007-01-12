@@ -4,4 +4,5 @@
 php_flag register_globals Off
 # UTF-8:
 php_value mbstring.language Neutral
+php_value mbstring.internal_encoding UTF-8
 php_value mbstring.func_overload 7
