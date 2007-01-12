@@ -24,60 +24,36 @@ author VELU Jonathan
 
 require_once('init.php');
 
-
-
-if(!isset($_POST["envoyer"])){
+if (!isset($_POST["envoyer"])) {
+  include('templates/header.php');
 ?>
-<html>
-<head>
-	<title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet">
-</head>
-<body>
-<div id="page">
-	<br><center><img src=images/banniere2.jpg></img><br><br><br></center>
-	<table align=center>
-	<form name = creerServiceForm method = post action= creerService.php>
-		<tr><td>libelle</td>
-		<td><input type = text name = libelle ></input></td></tr>
-		<tr><td>designation</td>
-		<td><input type = text name = designation></input></td></tr>
-	</table>
-		<center><input type = submit name = envoyer value = enregistrer></input></center>
-	</form>
-
-<center><br>
-<a href = index.php>index</a><br><br>
-</div>
-</center>
-</body>
-</html>
+<form name="creerServiceForm" method="post" action="creerService.php">
+  <table>
+    <tr>
+      <td>Libellé</td>
+      <td><input type="text" name="libelle" /></td>
+    </tr>
+    <tr>
+      <td>Désignation</td>
+      <td><input type="text" name="designation" /></td>
+    </tr>
+  </table>
+  <input type="submit" name="envoyer" value="enregistrer" />
+</form>
 <?php
-}else{
-	$requeteVerif="select * from service where libelle = '".$_POST['libelle']."';";
-	$result = mysql_query($requeteVerif) or die(mysql_error());
-	if(mysql_num_rows($result) !=0 ){
-		echo "Ce service existe deja !</br>";
-		echo "<a href=index.php>index</a>";
-		exit();
-	}
-
-	$libelle = $_POST['libelle'];
-	$designation = $_POST['designation'];
-	
-	
-	$requeteExist = "select count(*) as nb from service where designation ='".$designation."';";
-	$resultExist = mysql_query($requeteExist) or die (mysql_error( ));
-	$ligne = mysql_fetch_array( $resultExist );
-	if($ligne['nb'] != 0){
-		echo "<meta http-equiv=\"refresh\" content=\"0;url=creerService.php\">";
-		exit();
-	}
-
-
-	$requete = "insert into service( libelle , designation ) values ('".$libelle."','".$designation."')";
-	$result = mysql_query($requete) or die( "erreur :".mysql_error( ) );
-	echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
+} else {
+  $libelle = $_POST['libelle'];
+  $designation = $_POST['designation'];
+  
+  $requeteVerif="SELECT id FROM service WHERE libelle='$libelle'";
+  $result = mysql_query($requeteVerif) or die(mysql_error());
+  if(mysql_num_rows($result) !=0 ){
+    echo "Ce service existe déjà!</br>";
+    echo "<a href=index.php>index</a>";
+    exit();
+  }
+  
+  $requete = "INSERT INTO service(libelle, designation) VALUES ('$libelle','$designation')";
+  $result = mysql_query($requete) or die("erreur: " . mysql_error( ));
+  header('Location: index.php');
 }
-
-?>
