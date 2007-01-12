@@ -43,8 +43,8 @@ function can_modify($login) {
 $form = new HTML_QuickForm_FR('creerCompteForm');
 $form->addElement('header', 'title', 'Créer un compte');
 $form->addElement('text', 'login', 'Identifiant');
-$form->addElement('text', 'firstname', 'Nom');
-$form->addElement('text', 'lastname', 'Prénom');
+$form->addElement('text', 'firstname', 'Prénom');
+$form->addElement('text', 'lastname', 'Nom');
 
 $services = array();
 $req = "SELECT id, CONCAT(libelle, ' ', designation) AS description FROM service
@@ -103,23 +103,23 @@ if ($form->validate()) {
     } else {
       db_execute("INSERT INTO utilisateur
                     (login, passwd,
-                     nom, prenom,
+                     prenom, nom,
                      idService, preferenceNbCourrier)
                   VALUES (?, ?,
                           ?, ?,
                           ?, ?)",
 		 array($form_values['login'], $form_values['password1'],
-		       $form_values['lastname'], $form_values['firstname'],
+		       $form_values['firstname'], $form_values['lastname'],
 		       $form_values['idService'], $form_values['pagersize']));
       echo "<div class='status'>" . _("Compte créé.") . "</div>";
     }
   } else {
     $req = "UPDATE utilisateur SET
-              nom = ?,
               prenom = ?,
+              nom = ?,
               idService = ?,
               preferenceNbCourrier = ?";
-    $sql_values = array($form_values['lastname'], $form_values['firstname'],
+    $sql_values = array($form_values['firstname'], $form_values['lastname'],
 		    $form_values['idService'], $form_values['pagersize']);
     # Don't change the password if it's left empty.
     if ($form_values['password1'] != '') {

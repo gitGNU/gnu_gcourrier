@@ -22,38 +22,32 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-require_once('init.php');
+require_once('classes/HTML/QuickForm/FR.php');
+require_once('functions/db.php');
+require_once('functions/service.php');
+require_once('functions/text.php');
 
-if (!isset($_POST["envoyer"])) {
-  include('templates/header.php');
-?>
-<form name="creerServiceForm" method="post" action="creerService.php">
-  <table>
-    <tr>
-      <td>Libellé</td>
-      <td><input type="text" name="libelle" /></td>
-    </tr>
-    <tr>
-      <td>Désignation</td>
-      <td><input type="text" name="designation" /></td>
-    </tr>
-  </table>
-  <input type="submit" name="envoyer" value="enregistrer" />
-</form>
-<?php
-} else {
-  $libelle = $_POST['libelle'];
-  $designation = $_POST['designation'];
-  
-  $requeteVerif="SELECT id FROM service WHERE libelle='$libelle'";
-  $result = mysql_query($requeteVerif) or die(mysql_error());
-  if(mysql_num_rows($result) !=0 ){
-    echo "Ce service existe déjà!</br>";
-    echo "<a href=index.php>index</a>";
-    exit();
-  }
-  
-  $requete = "INSERT INTO service(libelle, designation) VALUES ('$libelle','$designation')";
-  $result = mysql_query($requete) or die("erreur: " . mysql_error( ));
-  header('Location: index.php');
+require_once('init.php');
+include('templates/header.php');
+
+$form = new HTML_QuickForm_FR('creerService');
+$form->addElement('header', 'title', 'Créer un service');
+$form->addElement('text', 'libelle', 'Libellé/Abréviation');
+$form->addElement('text', 'designation', 'Désignation');
+$form->addElement('submit', null, 'Créer');
+
+$form->addRule('libelle', _("Ce champ est requis"), 'required');
+$form->addRule('libelle', _("Entrez uniquement des lettres et des chiffres"),
+	       'callback', 'ctype_alphanum');
+$form->addRule('libelle', _("Ce service existe déjà"), 'callback', 'service_exists_not');
+
+if ($form->validate()) {
+  $values = $form->exportValues();
+  db_autoexecute('service', $values, DB_AUTOQUERY_INSERT);
+  text_notice(_("Service créé."));
+  // empty the form
+  $form->setConstants(array('libelle' => '', 'designation' => ''));
 }
+
+$form->display();
+include('templates/footer.php');
