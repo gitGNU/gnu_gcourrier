@@ -40,3 +40,14 @@ function user_exists($login) {
 function user_exists_not($login) {
   return !user_exists($login);
 }
+
+// doesn't work, need to rename fields, see account.php
+function user_create($params) {
+  die("unfinished function");
+  $insert_fields = utils_array_filter_fields($params,
+    array('login', 'passwd', 'prenom', 'nom', 'idService',
+	  'preferenceNbCourrier'));
+  db_autoexecute('utilisateur',
+		 $insert_fields,
+		 DB_AUTOQUERY_UPDATE);
+}

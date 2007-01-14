@@ -41,7 +41,7 @@ $form->addRule('libelle', _("Ce service existe déjà"), 'callback', 'service_ex
 
 if ($form->validate()) {
   $values = $form->exportValues();
-  db_autoexecute('service', $values, DB_AUTOQUERY_INSERT);
+  service_new($values['libelle'], $values['designation']);
   text_notice(_("Service créé."));
   // empty the form
   $form->setConstants(array('libelle' => '', 'designation' => ''));

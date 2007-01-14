@@ -4,7 +4,7 @@ setlocale(LC_ALL, 'fr_FR.UTF-8');
 header('Content-type: text/plain');
 require_once "Text/Password.php";
 
-$prenoms = array("Blandine", "Claudine", "Ducourant", "Dumur", "Edith", "Hervé", "Jean-François", "Jean-Luc", "Jean-Paul", "Lecomte", "Liliane", "Martine", "Nathalie", "Patricia", "Stéphanie", "Vandionant", "Anne-marie", "Bernadette", "Christine", "David", "Francelina", "Georges", "Gérard", "Grégory", "Karine", "Marcel", "Marianne", "Sylvie", "Willy", "Yves");
+$prenoms = array("Blandine", "Claudine", "Edith", "Hervé", "Jean-François", "Jean-Luc", "Jean-Paul", "Liliane", "Martine", "Nathalie", "Patricia", "Stéphanie", "Anne-marie", "Bernadette", "Christine", "David", "Francelina", "Georges", "Gérard", "Grégory", "Carine", "Marcel", "Marianne", "Sylvie", "Willy", "Yves");
 
 $noms = array();
 foreach($prenoms as $prenom) {
@@ -22,7 +22,7 @@ foreach($prenoms as $prenom) {
 $services[] = array('ACC', "Accueil");
 $services[] = array('COMM', "Communication");
 $services[] = array('COMPTA', "Comptabilité");
-$services[] = array('MAR', "Maire");
+$services[] = array('MAR', "Bureau du maire");
 $services[] = array('SEC', "Secrétariat");
 $services[] = array('INFO', "Services informatiques");
 
@@ -58,6 +58,8 @@ foreach ($priorities as $priority) {
   echo "INSERT INTO priorite (designation, nbJours)
         VALUES('{$priority['designation']}', {$priority['nbJours']});\n";
 }
+
+# fournisseurs
 
 # facture
 # courrier entrant

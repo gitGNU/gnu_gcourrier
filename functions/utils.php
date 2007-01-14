@@ -1,7 +1,7 @@
 <?php
 /*
-GCourrier
-Copyright (C) 2005,2006 Cliss XXI
+Various utilities
+Copyright (C) 2007 Cliss XXI
 
 This file is part of GCourrier.
 
@@ -20,19 +20,9 @@ along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-function service_exists($libelle) {
-  $result = db_execute("SELECT * FROM service WHERE libelle=?",
-		       array($libelle));
-  return (mysql_num_rows($result) > 0);
-}
-/* Variant to be used as QuickForm callback */
-function service_exists_not($service) {
-  return !service_exists($service);
-}
-
-function service_new($libelle, $designation) {
-  db_autoexecute('service',
-		 array('libelle' => $libelle,
-		       'designation' => $designation),
-		 DB_AUTOQUERY_INSERT);
+function utils_array_filter_fields($array, $fields) {
+  $result = array();
+  foreach($fields as $field)
+    if (array_key_exists($field, $array))
+      $result[$field] = $array[$field];
 }
