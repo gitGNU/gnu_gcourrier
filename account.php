@@ -152,12 +152,12 @@ if ($param_user->validate()) {
 }
 
 if ($display_mode == 'modify') {
-  $elt = $form->getElement('title');
-  $elt->setText("Modifier le compte");
-  $elt = $form->getElement('password1');
-  $elt->setLabel("Changer de mot de passe");
-  $elt = $form->getElement('login');
-  $elt->freeze();
+  $elt1 = &$form->getElement('title');
+  $elt1->setText("Modifier le compte");
+  $elt2 = &$form->getElement('password1');
+  $elt2->setLabel("Changer de mot de passe");
+  $elt3 = &$form->getElement('login');
+  $elt3->freeze();
   $form->setConstants(array('mode' => 'modify'));
 }
 if ($_SESSION['login'] != 'admin') {
