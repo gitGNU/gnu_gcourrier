@@ -161,8 +161,8 @@ if ($display_mode == 'modify') {
   $form->setConstants(array('mode' => 'modify'));
 }
 if ($_SESSION['login'] != 'admin') {
-  $elt = $form->getElement('idService');
-  $elt->freeze();
+  $elt4 = &$form->getElement('idService');
+  $elt4->freeze();
 }
 
 $form->display();
