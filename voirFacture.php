@@ -190,12 +190,12 @@ $resultatFacture = mysql_query($requeteFacture) or die("erreur facture ".mysql_e
 
 echo "<table align=center font-color ='white'>";
 	echo "<tr>";
-	echo "<td align=center><a href=voirFacture?order=facture.id style=\"font-weight:normal\">numero</a> </td>";
-	echo "<td align=center><a href=voirFacture?order=facture.idFournisseur style=\"font-weight:normal\">fournisseur</a></td>";
-	echo "<td align=center><a href=voirFacture?order=facture.refFacture style=\"font-weight:normal\">refFacture</a></td>";
-	echo "<td align=center><a href=voirFacture?order=facture.montant style=\"font-weight:normal\">montant</a></td>";
-	echo "<td align=center><a href=voirFacture?order=facture.dateFacture style=\"font-weight:normal\">dateMairie</a></td>";
-	echo "<td align=center><a href=voirFacture?order=facture.dateFactureOrigine style=\"font-weight:normal\">dateFacture</a></td>";
+	echo "<td align=center><a href=voirFacture.php?order=facture.id style=\"font-weight:normal\">numero</a> </td>";
+	echo "<td align=center><a href=voirFacture.php?order=facture.idFournisseur style=\"font-weight:normal\">fournisseur</a></td>";
+	echo "<td align=center><a href=voirFacture.php?order=facture.refFacture style=\"font-weight:normal\">refFacture</a></td>";
+	echo "<td align=center><a href=voirFacture.php?order=facture.montant style=\"font-weight:normal\">montant</a></td>";
+	echo "<td align=center><a href=voirFacture.php?order=facture.dateFacture style=\"font-weight:normal\">dateMairie</a></td>";
+	echo "<td align=center><a href=voirFacture.php?order=facture.dateFactureOrigine style=\"font-weight:normal\">dateFacture</a></td>";
 	echo "<td align=center>observation</td>";
 	echo "<td align=center>historique</td>";
 if(strcmp($_SESSION['login'] , 'admin') != 0){

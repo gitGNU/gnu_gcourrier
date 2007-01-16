@@ -126,7 +126,7 @@ for ($i = 0; $i < $nb_factures; $i++) {
 
   $priority = rand(1, 3);
 
-  $histo = $services[$idServiceDest-1][0];
+  $histo = $services[$idServiceDest-1-1][0];
 
   echo "INSERT INTO facture
 (montant, refFacture, dateFacture, dateFactureOrigine,
