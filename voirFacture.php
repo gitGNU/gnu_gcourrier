@@ -298,7 +298,8 @@ if(strcmp($_SESSION['login'] , 'admin') != 0){
 		$timestampArrivee= mktime(0,0,0,$moisArrivee,$jourArrivee,$anneeArrivee);
 		$urgence = ($timestampActuel - $timestampArrivee ) / 86400;
 
-		$nbJoursRestant = $nbJours - $urgence;
+		// round value to take 'dailight saving time' into account (=> no float)
+		$nbJoursRestant = (int) ($nbJours - $urgence);
 
 //		echo " fze ".$urgence." : ".$nbJours." :: ".$ligne['nbJours']."<br>";
 		if ($nbJoursRestant >= 5)
@@ -318,7 +319,7 @@ if(mysql_num_rows($resultatFacture) == $nbAffiche)
 <center><a href="javascript:history.go(-1)"> <b>page precedente </b></a> &nbsp/</center>
 
 <center><br>
-<a href = index.php>index</a>
+<a href="index.php">index</a>
 </center>
 <br><br>
 </div>

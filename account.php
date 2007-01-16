@@ -114,15 +114,19 @@ if ($form->validate()) {
     $req = "UPDATE utilisateur SET
               prenom = ?,
               nom = ?,
-              idService = ?,
               preferenceNbCourrier = ?";
     $sql_values = array($form_values['firstname'], $form_values['lastname'],
-		    $form_values['idService'], $form_values['pagersize']);
-    # Don't change the password if it's left empty.
+		    $form_values['pagersize']);
+    // Don't change the password if it's left empty.
     if ($form_values['password1'] != '') {
       $pass = base64_encode($form_values['password1']);
       $req .= ", passwd = ?";
       $sql_values[] = $pass;
+    }
+    // Changing service only if admin
+    if ($_SESSION['login'] == 'admin') {
+      $req .= ", idService = ?";
+      $sql_values[] = $form_values['idService'];
     }
     $req .= " WHERE login = ?";
     $sql_values[] = $form_values['login'];
@@ -155,6 +159,10 @@ if ($display_mode == 'modify') {
   $elt = $form->getElement('login');
   $elt->freeze();
   $form->setConstants(array('mode' => 'modify'));
+}
+if ($_SESSION['login'] != 'admin') {
+  $elt = $form->getElement('idService');
+  $elt->freeze();
 }
 
 $form->display();
