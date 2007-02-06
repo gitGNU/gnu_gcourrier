@@ -35,9 +35,8 @@ foreach ($services as $service) {
 // Utilisateurs
 $prenoms = array("Blandine", "Claudine", "Edith", "Hervé", "Jean-François", "Jean-Luc", "Jean-Paul", "Liliane", "Martine", "Nathalie", "Patricia", "Stéphanie", "Anne-marie", "Bernadette", "Christine", "David", "Francelina", "Georges", "Gérard", "Grégory", "Carine", "Marcel", "Marianne", "Sylvie", "Willy", "Yves");
 
-$noms = array();
 foreach($prenoms as $prenom) {
-  $noms[] = gen_nom();
+  $nom = gen_nom();
   $service = rand(1+1, count($services)+1); // don't use the 'admin'/1 service
   $login = strtolower($prenom);
   echo "INSERT INTO utilisateur
