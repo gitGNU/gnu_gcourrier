@@ -53,10 +53,19 @@ echo"<form method = POST action = rechercherFacture.php>";
 <td>refFacture</td>
 <td><input type = text name = refFacture></input></td>
 </tr>
+
 <tr>
-<td>montant</td>
-<td><input type=text name=montant></td>
-</tr>
+  <td>montant</td>
+  <td colspan=>
+    <select name="montant_op">
+      <option value="<">&lt;</option>
+      <option value="=">=</option>
+      <option value=">">&gt;</option>
+    </select>
+    <input type="text" name="montant" /> €
+  </td>
+</td>
+
 <tr>
 <td>observation</td>
 <td><input type=text name=observation></td>
@@ -135,6 +144,7 @@ $eDate1 = $_POST['eDate1'];
 $eDate2 = $_POST['eDate2'];
 $fournisseur = $_POST['fournisseur'];
 $montant = $_POST['montant'];
+$montant_op = $_POST['montant_op'];
 $observation = $_POST['observation'];
 
 $requetetmp = 	"SELECT	facture.id as idCourrier,
@@ -159,9 +169,13 @@ if(strcmp($numero,"")!=0){
 
 }
 
-if(strcmp($montant,"")!=0){
-	$requete.= " and montant = '".$montant."' ";
-
+if ($montant != '' and ctype_digit($montant)) {
+  if ($montant_op == '<')
+    $requete.= " and montant < $montant ";
+  else if ($montant_op == '=')
+    $requete.= " and montant = $montant ";
+  else if ($montant_op == '>')
+    $requete.= " and montant > $montant ";
 }
 
 if(strcmp($observation,"")!=0){

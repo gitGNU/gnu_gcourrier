@@ -53,6 +53,19 @@ echo"<form method = POST action = archiveFacture.php>";
 <td>refFacture</td>
 <td><input type = text name = refFacture></input></td>
 </tr>
+
+<tr>
+  <td>montant</td>
+  <td colspan=>
+    <select name="montant_op">
+      <option value="<">&lt;</option>
+      <option value="=">=</option>
+      <option value=">">&gt;</option>
+    </select>
+    <input type="text" name="montant" /> €
+  </td>
+</td>
+
 <tr>
 <td>date arrivee</td>
 <td><input type = text name = dateArrivee value ="jj-mm-aaaa"></input></td>
@@ -112,6 +125,8 @@ $dateOrigine = $_POST['dateOrigine'];
 $eDate1 = $_POST['eDate1'];
 $eDate2 = $_POST['eDate2'];
 $fournisseur = $_POST['fournisseur'];
+$montant = $_POST['montant'];
+$montant_op = $_POST['montant_op'];
 
 
 $requetetmp = 	"SELECT	facture.refuse as refuse,
@@ -133,6 +148,17 @@ if(strcmp($numero,"")!=0){
 	$requete.= " and facture.id = '".$numero."' ";
 
 }
+
+
+if ($montant != '' and ctype_digit($montant)) {
+  if ($montant_op == '<')
+    $requete.= " and montant < $montant ";
+  else if ($montant_op == '=')
+    $requete.= " and montant = $montant ";
+  else if ($montant_op == '>')
+    $requete.= " and montant > $montant ";
+}
+
 
 if(strcmp($refFacture,"")!=0){
 	$requete.= " and facture.refFacture = '".$refFacture."' ";
@@ -197,7 +223,6 @@ $requete.=" and facture.dateFacture >='".$eDate1."' and facture.dateFacture<='".
 
 $requetetmp .= " ".$from." ".$where." ".$requete." ";
 $requete = $requetetmp;
-
 
 $result = mysql_query( $requete ) or die ( mysql_error() ) ;
 echo '<table align=center font-color ="white">';

@@ -102,7 +102,7 @@ for ($i = 0; $i < $nb_fournisseurs; $i++) {
 }
 
 // Factures
-$date_mairie_start = strtotime('2005-01-01');
+$date_mairie_start = strtotime('2 years ago');
 $now = time();
 $nb_factures = 2000;
 for ($i = 0; $i < $nb_factures; $i++) {
