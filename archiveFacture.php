@@ -24,27 +24,16 @@ author VELU Jonathan
 
 require_once('init.php');
 
-?>
-<html>
-<head><title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet">
-</head>
-<body>
+include('templates/header.php');
 
-
-
-
-<?php
 if(!isset( $_POST["rechercher"] ) ){
 
 ?>
-<div id =pageTGd><br>
-<center><img src = images/banniere2.jpg></center><br><br>
 <center><b>Recherche facture archivée</b><br><br>
 <?php
 echo"<form method = POST action = archiveFacture.php>";
 ?>
-<table align = center>
+<table class="resultats">
 <tr>
 <td>numero</td>
 <td><input type = text name = numero></input></td>
@@ -98,22 +87,10 @@ echo"<form method = POST action = archiveFacture.php>";
 
 <br><input type = submit name = rechercher value = rechercher>
 </form>
-<br><a href = index.php>index</a><br><br></div>
-</center>
-</body>
-</html>
+
 <?php
 }
 else{
-echo"<html>";
-echo"<head><title>gCourrier</title>";
-echo"<LINK HREF=styles3.css REL=stylesheet>";
-echo"</head>";
-echo"<body>"; 
-
-
-echo"<center><img src = images/banniere2.jpg></center><br><br>";
-echo"<center>";
 echo "<div id = titre>RESULTAT DE LA RECHERCHE</div><br></b>";
 
 
@@ -225,7 +202,7 @@ $requetetmp .= " ".$from." ".$where." ".$requete." ";
 $requete = $requetetmp;
 
 $result = mysql_query( $requete ) or die ( mysql_error() ) ;
-echo '<table align=center font-color ="white">';
+echo '<table align=center font-color="white" class="resultats">';
 echo '<tr>';
 echo '<td align="center">numero</td>';
 echo '<td align="center">fournisseur</td>';
@@ -293,11 +270,9 @@ echo "<td bgcolor = ".$couleurTmp."><a href=refuse.php?idCourrier=".$ligne['idCo
 }//fin while
 echo "</table>";
 
-echo "<br><a href = rechercherFacture.php>nouvelle recherche</a>";
-echo "<br><a href = index.php>index</a>";
+echo "<br><a href='archiveFacture.php'>Nouvelle Recherche</a>";
 
 echo "</center>";
 }//fin du premier else
-?> 
 
-
+include('templates/footer.php');

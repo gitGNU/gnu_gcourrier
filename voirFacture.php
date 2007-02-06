@@ -24,20 +24,7 @@ author VELU Jonathan
 
 require_once('init.php');
 
-?>
-<html>
-<head><title>gCourrier</title></head>
-<link rel="stylesheet" href=styles3.css type="text/css">
-
-<body>
-
-	<center>
-		<img src= images/banniere2.jpg></img>
-	</center>
-		<br>
-
-
-<?php
+include('templates/header.php');
 
 $requeteInit = "Select id from facture Limit 1;";
 $result = mysql_query($requeteInit) or die(mysql_error());
@@ -85,7 +72,7 @@ else{
 }
 ?>
 <form method = POST action=voirFactureAffiche.php>
-<table align=center style="border:1px dotted black;"><tr><td>
+<table align="center" style="border:1px dotted black;"><tr><td>
 <label>nombre de facture a afficher : </label>
 
 <?php
@@ -188,7 +175,7 @@ $requeteFacture = "select facture.id as idFacture,
 
 $resultatFacture = mysql_query($requeteFacture) or die("erreur facture ".mysql_error() );
 
-echo "<table align=center font-color ='white'>";
+echo "<table align=center font-color ='white' class='resultats'>";
 	echo "<tr>";
 	echo "<td align=center><a href=voirFacture.php?order=facture.id style=\"font-weight:normal\">numero</a> </td>";
 	echo "<td align=center><a href=voirFacture.php?order=facture.idFournisseur style=\"font-weight:normal\">fournisseur</a></td>";
@@ -313,18 +300,11 @@ if(strcmp($_SESSION['login'] , 'admin') != 0){
 }
 	echo"</table>";
 if(mysql_num_rows($resultatFacture) == $nbAffiche) 
-	echo "<center><a href = voirFacture.php?id=".$idTmp."&nbAffiche=".$nbAffiche.">page suivante</a></center>";
+	echo "<center><a href = voirFacture.php?id=".$idTmp."&nbAffiche=".$nbAffiche.">Page suivante</a> &gt;</center>";
 ?>	
 
-<center><a href="javascript:history.go(-1)"> <b>page precedente </b></a> &nbsp/</center>
+<center>&lt; <a href="javascript:history.go(-1)"><b>Page précédente</b></a></center>
 
-<center><br>
-<a href="index.php">index</a>
-</center>
-<br><br>
-</div>
+<?php
 
-</body>
-
-</html>
-
+include('templates/footer.php');

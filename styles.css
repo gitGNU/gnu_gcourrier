@@ -1,4 +1,4 @@
-/*
+/* -*-C-*-
 GCourrier
 Copyright (C) 2005,2006 CLISS XXI
 
@@ -183,4 +183,8 @@ background: silver
 	border: solid 1px;
 	border-style: dashed;
 	background: lightgrey;
+}
+
+table.resultats {
+  font-size: small;
 }
