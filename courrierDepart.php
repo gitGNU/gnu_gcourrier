@@ -23,22 +23,13 @@ author VELU Jonathan
 */
 
 require_once('init.php');
+require_once('functions/priority.php');
 
+if (!isset($_POST["enregistrer"])) {
 
+include('templates/header.php');
 
-if(!isset($_POST["enregistrer"])){
 ?>
-
-<html>
-	<head> <title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet"></head>
-	<body>
-
-
-<div id = pageTGd><br>
-	<center>
-	<img src = images/banniere2.jpg></img><br><br><br>
-	</center>
 	<table align = center>
 		<form enctype="multipart/form-data" name = creerCourrier.php method= POST action = courrierDepart.php> 
 		
@@ -77,24 +68,16 @@ if(!isset($_POST["enregistrer"])){
 		?></td></tr>
 		<tr><td>Observation</td>
 		<td><textarea name=observation cols=30 rows=4></textarea></td></tr>
-
-	<td>Priorite</td>
-		<td><select name = priorite>
-		<?php
-		$requete = "select * from priorite ; ";
-		$result = mysql_query($requete) or die( mysql_error() );
-		while( $ligne = mysql_fetch_array( $result ) ){
-		    echo "<option value = '".$ligne['id']."'>".$ligne['libelle']." ".$ligne['designation']."</option>";
-		}
-		?>
-	</select></td></tr>
+<?php
+		priority_display();
+?>
 	<tr>
-	<td><label>attacher un fichier</label></td>
+	<td><label>Joindre un fichier</label></td>
 	<td><input type="file" name="fichier"></td>
 	</tr>
 	</table><br>
 		<center>
-		<input type = submit name = enregistrer value = enregistrer></input>
+		<input type = submit name = enregistrer value="Enregistrer"></input>
 		</center>
 		</form>
 
@@ -173,4 +156,5 @@ echo" window.open('".$adresse."','info',  'width=200,height=125,directories=no,s
 echo"</SCRIPT>";
 echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
 }
-?>
+
+include('templates/footer.php');

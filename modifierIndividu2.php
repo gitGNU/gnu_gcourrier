@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005,2006 CLISS XXI
+Copyright (C) 2005,2006  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -24,72 +24,67 @@ author VELU Jonathan
 
 require_once('init.php');
 
-
-if(!isset($_POST["enregistrer"])){
+if (!isset($_POST["enregistrer"])) {
+  include('templates/header.php');
 ?>
-<html>
-<head> <title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet"></head>
-<body>
-<div id =pageGd><br>
-	<center><img src = images/banniere2.jpg></img></center><br><br><br>
-	<table align = center>
-	<form name = creerDestForm method = POST action = modifierIndividu2.php>
+	<table align="center">
+	<form name="creerDestForm" method="POST" action="modifierIndividu2.php">
 <?php
-$requete="select * from destinataire where id=".$_POST['fournisseur'].";";
-$result=mysql_query($requete) or die (mysql_error());
-while($ligne = mysql_fetch_array($result)){
-  $nom = $ligne['nom'];
-  $prenom = $ligne['prenom'];
-  $adresse= $ligne['adresse'];
-  $codePostal= $ligne['codePostal'];
-  $ville= $ligne['ville'];
-}
+   if (isset($_GET['fournisseur'])
+       and $_GET['fournisseur'] != ''
+       and ctype_digit($_GET['fournisseur'])) {
+     $requete = "SELECT * FROM destinataire WHERE id={$_GET['fournisseur']};";
+     $result = mysql_query($requete) or die (mysql_error());
+     
+     while ($ligne = mysql_fetch_array($result)) {
+       $nom = $ligne['nom'];
+       $prenom = $ligne['prenom'];
+       $adresse= $ligne['adresse'];
+       $codePostal= $ligne['codePostal'];
+       $ville= $ligne['ville'];
+     }
+   }
 ?>
-		<tr><td>nom</td>
+		<tr><td>Nom</td>
 <?php
 echo"		<td><input type = text name = nom value='".$nom."' ></input></td></tr>";
 ?>
-        	<tr><td>prenom</td>
+        	<tr><td>Prénom</td>
 <?php
 echo"		<td><input type = text name = prenom value='".$prenom."'></input></td></tr>";
 ?>
-		<tr><td>adresse</td>
+		<tr><td>Adresse</td>
 <?php
 echo"		<td><input type = text name = adresse value='".$adresse."'></input></td></tr>";
 ?>
-		<tr><td>code postal</td>
+		<tr><td>Code postal</td>
 <?php
 echo"		<td><input type = text name =codePostal value='".$codePostal."'></input></td></tr>";
 ?>
-		<tr><td>ville</td>
+		<tr><td>Ville</td>
 <?php
 echo"		<td><input type = text name =ville value='".$ville."'></input></td></tr>";
-echo"<input type=hidden name=id value=".$_POST['fournisseur'].">";
+echo"<input type=hidden name=id value=".$_GET['fournisseur'].">";
 ?>
 	</table>
-		<center><input type = submit name = enregistrer value = enregistrer></input></center>
+		<center><input type="submit" name="enregistrer" value="Enregistrer"></input></center>
 	</form>
-
-<center><br>
-<a href = index.php>index</a>
-</center><br><br>
-</div>
-</body>
-</html>
 <?php
-}else{
+	    include('templates/footer.php');
+} else {
 	$nom = $_POST['nom'];
 	$prenom = $_POST['prenom'];
 	$adresse = $_POST['adresse'];
 	$codePostal = $_POST['codePostal'];
 	$ville = $_POST['ville'];
-	
-	$requete= "update destinataire set nom='".$nom."', prenom='".$prenom."', adresse='".$adresse."', codePostal='".$codePostal."', ville='".$ville."' where id=".$_POST['id']."";
-	$resultat = mysql_query($requete ) or die ("erreur requete ".mysql_error( ) );
-	
-	echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
+	$id = $_POST['id'];
 
+	$requete= "UPDATE destinataire
+                   SET nom='$nom', prenom='$prenom', adresse='$adresse',
+                       codePostal='$codePostal', ville='$ville'
+                   WHERE id=$id";
 
+	$resultat = mysql_query($requete) or die ("erreur requete: " . mysql_error());
+	
+	header('Location: index.php');
 }
-?>

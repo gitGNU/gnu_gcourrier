@@ -35,7 +35,7 @@ require_once('init.php');
 
 
 <?php
-if(!isset( $_POST["rechercher"] ) ){
+if(!isset( $_GET["rechercher"] ) ){
 
 ?>
 <div id =pageTGd><br>
@@ -54,7 +54,8 @@ else{
 
 </b><br><br>
 <?php
-echo"<form name = rechercheAvanceeForm method = POST action = rechercher.php?type=".$_GET['type'].">";
+echo "<form name = rechercheAvanceeForm action='rechercher.php'>";
+echo "<input type='hidden' name='type' value='{$_GET['type']}' />";
 ?>
 <table align = center>
 <tr>
@@ -117,7 +118,7 @@ echo $emetteur;
 }
 else{
 
-if(isset($_POST['gTransmis'])){
+if(isset($_GET['gTransmis'])){
 $reqTmpTransmission = " and courrier.id = estTransmis.idCourrier
 		       and estTransmis.idService =".$_SESSION['idService']." ";
 $fromTransmission = ",estTransmis,service";
@@ -127,7 +128,7 @@ $reqTmpTransmission =" ";
 $fromTransmission = "";
 }
 
-if(isset($_POST['retard'])){
+if(isset($_GET['retard'])){
 $fromRetard = ",priorite ";
 $whereRetard = " and courrier.idPriorite = priorite.id";
 }
@@ -148,16 +149,16 @@ echo"<center>";
 echo "<div id = titre>RESULTAT DE LA RECHERCHE</div><br></b>";
 
 
-$libelle = $_POST['libelle'];
-$numero = $_POST['numero'];
+$libelle = $_GET['libelle'];
+$numero = $_GET['numero'];
 
-$date = $_POST['date'];
+$date = $_GET['date'];
 
 $dateResult = $date;
 
-$eDate1 = $_POST['eDate1'];
-$eDate2 = $_POST['eDate2'];
-$ext = $_POST['ext'];
+$eDate1 = $_GET['eDate1'];
+$eDate2 = $_GET['eDate2'];
+$ext = $_GET['ext'];
 
 
 $requetetmp = "SELECT courrier.id as idCourrier,
@@ -248,7 +249,7 @@ else{
 	$couleur = 'white';
 	$boul = 0;	
 }
-if(isset($_POST['retard'])){
+if(isset($_GET['retard'])){
 //test pour urgence du courrier
 		$dateActuel = date("Y-m-d");
 		$jourActuel = substr($dateActuel,8,2);

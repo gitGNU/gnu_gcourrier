@@ -22,8 +22,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-require_once("init.php");
+require_once('init.php');
+require_once('functions/priority.php');
 
+include('templates/header.php');
 
 if(isset($_POST["enregistrer"])){
 	$service = $_POST['serviceDest'];
@@ -74,30 +76,19 @@ $result = mysql_query($requete ) or die(mysql_error() );
 $status = "Vous venez de créer la facture numéro: <strong>$idCourrier</strong>.";
 
 }
-?>
-<html>
-<head>
-  <title>gCourrier</title>
-  <link href="styles.css"  rel="stylesheet" />
-  <link href="styles2.css" rel="stylesheet" />
-</head>
 
-<body>
-<?php
+
 if (isset($status)) {
   echo "<div class='status'>$status</div>";
 }
 ?>
-
-<div id = pageTGd><br>
-	<center><img src = images/banniere2.jpg></img></center><br><br><br>
 	<table align = center>
 	<form name = creerFactureForm method = POST action = creerFacture.php>
 		<tr>
 		<td>Fournisseur</td>
 		<td><select name = fournisseur>
 		<?php
-		$requete = "select * from destinataire order by nom; ";
+		$requete = "SELECT * FROM destinataire ORDER BY nom; ";
 		$result = mysql_query($requete) or die( mysql_error() );
 		while( $ligne = mysql_fetch_array( $result ) ){
 		    echo "<option value = '".$ligne['id']."'>".$ligne['nom']." ".$ligne['prenom']."</option>";
@@ -121,7 +112,7 @@ if (isset($status)) {
 
 
 		<tr>
-		<td>Reference facture</td>
+		<td>Référence facture</td>
 		<td><input type = text name = numFacture></input></td></tr>
 		<tr><td>Date mairie</td><td>
 		<?php
@@ -136,31 +127,9 @@ if (isset($status)) {
 		
 		<tr><td>Montant</td>
 		<td><input type = text name = montant></input></td></tr>
-		<?php
-		$requete = "select * from priorite; ";
-		$result = mysql_query($requete) or die( mysql_error() );
-		if(mysql_num_rows($result) > 1){
-			echo"<tr><td>Priorite</td>";
-			echo"<td><select name = priorite>";
-			while( $ligne = mysql_fetch_array( $result ) ){
-			    echo "<option value = '".$ligne['id']."'>".$ligne['libelle']." ".$ligne['designation']."</option>";
-			}
-		echo "</select></td></tr>";
-		}
-		else if(mysql_num_rows($result) == 0){
-			echo"<td>Priorite</td><td>Veuillez contacter l'admin pour ajouter une priorite</td></tr>";
-		}	
-		else{
-		$id=1;
-			while( $ligne = mysql_fetch_array( $result ) ){
-				$id = $ligne['id'];		    
-			}
-		echo"<input type=hidden name=priorite value=".$id."></input>";
-		
-		}
-		?>
-
-	
+<?php
+		priority_display();
+?>
 		<tr>
 		<td>Observation</td>
 		<td><textarea name=observation cols=30 rows=4></textarea></td></tr>
@@ -171,9 +140,8 @@ if (isset($status)) {
 		</center>
 	</form>
 
-<center><br>
-<a href = index.php>index</a><br><br>
-</div>
-</center>
-</body>
-</html>
+<center>
+
+<?php
+
+include('templates/footer.php');

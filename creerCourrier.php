@@ -22,8 +22,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
-require_once("init.php");
+require_once('init.php');
+require_once('functions/priority.php');
 
+include('templates/header.php');
 
 if (isset($_POST["enregistrer"])) {
     $content_dir = 'upload/'; // dossier où sera déplacé le fichier
@@ -89,26 +91,11 @@ $adresse ="infoCourrier.php?idCourrier=".$idCourrier;
 $status = "Vous venez de créer le courrier numéro: <strong>$idCourrier</strong>.";
 }
 
-?>
 
-<html>
-<head>
-  <title>gCourrier</title>
-  <link href="styles.css"  rel="stylesheet" />
-  <link href="styles2.css" rel="stylesheet" />
-</head>
-
-<body>
-<?php
 if (isset($status)) {
   echo "<div class='status'>$status</div>";
 }
 ?>
-
-<div id = pageTGd><br>
-	<center>
-	<img src = images/banniere2.jpg></img><br><br><br>
-	</center>
 	<table align = center>
 		<form  enctype="multipart/form-data"  name = creerCourrier.php method= POST action = creerCourrier.php> 
 <?/*		
@@ -162,17 +149,10 @@ if (isset($status)) {
 		?></td></tr>
 		<tr><td>Observation</td>
 		<td><textarea name=observation cols=30 rows=4></textarea></td></tr>
+<?php
+		priority_display();
+?>
 
-	<td>Priorite</td>
-		<td><select name = priorite>
-		<?php
-		$requete = "select * from priorite ; ";
-		$result = mysql_query($requete) or die( mysql_error() );
-		while( $ligne = mysql_fetch_array( $result ) ){
-		    echo "<option value = '".$ligne['id']."'>".$ligne['libelle']." ".$ligne['designation']."</option>";
-		}
-		?>
-	</select></td></tr>
 	<tr>
 	<td><label>Attacher un fichier</label></td>
 	<td><input type="file" name="fichier"></td>
@@ -182,11 +162,6 @@ if (isset($status)) {
 		<input type = submit name = enregistrer value = enregistrer></input>
 		</center>
 		</form>
+<?php
 
-<center><br>
-<a href = index.php>index</a>
-<br><br>
-</center>
-</div>
-</body>
-</html>
+include('templates/footer.php');

@@ -32,19 +32,18 @@ require_once('init.php');
 <div id =pageGd><br>
 	<center><img src = images/banniere2.jpg></img></center><br><br><br>
 <center>
-<form name = creerFactureForm method = POST action = modifierIndividu2.php>
-		<tr>
-		<td>Fournisseur</td>
-		<td><select name = fournisseur>
-		<?php
-		$requete = "select * from destinataire order by nom; ";
-		$result = mysql_query($requete) or die( mysql_error() );
-		while( $ligne = mysql_fetch_array( $result ) ){
-		    echo "<option value = '".$ligne['id']."'>".$ligne['nom']." ".$ligne['prenom']."</option>";
-		}
-		?>
-	</select>
-<input type=submit name=modifier value=modifier>
+<form name="creerFactureForm" action="modifierIndividu2.php">
+Fournisseur <select name="fournisseur">
+<?php
+$requete = "select * from destinataire order by nom; ";
+$result = mysql_query($requete) or die( mysql_error() );
+while( $ligne = mysql_fetch_array( $result ) ){
+  echo "<option value = '".$ligne['id']."'>".$ligne['nom']." ".$ligne['prenom']."</option>";
+}
+?>
+</select> <input type="submit" value="Modifier">
 </center>
 </form>
 </div>
+</body>
+</html>

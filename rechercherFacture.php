@@ -31,21 +31,19 @@ if(!isset( $_POST["rechercher"] ) ){
 ?>
 <div id =pageTGd><br>
 <center><b>RECHERCHE FACTURE</b><br><br>
-<?php
-echo"<form method = POST action = rechercherFacture.php>";
-?>
+<form action='rechercherFacture.php'>
 <table align = center>
 <tr>
-<td>numero</td>
-<td><input type = text name = numero></input></td>
+<td>Numéro</td>
+<td><input type="text" name="numero"></input></td>
 </tr>
 <tr>
-<td>refFacture</td>
-<td><input type = text name = refFacture></input></td>
+<td>Réf. Facture</td>
+<td><input type="text" name="refFacture"></input></td>
 </tr>
 
 <tr>
-  <td>montant</td>
+  <td>Montant</td>
   <td colspan=>
     <select name="montant_op">
       <option value="<">&lt;</option>
@@ -57,25 +55,25 @@ echo"<form method = POST action = rechercherFacture.php>";
 </td>
 
 <tr>
-<td>observation</td>
-<td><input type=text name=observation></td>
+<td>Observation</td>
+<td><input type="text" name="observation"></td>
 </tr>
 <tr>
-<td>date arrivee</td>
-<td><input type = text name = dateArrivee value ="jj-mm-aaaa"></input></td>
+<td>Date arrivée mairie</td>
+<td><input type="text" name="dateArrivee" value="jj-mm-aaaa" /></td>
 </tr>
-<td>date origine</td>
-<td><input type = text name = dateOrigine value ="jj-mm-aaaa"></input></td>
-</tr>
-<tr>
-<td>enregistrer entre</td>
-<td><input type = text name = eDate1 value="jj-mm-aaaa"></input>
- et <input type = text name = eDate2 value="jj-mm-aaaa"></input></td>
+<td>Date origine fournisseur</td>
+<td><input type="text" name="dateOrigine" value="jj-mm-aaaa" /></td>
 </tr>
 <tr>
-<td>fournisseur</td>
-<td><select name = fournisseur>
-	<option value = "rien"></option>
+<td>Enregistré entre</td>
+<td><input type="text" name="eDate1" value="jj-mm-aaaa" />
+ et <input type="text" name="eDate2" value="jj-mm-aaaa" /></td>
+</tr>
+<tr>
+<td>Fournisseur</td>
+<td><select name="fournisseur">
+	<option value="rien"></option>
 		<?php
 		$requete = "select * from destinataire order by nom ; ";
 		$result = mysql_query($requete) or die( mysql_error() );
@@ -85,9 +83,9 @@ echo"<form method = POST action = rechercherFacture.php>";
 		?></select></td>
 </tr>
 		<tr>
-		<td>service</td>
-		<td><select name = serviceDest>
-	<option value = "rien"></option>
+		<td>Service</td>
+		<td><select name="serviceDest">
+	<option value="rien"></option>
 		<?php
 			$requete = "select * from service where libelle <>'admin' order by libelle;";
 			$result = mysql_query($requete) or die ( mysql_error() );
@@ -98,13 +96,13 @@ echo"<form method = POST action = rechercherFacture.php>";
 		</td>
 		</tr>
 
-<td><label>courrier retard</label></td>
-<td><input type = "checkbox" name ="retard"/></td>
+<td><label>Courrier retard</label></td>
+<td><input type="checkbox" name="retard"/></td>
 </tr>
 
 </table>
 
-<br><input type = submit name = rechercher value = rechercher>
+<br><input type="submit" name="rechercher" value="Rechercher" />
 </form>
 </div>
 
