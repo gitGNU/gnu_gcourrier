@@ -18,15 +18,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-author VELU Jonathan
 */
 
 require_once('init.php');
 
 include('templates/header.php');
 
-if(!isset( $_POST["rechercher"] ) ){
+if(!isset( $_GET["rechercher"] ) ){
 
 ?>
 <div id =pageTGd><br>
@@ -113,17 +111,17 @@ echo"<center>";
 echo "<div id = titre>RESULTAT DE LA RECHERCHE</div><br></b>";
 
 
-$serviceDest = $_POST['serviceDest'];
-$numero = $_POST['numero'];
-$refFacture = $_POST['refFacture'];
-$dateArrivee = $_POST['dateArrivee'];
-$dateOrigine = $_POST['dateOrigine'];
-$eDate1 = $_POST['eDate1'];
-$eDate2 = $_POST['eDate2'];
-$fournisseur = $_POST['fournisseur'];
-$montant = $_POST['montant'];
-$montant_op = $_POST['montant_op'];
-$observation = $_POST['observation'];
+$serviceDest = $_GET['serviceDest'];
+$numero = $_GET['numero'];
+$refFacture = $_GET['refFacture'];
+$dateArrivee = $_GET['dateArrivee'];
+$dateOrigine = $_GET['dateOrigine'];
+$eDate1 = $_GET['eDate1'];
+$eDate2 = $_GET['eDate2'];
+$fournisseur = $_GET['fournisseur'];
+$montant = $_GET['montant'];
+$montant_op = $_GET['montant_op'];
+$observation = $_GET['observation'];
 
 $requetetmp = 	"SELECT	facture.id as idCourrier,
 			facture.montant as montant,
@@ -264,7 +262,7 @@ if($boul == 0){
 
 echo "<tr>";	
 
-if(isset($_POST['retard'])){
+if(isset($_GET['retard'])){
 
 		$dateActuel = date("Y-m-d");
 		$jourActuel = substr($dateActuel,8,2);
