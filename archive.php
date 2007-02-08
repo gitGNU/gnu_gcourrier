@@ -35,7 +35,7 @@ require_once('init.php');
 
 
 <?php
-if(!isset( $_POST["rechercher"] ) ){
+if (!isset($_GET["rechercher"])) {
 
 ?>
 <div id =pageTGd><br>
@@ -49,37 +49,38 @@ else
 ?>
 </b><br><br>
 <?
-echo"<form name = rechercheAvanceeForm method = POST action = archive.php?type=".$_GET['type'].">";
+echo "<form name = rechercheAvanceeForm action='archive.php'>";
+echo "<input type='hidden' name='type' value='{$_GET['type']}' />";
 ?>
 <table align = center>
 <tr>
-<td>libelle</td>
-<td><input type = text name = libelle></input></td>
+<td>Libellé</td>
+<td><input type="text" name="libelle" /> (contient cette phrase)</td>
 </tr>
 <tr>
-<td>numero</td>
-<td><input type = text name = numero></input></td>
+<td>Numéro</td>
+<td><input type="text" name="numero" /></td>
 </tr>
 
 <tr>
-<td>date arrivee</td>
-<td><input type = text name = date value ="jj-mm-aaaa"></input></td>
-</tr>
-
-
-<tr>
-<td>arrive entre</td>
-<td><input type = text name = eDate1 value="jj-mm-aaaa"></input>
- et <input type = text name = eDate2 value="jj-mm-aaaa"></input></td>
+<td>Date arrivée</td>
+<td><input type="text" name="date" value="jj-mm-aaaa" /></td>
 </tr>
 
 
 <tr>
-<td>emetteur</td>
-<td><select name = ext>
-	<option value = "rien"></option>
+<td>Arrivé entre</td>
+<td><input type="text" name="eDate1" value="jj-mm-aaaa" />
+ et <input type="text" name="eDate2" value="jj-mm-aaaa" /></td>
+</tr>
+
+
+<tr>
+<td>Émetteur</td>
+<td><select name="ext">
+	<option value="rien">(tous)</option>
 		<?php
-		$requete = "select * from destinataire order by nom ; ";
+		$requete = "SELECT * FROM destinataire ORDER BY nom";
 		$result = mysql_query($requete) or die( mysql_error() );
 		while( $ligne = mysql_fetch_array( $result ) ){
 		    echo "<option value = '".$ligne['id']."'>".$ligne['nom']." ".$ligne['prenom']."</option>";
@@ -90,9 +91,9 @@ echo"<form name = rechercheAvanceeForm method = POST action = archive.php?type="
 
 </table>
 
-<br><input type = submit name = rechercher value = rechercher>
+<br><input type="submit" name="rechercher" value="Rechercher" />
 </form>
-<br><a href = index.php>index</a><br><br></div>
+<br><a href="index.php">index</a><br><br></div>
 </center>
 </body>
 </html>
@@ -111,16 +112,16 @@ echo"<center>";
 echo "<div id = titre>RESULTAT DE LA RECHERCHE</div><br></b>";
 
 
-$libelle = $_POST['libelle'];
-$numero = $_POST['numero'];
+$libelle = $_GET['libelle'];
+$numero = $_GET['numero'];
 
-$date = $_POST['date'];
+$date = $_GET['date'];
 
 $dateResult = $date;
 
-$eDate1 = $_POST['eDate1'];
-$eDate2 = $_POST['eDate2'];
-$ext = $_POST['ext'];
+$eDate1 = $_GET['eDate1'];
+$eDate2 = $_GET['eDate2'];
+$ext = $_GET['ext'];
 
 
 $requetetmp = "SELECT courrier.id as idCourrier,
@@ -131,9 +132,9 @@ $from ="    FROM courrier ";
 $where =" WHERE courrier.validite = 1 and courrier.type=".$_GET['type']."";
 
 
-if(strcmp($libelle,"")!=0){
-	$requete.= " and courrier.libelle = '".$libelle."' ";
-
+if ($libelle != '') {
+  $libelle = mysql_real_escape_string($libelle);
+  $requete .= " AND courrier.libelle LIKE '%$libelle%' ";
 }
 
 if(strcmp($numero,"")!=0){
@@ -187,7 +188,7 @@ $requetetmp .= " ".$from." ".$where." ".$requete." ";
 $requete = $requetetmp;
 
 
-$result = mysql_query( $requete ) or die ( mysql_error() ) ;
+$result = mysql_query($requete) or die(mysql_error());
 echo "<table align=center font-color ='white'>";
 echo "<tr>";
 echo "<td align=center>numero</td>";

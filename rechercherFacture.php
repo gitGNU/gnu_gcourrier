@@ -54,7 +54,7 @@ if(!isset( $_GET["rechercher"] ) ){
 
 <tr>
 <td>Observation</td>
-<td><input type="text" name="observation"></td>
+<td><input type="text" name="observation"> (contient cette phrase)</td>
 </tr>
 <tr>
 <td>Date arrivée mairie</td>
@@ -154,9 +154,9 @@ if ($montant != '' and ctype_digit($montant)) {
     $requete.= " and montant > $montant ";
 }
 
-if(strcmp($observation,"")!=0){
-	$requete.= " and observation = '".$observation."' ";
-
+if ($observation != "") {
+  $observation = mysql_real_escape_string($observation);
+  $requete .= " AND observation LIKE '%$observation%' ";
 }
 
 

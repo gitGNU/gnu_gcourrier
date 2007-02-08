@@ -24,31 +24,19 @@ author VELU Jonathan
 
 require_once('init.php');
 
-?>
-<html>
-<head><title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet">
-</head>
-<body>
-
-
-
-
-<?php
+include('templates/header.php');
 if(!isset( $_GET["rechercher"] ) ){
 
 ?>
-<div id =pageTGd><br>
-<center><img src = images/banniere2.jpg></center><br><br>
 <center><b>RECHERCHE COURRIER
 <?php
 if($_GET['type']==1){
 	echo " ENTRANT";
-	$emetteur = "emetteur";
+	$emetteur = "Émetteur";
 }
 else{
 	echo " DEPART";
-	$emetteur = "destinataire";
+	$emetteur = "Destinataire";
 }
 ?>
 
@@ -57,26 +45,26 @@ else{
 echo "<form name = rechercheAvanceeForm action='rechercher.php'>";
 echo "<input type='hidden' name='type' value='{$_GET['type']}' />";
 ?>
-<table align = center>
+<table>
 <tr>
-<td>libelle</td>
-<td><input type = text name = libelle></input></td>
+<td>Libellé</td>
+<td><input type="text" name="libelle" /> (contient cette phrase)</td>
 </tr>
 <tr>
-<td>numero</td>
-<td><input type = text name = numero></input></td>
+<td>Numéro</td>
+<td><input type="text" name="numero" /></td>
 </tr>
 
 <tr>
-<td>date arrivee</td>
-<td><input type = text name = date value ="jj-mm-aaaa"></input></td>
+<td>Date arrivée</td>
+<td><input type="text" name="date" value ="jj-mm-aaaa" /></td>
 </tr>
 
 
 <tr>
-<td>arrive entre</td>
-<td><input type = text name = eDate1 value="jj-mm-aaaa"></input>
- et <input type = text name = eDate2 value="jj-mm-aaaa"></input></td>
+<td>Arrivé entre</td>
+<td><input type = text name = eDate1 value="jj-mm-aaaa" />
+ et <input type = text name = eDate2 value="jj-mm-aaaa" /></td>
 </tr>
 
 
@@ -89,21 +77,21 @@ echo $emetteur;
 
 
 <td><select name = ext>
-	<option value = "rien"></option>
+	<option value = "rien">(tous)</option>
 		<?php
-		$requete = "select * from destinataire order by nom ; ";
+		$requete = "SELECT * FROM destinataire ORDER BY nom";
 		$result = mysql_query($requete) or die( mysql_error() );
-		while( $ligne = mysql_fetch_array( $result ) ){
+		while ($ligne = mysql_fetch_array($result)) {
 		    echo "<option value = '".$ligne['id']."'>".$ligne['nom']." ".$ligne['prenom']."</option>";
 		}
 		?></select></td>
 </tr>
 <tr>
-<td><label>deja transmis</br> par le service</label></td>
+<td><label>Déjà transmis</br> par le service</label></td>
 <td><input type = "checkbox" name ="gTransmis"/></td>
 </tr>
 <tr>
-<td><label>courrier retard</label></td>
+<td><label>Courrier retard</label></td>
 <td><input type = "checkbox" name ="retard"/></td>
 </tr>
 </table>
@@ -137,15 +125,6 @@ $whereRetard="";
 $fromRetard = ""; 
 }
 
-echo"<html>";
-echo"<head><title>gCourrier</title>";
-echo"<LINK HREF=styles3.css REL=stylesheet>";
-echo"</head>";
-echo"<body>"; 
-
-
-echo"<center><img src = images/banniere2.jpg></center><br><br>";
-echo"<center>";
 echo "<div id = titre>RESULTAT DE LA RECHERCHE</div><br></b>";
 
 
@@ -169,9 +148,10 @@ $from =" FROM courrier ".$fromTransmission.$fromRetard;
 $where =" WHERE courrier.validite = 0 and courrier.type=".$_GET['type']."";
 $where .= $reqTmpTransmission.$whereRetard;
 $requete = '';
-if(strcmp($libelle,"")!=0){
-	$requete.= " and courrier.libelle = '".$libelle."' ";
 
+if ($libelle != "") {
+  $libelle = mysql_real_escape_string($libelle);
+  $requete .= " AND courrier.libelle LIKE '%$libelle%' ";
 }
 
 if(strcmp($numero,"")!=0){

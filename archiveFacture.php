@@ -26,25 +26,25 @@ require_once('init.php');
 
 include('templates/header.php');
 
-if(!isset( $_POST["rechercher"] ) ){
+if(!isset( $_GET["rechercher"] ) ){
 
 ?>
 <center><b>Recherche facture archivée</b><br><br>
 <?php
-echo"<form method = POST action = archiveFacture.php>";
+echo"<form action=archiveFacture.php>";
 ?>
-<table class="resultats">
+<table>
 <tr>
-<td>numero</td>
-<td><input type = text name = numero></input></td>
+<td>Numéro</td>
+<td><input type="text" name="numero" /></td>
 </tr>
 <tr>
-<td>refFacture</td>
-<td><input type = text name = refFacture></input></td>
+<td>Réf. facture</td>
+<td><input type="text" name="refFacture" /></td>
 </tr>
 
 <tr>
-  <td>montant</td>
+  <td>Montant</td>
   <td colspan=>
     <select name="montant_op">
       <option value="<">&lt;</option>
@@ -56,23 +56,23 @@ echo"<form method = POST action = archiveFacture.php>";
 </td>
 
 <tr>
-<td>date arrivee</td>
-<td><input type = text name = dateArrivee value ="jj-mm-aaaa"></input></td>
+<td>Date arrivée</td>
+<td><input type="text" name="dateArrivee" value="jj-mm-aaaa" /></td>
 </tr>
-<td>date origine</td>
-<td><input type = text name = dateOrigine value ="jj-mm-aaaa"></input></td>
+<td>Date fournisseur</td>
+<td><input type="text" name="dateOrigine" value="jj-mm-aaaa" /></td>
 </tr>
 <tr>
-<td>enregistrer entre</td>
-<td><input type = text name = eDate1 value="jj-mm-aaaa"></input>
- et <input type = text name = eDate2 value="jj-mm-aaaa"></input></td>
+<td>Enregistré entre</td>
+<td><input type="text" name="eDate1" value="jj-mm-aaaa" />
+ et <input type="text" name="eDate2" value="jj-mm-aaaa" /></td>
 </tr>
 
 
 <tr>
-<td>fournisseur</td>
-<td><select name = fournisseur>
-	<option value = "rien"></option>
+<td>Fournisseur</td>
+<td><select name="fournisseur">
+	<option value="rien">(tous)</option>
 		<?php
 		$requete = "select * from destinataire order by nom ; ";
 		$result = mysql_query($requete) or die( mysql_error() );
@@ -85,7 +85,7 @@ echo"<form method = POST action = archiveFacture.php>";
 
 </table>
 
-<br><input type = submit name = rechercher value = rechercher>
+<br><input type="submit" name="rechercher" value="Rechercher">
 </form>
 
 <?php
@@ -95,15 +95,15 @@ echo "<div id = titre>RESULTAT DE LA RECHERCHE</div><br></b>";
 
 
 
-$numero = $_POST['numero'];
-$refFacture = $_POST['refFacture'];
-$dateArrivee = $_POST['dateArrivee'];
-$dateOrigine = $_POST['dateOrigine'];
-$eDate1 = $_POST['eDate1'];
-$eDate2 = $_POST['eDate2'];
-$fournisseur = $_POST['fournisseur'];
-$montant = $_POST['montant'];
-$montant_op = $_POST['montant_op'];
+$numero = $_GET['numero'];
+$refFacture = $_GET['refFacture'];
+$dateArrivee = $_GET['dateArrivee'];
+$dateOrigine = $_GET['dateOrigine'];
+$eDate1 = $_GET['eDate1'];
+$eDate2 = $_GET['eDate2'];
+$fournisseur = $_GET['fournisseur'];
+$montant = $_GET['montant'];
+$montant_op = $_GET['montant_op'];
 
 
 $requetetmp = 	"SELECT	facture.refuse as refuse,
@@ -137,13 +137,11 @@ if ($montant != '' and ctype_digit($montant)) {
 }
 
 
-if(strcmp($refFacture,"")!=0){
+if (strcmp($refFacture,"") != 0) {
 	$requete.= " and facture.refFacture = '".$refFacture."' ";
-
 }
 
-
-if(strcmp($dateArrivee,"jj-mm-aaaa")!=0){
+if (strcmp($dateArrivee,"jj-mm-aaaa") != 0) {
 	$tmpdatearrivee= substr($dateArrivee, 6,4);
 	$tmpdatearrivee.='-';
 	$tmpdatearrivee.=substr($dateArrivee, 3,2);
@@ -155,7 +153,7 @@ if(strcmp($dateArrivee,"jj-mm-aaaa")!=0){
 
 }
 
-if(strcmp($dateOrigine,"jj-mm-aaaa")!=0){
+if (strcmp($dateOrigine,"jj-mm-aaaa") != 0) {
 	$tmpdateorigine= substr($dateOrigine, 6,4);
 	$tmpdateorigine.='-';
 	$tmpdateorigine.=substr($dateOrigine, 3,2);
@@ -168,17 +166,17 @@ if(strcmp($dateOrigine,"jj-mm-aaaa")!=0){
 }
 
 
-if(strcmp($fournisseur,"rien")!=0){
+if (strcmp($fournisseur, 'rien') != 0) {
 //	$from .= " ,destinataire";
 	$requete.=" and facture.idFournisseur = destinataire.id and destinataire.id = ".$fournisseur." ";
-} else{
+} else {
 	$requete.=" and facture.idFournisseur = destinataire.id ";
 }
 
 
 
 
-if(strcmp($eDate1,"jj-mm-aaaa")!=0 && strcmp($eDate2,"jj-mm-aaaa")!=0){
+if (strcmp($eDate1,"jj-mm-aaaa") != 0 && strcmp($eDate2, "jj-mm-aaaa") != 0) {
 $tmpdate= substr($eDate1, 6,4);
 $tmpdate.='-';
 $tmpdate.=substr($eDate1, 3,2);
