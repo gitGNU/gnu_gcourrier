@@ -96,7 +96,7 @@ echo $emetteur;
 </tr>
 </table>
 
-<br><input type = submit name = rechercher value = rechercher>
+<br><input type="submit" name="rechercher" value="Rechercher" />
 </form>
 <br><a href = index.php>index</a><br><br></div>
 </center>
