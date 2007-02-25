@@ -23,27 +23,30 @@ author VELU Jonathan
 */
 
 require_once('init.php');
+require_once('functions/db.php');
 
+include('templates/header.php');
 ?>
-<html>
-<head> <title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet"></head>
-<body>
-<div id =pageGd><br>
-	<center><img src = images/banniere2.jpg></img></center><br><br><br>
-<center>
+
+Modifier le destinataire ou fournisseur:
 <form name="creerFactureForm" action="modifierIndividu2.php">
-Fournisseur <select name="fournisseur">
+  <select name="fournisseur">
+
 <?php
-$requete = "select * from destinataire order by nom; ";
-$result = mysql_query($requete) or die( mysql_error() );
-while( $ligne = mysql_fetch_array( $result ) ){
-  echo "<option value = '".$ligne['id']."'>".$ligne['nom']." ".$ligne['prenom']."</option>";
+$req = "SELECT * FROM destinataire ORDER BY nom";
+$result = db_execute($req) or die(mysql_error());
+
+while ($ligne = mysql_fetch_array($result)) {
+  echo "<option value='{$ligne['id']}'>";
+  echo htmlspecialchars("{$ligne['nom']} {$ligne['prenom']}");
+  echo "</option>\n";
 }
 ?>
-</select> <input type="submit" value="Modifier">
-</center>
+
+  </select>
+  <input type="submit" value="Modifier" />
 </form>
-</div>
-</body>
-</html>
+
+<?php
+include('templates/footer.php');
+

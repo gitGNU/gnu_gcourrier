@@ -2,7 +2,7 @@
     </div>
     <div id="version">
       GCourrier 1.6
-      - <a href="copyright.html">Licence</a></center>
+      - <a href="copyright.html">Licence</a>
     </div>
   </body>
 </html>
