@@ -27,10 +27,12 @@ require_once('functions/db.php');
 
 include('templates/header.php');
 ?>
+<script src="javascripts/prototype.js" type="text/javascript"></script>
+<script src="javascripts/scriptaculous.js?load=effects,controls" type="text/javascript"></script>
 
 Modifier le destinataire ou fournisseur:
 <form name="creerFactureForm" action="modifierIndividu2.php">
-  <select name="fournisseur">
+  <select name="fournisseur" id="fournisseur">
 
 <?php
 $req = "SELECT * FROM destinataire ORDER BY nom";
@@ -44,6 +46,27 @@ while ($ligne = mysql_fetch_array($result)) {
 ?>
 
   </select>
+<br />
+
+Rechercher: <input type="text" id="autocomplete" name="autocomplete_parameter" size=50 />
+<span id="indicator1" style="display: none">En cours...</span>
+<div id="autocomplete_choices" class="autocomplete"></div>
+
+<script type="text/javascript" language="javascript">
+// <![CDATA[
+  new Ajax.Autocompleter("autocomplete", "autocomplete_choices", "completion-recipients.php",
+    {indicator: 'indicator1', afterUpdateElement : getSelectionId});
+
+function getSelectionId(text, li) {
+  options = document.getElementById('fournisseur').options;
+  for (i = 0; i < options.length; i++)
+    if (options[i].value == li.id)
+      document.getElementById('fournisseur').selectedIndex = i;
+}
+// ]]>
+</script>
+  <br />
+
   <input type="submit" value="Modifier" />
 </form>
 

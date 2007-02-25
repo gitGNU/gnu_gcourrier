@@ -44,6 +44,8 @@ if (!isset($_POST["enregistrer"])) {
        $ville= $ligne['ville'];
      }
    }
+  echo "<input type=hidden name=id value=".$_GET['fournisseur'].">";
+  echo "<tr><td>Numéro</td><td style='text-align: left'>{$_GET['fournisseur']}</td></tr>";
 ?>
 		<tr><td>Nom</td>
 <?php
@@ -64,7 +66,6 @@ echo"		<td><input type = text name =codePostal value='".$codePostal."'></input><
 		<tr><td>Ville</td>
 <?php
 echo"		<td><input type = text name =ville value='".$ville."'></input></td></tr>";
-echo"<input type=hidden name=id value=".$_GET['fournisseur'].">";
 ?>
 	</table>
 		<center><input type="submit" name="enregistrer" value="Enregistrer"></input></center>
