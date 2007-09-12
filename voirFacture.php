@@ -113,7 +113,8 @@ $requeteFacture = "select facture.id as idFacture,
 			  destinataire.nom as nomFournisseur,
 			  destinataire.id as idDest,
 			  destinataire.prenom as prenomFournisseur,
-			  priorite.nbJours as nbJours	
+			  priorite.nbJours as nbJours,
+			  unix_timestamp(datesysteme) AS internal_timestamp	
  		   from facture,destinataire,priorite
 		   where facture.idFournisseur = destinataire.id
 		   and validite=0 
@@ -137,7 +138,8 @@ $requeteFacture = "select facture.id as idFacture,
 			  destinataire.nom as nomFournisseur,
 			  destinataire.id as idDest,
 			  destinataire.prenom as prenomFournisseur,
-			  priorite.nbJours as nbJours
+			  priorite.nbJours as nbJours,
+			  unix_timestamp(datesysteme) AS internal_timestamp
  		    from facture,destinataire,priorite
 		    where facture.id<=".$idTmp." 
              		   and facture.validite = 0
@@ -159,7 +161,8 @@ $requeteFacture = "select facture.id as idFacture,
 			  destinataire.nom as nomFournisseur,
 			  destinataire.id as idDest,
 			  destinataire.prenom as prenomFournisseur,
-			  priorite.nbJours as nbJours
+			  priorite.nbJours as nbJours,
+			  unix_timestamp(datesysteme) AS internal_timestamp
  		    from facture,destinataire,priorite
 		    where facture.id=".$_GET['idFactureRecherche']." 
              		   and facture.validite = 0
@@ -243,7 +246,7 @@ while($ligne = mysql_fetch_array($resultatFacture)){
 	echo "<td bgcolor=".$couleur." style=\"text-align:center\"><a href=modifRef.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$refFacture."</a></td>";
 	echo "<td bgcolor=".$couleur." style=\"text-align:right\"><a href=modifMontant.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$montant."</a></td>";
 	echo "<td bgcolor='$couleur'>".
-	  (((time() - strtotime($ligne['dateFacture'])) < 86400)
+	  (((time() - $ligne['internal_timestamp']) < 86400)
 	   ? "<a href='editBillDate.php?id=$idCourrier'>$dateArrivee</a>"
 	   : "$dateArrivee")
 	  . "</td>";

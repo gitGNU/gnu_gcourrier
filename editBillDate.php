@@ -29,7 +29,8 @@ include('templates/header.php');
 
 function cur_dates() {
   $res = db_execute("SELECT dateFactureOrigine AS date_facture,
-                            dateFacture AS date_mairie
+                            dateFacture AS date_mairie,
+			    unix_timestamp(datesysteme) AS internal_timestamp
                      FROM facture WHERE id=?",
 		    array((int)$_REQUEST['id']));
   return mysql_fetch_array($res);
@@ -59,9 +60,8 @@ if(empty($_REQUEST['id']) or !ctype_digit($_REQUEST['id'])) {
 			   'date_facture' => $cur_dates['date_facture'],
 			   'date_mairie'  => $cur_dates['date_mairie']));
 
-  if ((time() - strtotime($cur_dates['date_mairie'])) > 86400)
+  if ((time() - $cur_dates['internal_timestamp']) > 86400)
     $form->freeze('date_mairie');
-  
 
   function date_isvalid($arr) {
     extract($arr);
@@ -80,7 +80,7 @@ if(empty($_REQUEST['id']) or !ctype_digit($_REQUEST['id'])) {
 
     $changed = false;
     if ($timestamp_mairie != strtotime($cur_dates['date_mairie'])) {
-      if ((time() - strtotime($cur_dates['date_mairie'])) > 86400) {
+      if ((time() - $cur_dates['internal_timestamp']) > 86400) {
 	echo "<div class='status'>"
 	  . _("Facture saisie depuis plus de 24H. Date de saisie non modifiée.")
 	  . "</div>";
