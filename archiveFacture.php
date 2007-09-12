@@ -127,7 +127,7 @@ if(strcmp($numero,"")!=0){
 }
 
 
-if ($montant != '' and ctype_digit($montant)) {
+if ($montant != '' and is_numeric($montant)) {
   if ($montant_op == '<')
     $requete.= " and montant < $montant ";
   else if ($montant_op == '=')
