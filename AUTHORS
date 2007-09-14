@@ -10,3 +10,5 @@ Bugfixes, long sessions support, release system, documentation
   legalese.
 
 Code clean-up (functions, input sanitizing).
+
+upgrades/1.8

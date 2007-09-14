@@ -114,7 +114,7 @@ $requeteFacture = "select facture.id as idFacture,
 			  destinataire.id as idDest,
 			  destinataire.prenom as prenomFournisseur,
 			  priorite.nbJours as nbJours,
-			  unix_timestamp(datesysteme) AS internal_timestamp	
+			  unix_timestamp(datesaisie) AS internal_timestamp	
  		   from facture,destinataire,priorite
 		   where facture.idFournisseur = destinataire.id
 		   and validite=0 
@@ -139,7 +139,7 @@ $requeteFacture = "select facture.id as idFacture,
 			  destinataire.id as idDest,
 			  destinataire.prenom as prenomFournisseur,
 			  priorite.nbJours as nbJours,
-			  unix_timestamp(datesysteme) AS internal_timestamp
+			  unix_timestamp(datesaisie) AS internal_timestamp
  		    from facture,destinataire,priorite
 		    where facture.id<=".$idTmp." 
              		   and facture.validite = 0
@@ -162,7 +162,7 @@ $requeteFacture = "select facture.id as idFacture,
 			  destinataire.id as idDest,
 			  destinataire.prenom as prenomFournisseur,
 			  priorite.nbJours as nbJours,
-			  unix_timestamp(datesysteme) AS internal_timestamp
+			  unix_timestamp(datesaisie) AS internal_timestamp
  		    from facture,destinataire,priorite
 		    where facture.id=".$_GET['idFactureRecherche']." 
              		   and facture.validite = 0
@@ -239,7 +239,7 @@ while($ligne = mysql_fetch_array($resultatFacture)){
 		$observation ="modifier";
 	
 	if($refuse==1)
-		$couleur=red;
+		$couleur = 'red';
 
 	echo "<td bgcolor=".$couleur.">".$idCourrier."</td>";
 	echo "<td bgcolor=".$couleur."><a href=modifDestinataire.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$nomDestinataire."</a></td>";

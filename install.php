@@ -110,7 +110,7 @@ $result = mysql_query( $requete ) or die ("erreur12". mysql_error() );
 
 $requete = " CREATE TABLE `facture` (
   `id` int(11) NOT NULL auto_increment,
-  `montant` varchar(32) NOT NULL default '',
+  `montant` decimal(10,2) NOT NULL,
   `refFacture` varchar(32) NOT NULL default '',
   `dateFacture` date NOT NULL default '0000-00-00',
   `dateFactureOrigine` date NOT NULL default '0000-00-00',
