@@ -19,6 +19,11 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 */
 
+/*
+  INSTALL: place this temporarily at the top-level of your
+  installation and run it from a web browser.
+ */
+
 include('functions/db.php');
 $result = db_execute('SELECT id, montant FROM facture');
 $num_errors_total = 0;
