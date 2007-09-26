@@ -97,9 +97,9 @@ $result = mysql_query($requete) or die(mysql_error());
 while ($ligne = mysql_fetch_array($result)) {
   $selected = '';
   if ($copy and $ligne['id'] == $idFournisseur)
-    $selected = 'SELECTED';
+    $selected = 'selected="selected"';
 
-  echo "<option $selected value='{$ligne['id']}'>"
+  echo "<option value='{$ligne['id']}' $selected>"
     . "{$ligne['nom']} {$ligne['prenom']}"
     . "</option>";
 }
@@ -117,9 +117,9 @@ $result = mysql_query($requete) or die (mysql_error());
 while ($ligne = mysql_fetch_array( $result )) {
   $selected = '';
   if ($copy and $ligne['id'] == $service)
-    $selected = 'SELECTED';
+    $selected = 'selected="selected"';
   
-  echo "<option $selected value='{$ligne['id']}'>"
+  echo "<option value='{$ligne['id']}' $selected>"
     . "{$ligne['libelle']} {$ligne['designation']}"
     . "</option>";
 }
@@ -157,7 +157,10 @@ echo "<input type='text' name='dateFactureOrigine' value='{$date}' />";
 <td><input type = text name = montant></input></td></tr>
 
 <?php
-priority_display();
+if ($copy)
+{ priority_display($idPriorite); }
+else
+{ priority_display(); }
 ?>
 
 <tr>

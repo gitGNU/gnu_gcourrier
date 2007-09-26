@@ -20,7 +20,7 @@ along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-function priority_display() {
+function priority_display($default_index=NULL) {
 ?>
       <tr>
         <td>Priorité</td>
@@ -33,7 +33,10 @@ function priority_display() {
 	    echo "<select name='priorite'>";
 
 	    while($ligne = mysql_fetch_array($result)){
-	      echo "<option value='{$ligne['id']}'>
+	      $selected = '';
+	      if (isset($default_index) and $ligne['id'] == $default_index)
+		$selected = 'selected="selected"';
+	      echo "<option value='{$ligne['id']}' $selected>
                     {$ligne['designation']} ({$ligne['nbJours']} j.)
                   </option>";
 	    }
