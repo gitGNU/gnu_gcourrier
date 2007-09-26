@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 setlocale(LC_ALL, 'fr_FR.UTF-8');
+#print strftime('%A %d %B %Y - %H:%M', time());
 header('Content-Type: text/html;charset=UTF-8');
 
 if (!file_exists(dirname(__FILE__).'/config.php')) {

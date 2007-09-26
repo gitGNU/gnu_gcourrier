@@ -137,7 +137,7 @@ if ($form->validate()) {
 
 # Modify an existing user?
 # Analyse the page parameters
-$param_user = new HTML_QuickForm('modify_user', 'get');
+$param_user = new GPLQuickForm('modify_user', 'get');
 $param_user->addElement('text', 'id');
 $param_user->addRule('id', NULL, 'required');
 $param_user->addRule('id', NULL, 'callback', 'ctype_digit');
@@ -152,16 +152,16 @@ if ($param_user->validate()) {
 }
 
 if ($display_mode == 'modify') {
-  $elt1 = &$form->getElement('title');
+  $elt1 = $form->getElement('title');
   $elt1->setText("Modifier le compte");
-  $elt2 = &$form->getElement('password1');
+  $elt2 = $form->getElement('password1');
   $elt2->setLabel("Changer de mot de passe");
-  $elt3 = &$form->getElement('login');
+  $elt3 = $form->getElement('login');
   $elt3->freeze();
   $form->setConstants(array('mode' => 'modify'));
 }
 if ($_SESSION['login'] != 'admin') {
-  $elt4 = &$form->getElement('idService');
+  $elt4 = $form->getElement('idService');
   $elt4->freeze();
 }
 
