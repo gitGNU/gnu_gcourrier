@@ -30,7 +30,7 @@ include('templates/header.php');
 function cur_dates() {
   $res = db_execute("SELECT dateFactureOrigine AS date_facture,
                             dateFacture AS date_mairie,
-			    unix_timestamp(datesysteme) AS internal_timestamp
+			    unix_timestamp(dateSaisie) AS internal_timestamp
                      FROM facture WHERE id=?",
 		    array((int)$_REQUEST['id']));
   return mysql_fetch_array($res);

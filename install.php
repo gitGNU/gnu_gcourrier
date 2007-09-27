@@ -122,7 +122,7 @@ $requete = " CREATE TABLE `facture` (
   `idPriorite` int(11) NOT NULL default '0',
   `histo` varchar( 255 ) DEFAULT 'consulter' NOT NULL,
   `refuse` int(11) NOT NULL default '0',
-  `dateSysteme` timestamp default CURRENT_TIMESTAMP,
+  `dateSaisie` timestamp default CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`)
 );";
 $result = mysql_query( $requete ) or die ("erreur13". mysql_error() );
