@@ -25,6 +25,7 @@ require_once('functions/priority.php');
 
 include('templates/header.php');
 
+$copy = 0;
 if (isset($_POST["enregistrer"]) or isset($_POST["enregistrer_puis_copie"])) {
   $service = $_POST['serviceDest'];
   $montant=$_POST["montant"];
@@ -73,7 +74,6 @@ if (isset($_POST["enregistrer"]) or isset($_POST["enregistrer_puis_copie"])) {
   
   $status = "Vous venez de créer la facture numéro: <strong>$idCourrier</strong>.";
 
-  $copy = 0;
   if (isset($_POST["enregistrer_puis_copie"]))
     {
       $copy = 1;
