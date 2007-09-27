@@ -24,7 +24,7 @@ require_once(dirname(__FILE__).'/../../../classes/HTML/QuickForm.php');
 class HTML_QuickForm_FR extends GPLQuickForm {
   function HTML_QuickForm_FR($formName='', $method='post', $action='', $target='', $attributes=null, $trackSubmit = false) {
     parent::__construct($formName, $method, $action, $target, $attributes, $trackSubmit);
-    $this->setRequiredNote('<span style="font-size:80%; color:#ff0000;">*</span><span style="font-size:80%;"> champ requis</span>');
+    $this->setRequiredNote('<span style="font-size: smaller"><span style="color: red">*</span> champ requis</span>');
     $this->setJsWarnings("Le formulaire n'est pas valide:", '');
   }
 }

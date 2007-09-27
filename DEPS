@@ -1,3 +1,2 @@
-pear install --alldeps HTML_QuickForm
 pear install --alldeps MDB2 MDB2_Driver_mysql
 pear install --alldeps Structures_DataGrid-beta Structures_DataGrid_DataSource_MDB2-beta Structures_DataGrid_Renderer_HTMLTable-beta Structures_DataGrid_Renderer_Pager-beta

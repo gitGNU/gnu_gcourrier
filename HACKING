@@ -44,6 +44,10 @@ database.
 
 Both can be found at http://pear.php.net
 
+To be more precise: we actually use our own GPLQuickForm, which is a
+partial reimplementation released under the GNU GPL (HTML_QuickForm is
+released under the PHP license, which is incompatible)
+
 
 Internationalization - i18n
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
