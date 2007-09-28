@@ -75,7 +75,7 @@ function db_execute($sql, $inputarr=null)
   $res = mysql_query($sql);
   if ($res === false)
 #    throw new Exception(mysql_error());
-    exit(mysql_error());
+    exit("Query <code>$sql</code> failed: " .mysql_error());
   return $res;
 }
 
