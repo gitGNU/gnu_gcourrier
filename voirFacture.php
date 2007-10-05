@@ -23,6 +23,7 @@ author VELU Jonathan
 */
 
 require_once('init.php');
+require_once('classes/SQLDataGrid.php');
 
 include('templates/header.php');
 
@@ -307,6 +308,63 @@ if(mysql_num_rows($resultatFacture) == $nbAffiche)
 ?>	
 
 <center>&lt; <a href="javascript:history.go(-1)"><b>Page précédente</b></a></center>
+
+<?php
+
+if(!isset( $_GET['id'] )){
+
+$re = "select max(id) as id from facture;";
+$res = mysql_query( $re ) or die (mysql_error() );
+	while($ligne = mysql_fetch_array( $res ) ){
+		$id = $ligne['id']; 
+	}
+$idTmp = $id;
+}
+
+else{
+	$idTmp = $_GET['id'];
+}
+
+$requeteFacture = "select facture.id as idFacture,
+			  facture.histo as histo,
+			  refuse as refuse,
+  			  facture.refFacture as refFacture,
+			  facture.dateFacture as dateFacture,
+			  facture.dateFactureOrigine as dateFactureOrigine,
+			  facture.observation as observation,			  
+			  facture.montant as montant,
+			  destinataire.nom as nomFournisseur,
+			  destinataire.id as idDest,
+			  destinataire.prenom as prenomFournisseur,
+			  priorite.nbJours as nbJours,
+			  unix_timestamp(datesaisie) AS internal_timestamp
+ 		    from facture,destinataire,priorite
+		    where facture.id<=".$idTmp." 
+             		   and facture.validite = 0
+			   and facture.idServiceCreation = ".$_SESSION['idService']."
+			   and facture.idPriorite = priorite.id
+			   and facture.idFournisseur = destinataire.id";
+
+$sdg = new SQLDataGrid($requeteFacture,
+		       array('Numéro' => 'idFacture',
+			     'Fournisseur' => 'nomFournisseur',
+			     'Ref.' => 'refFacture',
+			     'Montant' => 'montant',
+			     'dateMairie' => 'dateFacture',
+			     'dateFacture' => 'dateFactureOrigine',
+			     'Observation' => 'observation',
+			     'Historique' => 'histo',
+			     ));
+$sdg->setPagerSize($_SESSION['pagersize']);
+$sdg->setDefaultSort(array('idFacture' => 'DESC'));
+$sdg->setClass('resultats');
+if (isset($_GET['idFactureRecherche']))
+{
+  $sdg->setDefaultPageWhere(array('idFacture' => $_GET['idFactureRecherche']));
+}
+$sdg->display();
+     
+?>
 
 <?php
 
