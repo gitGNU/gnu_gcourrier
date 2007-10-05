@@ -92,7 +92,7 @@ echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
 <label>rechercher la facture numero : </label>
 <input type=text name=numero value=1 size=2></input>
 <input type=submit name=ok value=ok></input>
-<br><a href=rechercherFacture.php><font size=1px><center>rechercheAvancee</center></font></a>
+<br><center><span style="font-size: x-small"><a href="rechercherFacture.php">Recherche avancée</a></span></center>
 </tr></td></table></form>
 
 <?php
@@ -325,6 +325,10 @@ else{
 	$idTmp = $_GET['id'];
 }
 
+
+
+
+
 $requeteFacture = "select facture.id as idFacture,
 			  facture.histo as histo,
 			  refuse as refuse,
@@ -347,13 +351,16 @@ $requeteFacture = "select facture.id as idFacture,
 
 $sdg = new SQLDataGrid($requeteFacture,
 		       array('Numéro' => 'idFacture',
-			     'Fournisseur' => 'nomFournisseur',
+			     'Fournisseur' => array('sqlcol' => 'nomFournisseur',
+						    'callback' => 'printProvider'),
 			     'Ref.' => 'refFacture',
 			     'Montant' => 'montant',
-			     'dateMairie' => 'dateFacture',
-			     'dateFacture' => 'dateFactureOrigine',
+			     'Date Mairie' => 'dateFacture',
+			     'Date Facture' => 'dateFactureOrigine',
 			     'Observation' => 'observation',
 			     'Historique' => 'histo',
+			     'Jours restant' => array('style' => 'text-align: center',
+						      'callback' => 'printRemainingDays'),
 			     ));
 $sdg->setPagerSize($_SESSION['pagersize']);
 $sdg->setDefaultSort(array('idFacture' => 'DESC'));
@@ -363,9 +370,51 @@ if (isset($_GET['idFactureRecherche']))
   $sdg->setDefaultPageWhere(array('idFacture' => $_GET['idFactureRecherche']));
 }
 $sdg->display();
-     
-?>
 
-<?php
+
+
+
+function printProvider($params)
+{
+  $row = $params['record'];
+  return "<a href='modifDestinataire.php?idCourrier={$row['idFacture']}'>"
+    . "{$row['nomFournisseur']}"
+    . " {$row['prenomFournisseur']}"
+    . "</a>";
+}
+
+function printRemainingDays($params)
+{
+  //test pour urgence du courrier
+  $dateActuel = date("Y-m-d");
+  $jourActuel = substr($dateActuel,8,2);
+  $moisActuel = substr($dateActuel,5,2);
+  $anneeActuel= substr($dateActuel,0,4);
+  
+  $tmpDateArrivee = $params['record']['dateFacture'];
+  $jourArrivee =substr($tmpDateArrivee,8,2);
+  $moisArrivee =substr($tmpDateArrivee,5,2);
+  $anneeArrivee =substr($tmpDateArrivee,0,4);
+  
+  //		echo " feafaoho".$tmpdateArrivee;
+  
+  $nbJours = $params['record']['nbJours'];
+  
+  $timestampActuel = mktime(0,0,0,$moisActuel,$jourActuel,$anneeActuel);
+  $timestampArrivee= mktime(0,0,0,$moisArrivee,$jourArrivee,$anneeArrivee);
+  $urgence = ($timestampActuel - $timestampArrivee ) / 86400;
+  
+  // round value to take 'dailight saving time' into account (=> no float)
+  $nbJoursRestant = (int) ($nbJours - $urgence);
+  
+  //		echo " fze ".$urgence." : ".$nbJours." :: ".$ligne['nbJours']."<br>";
+  if ($nbJoursRestant >= 5)
+    $alerte = "green";
+  else
+    $alerte = "red";
+  
+  
+  return "<span style='color:$alerte;font-weight:bold'>$nbJoursRestant</span>";
+}
 
 include('templates/footer.php');

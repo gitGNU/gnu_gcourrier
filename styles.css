@@ -65,7 +65,7 @@ body {
 /*   margin-right: 10%; */
 }
 
-#page
+.page
 {
   /* for absolution pos. in #greeting: */
   position: relative;
@@ -79,7 +79,7 @@ body {
   text-align: center;
 }
 
-#page table {
+.page table {
   margin: auto;
   margin-bottom: 20px;
 }
@@ -148,54 +148,45 @@ img {
   padding: 20px;
 }
 
-#page A {
-color: darkblue ;
-text-decoration: underline ;
-font-weight:bold;
-}
-#page A:link {
-color: darkblue ;
-text-decoration: underline ;
-font-weight:bold;
-}
-#page A:hover {
-color: darkblue ;
-text-decoration: underline ;
-font-weight:bold;
-}
-#page A:active {
-color: darkblue ;
-text-decoration: underline ;
-font-weight:bold;
-}
-#page A:visited {
-color: darkblue ;
-text-decoration: underline ;
-font-weight:bold;
-}
 
-
-A {
+a {
 color: white ;
 text-decoration: underline ;
 }
-A:link {
+a:visited {
 color: white ;
 text-decoration: underline ;
 }
-A:hover {
+a:hover {
 color: white ;
-text-decoration: underline ;
+text-decoration: none ;
 }
-A:active {
-color: white ;
-text-decoration: underline ;
-}
-A:visited {
+a:active {
 color: white ;
 text-decoration: underline ;
 }
 
+
+.page a {
+color: darkblue ;
+text-decoration: underline ;
+font-weight:bold;
+}
+.page a:visited {
+color: darkblue ;
+text-decoration: underline ;
+font-weight:bold;
+}
+.page a:hover {
+color: darkblue ;
+text-decoration: none ;
+font-weight:bold;
+}
+.page a:active {
+color: darkblue ;
+text-decoration: underline ;
+font-weight:bold;
+}
 
 body 
 {
@@ -214,4 +205,21 @@ background: silver
 
 table.resultats {
   font-size: small;
+}
+
+table.resultats th {
+  font-weight: bold;
+}
+
+table.resultats td a, table.resultats td a:hover,
+  table.resultats td a:visited {
+  font-weight: normal;
+}
+
+table.resultats a, table.resultats a:visited {
+  text-decoration: none;
+}
+
+table.resultats a:hover {
+  text-decoration: underline;
 }

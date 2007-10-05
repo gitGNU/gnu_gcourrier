@@ -7,7 +7,7 @@
   </head>
 
   <body>
-    <div id="page">
+    <div class="page">
       <div id="top_logo">
         <a href=".">
           <img src="images/banniere2.jpg" alt="GCourrier" />

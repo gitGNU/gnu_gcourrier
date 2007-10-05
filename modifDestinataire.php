@@ -23,6 +23,7 @@ author VELU Jonathan
 */
 
 require_once('init.php');
+require_once('functions/db.php');
 
 if(!isset($_POST['modifier'])){
   $idCourrier = $_GET['idCourrier'];
@@ -42,13 +43,22 @@ if(!isset($_POST['modifier'])){
 <?php
 echo"<center>";
 echo"<label>fournisseur : </label>";
+
+
+$res = db_execute("select * from facture where id=?", array($idCourrier));
+$row = mysql_fetch_array($res);
+$cur_provider = $row['idFournisseur'];
+
 echo "<select name = fournisseur>";
 
 $requete = "select * from destinataire order by nom; ";
 $result = mysql_query($requete) or die( mysql_error() );
 
 while( $ligne = mysql_fetch_array( $result ) ){
-    echo "<option value = '".$ligne['id']."'>".$ligne['nom']." ".$ligne['prenom']."</option>";
+  $selected = '';
+  if ($ligne['id'] == $cur_provider)
+    $selected = "selected='selected'";
+  echo "<option $selected value='{$ligne['id']}'>{$ligne['nom']} {$ligne['prenom']}</option>";
 }
 
 echo "</select>";
