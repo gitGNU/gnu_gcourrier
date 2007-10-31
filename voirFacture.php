@@ -35,61 +35,26 @@ echo "<a href = index.php>index</a></center>";
 exit();
 }
 
-
-if(!isset( $_GET['order'] )){
-$order = "facture.id";
-}
-else{
-$order = $_GET['order'];
-}
-
-if(!isset( $_GET['id'] )){
-
-$re = "select max(id) as id from facture;";
-$res = mysql_query( $re ) or die (mysql_error() );
-	while($ligne = mysql_fetch_array( $res ) ){
-		$id = $ligne['id']; 
-	}
-$idTmp = $id;
-}
-
-else{
-	$idTmp = $_GET['id'];
-}
-
-
-if(!isset( $_GET['nbAffiche'] )){
-$requete = "select * from utilisateur where login = '".$_SESSION['login']."';";
-$result = mysql_query($requete) or die(mysql_error());
-while($ligne = mysql_fetch_array($result)){
-$nbAffiche = $ligne['preferenceNbCourrier'];
-
-}
-
-}
-
-else{
-        $nbAffiche = $_GET['nbAffiche'];
-}
 ?>
+
 <form method = POST action=voirFactureAffiche.php>
-<table align="center" style="border:1px dotted black;"><tr><td>
-<label>nombre de facture a afficher : </label>
+<table align="center" style="border: 1px dotted black;"><tr><td>
+<label>Nombre de factures à afficher:</label>
 
 <?php
 //echo"<input type = hidden name=type value=".$_GET['type']." size=2></input>";
-echo"<input type = text name=affiche value=".$nbAffiche." size=2></input>";
-echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
+echo"<input type='text' name='affiche' value='{$_GET['nbAffiche']}' size=2></input>";
+echo"<input type='hidden' name='idTmp' value='{$_GET['id']}'></input>";
 ?>
 
-<input type=submit name=ok value=ok></input>
+<input type="submit" name="ok" value="ok"></input>
 </td></tr>
 </table>
 </form>
 
-<form method = POST action=rechercheRapideFacture.php>
-<table align=center style="border:1px dotted black;"><tr><td>
-<label>rechercher la facture numero : </label>
+<form method="POST" action="rechercheRapideFacture.php#result">
+<table align=center style="border: 1px dotted black;"><tr><td>
+<label>Aller à la facture numéro:</label>
 <input type=text name=numero value=1 size=2></input>
 <input type=submit name=ok value=ok></input>
 <br><center><span style="font-size: x-small"><a href="rechercherFacture.php">Recherche avancée</a></span></center>
@@ -97,282 +62,95 @@ echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
 
 <?php
 
+echo"<center><div id= titre>Factures  / <a href=copieFacture.php >Copies de Factures</a><br/><br/><i style=\"font-size:10px;font-weight:normal\">Note: sont affichées les factures de votre service uniquement</i><br/><br/></div></center>";
 
 
-echo"<center><div id= titre>Factures  / <a href=copieFacture.php >Copies de Factures</a><br/><br/><i style=\"font-size:10px;font-weight:normal\">Note: Ceci est les factures de votre service uniquement</i><br/><br/></div></center>";
-
-
-if(strcmp($_SESSION['login'] , 'admin') == 0){
-$requeteFacture = "select facture.id as idFacture,
-			  facture.histo as histo,
-  			  refFacture as refFacture,
-			  refuse as refuse,
-			  montant as montant,
-			  dateFacture as dateFacture,
-			  dateFactureOrigine as dateFactureOrigine,
-			  observation as observation,			  
-			  destinataire.nom as nomFournisseur,
-			  destinataire.id as idDest,
-			  destinataire.prenom as prenomFournisseur,
-			  priorite.nbJours as nbJours,
-			  unix_timestamp(datesaisie) AS internal_timestamp	
- 		   from facture,destinataire,priorite
-		   where facture.idFournisseur = destinataire.id
-		   and validite=0 
-		   and facture.idPriorite = priorite.id
-		   order by ".$order." DESC
-	           LIMIT ".$nbAffiche.";";
-
-
-}
-else{
-
-if(!isset($_GET['idFactureRecherche'])){
-$requeteFacture = "select facture.id as idFacture,
-			  facture.histo as histo,
-			  refuse as refuse,
-  			  facture.refFacture as refFacture,
-			  facture.dateFacture as dateFacture,
-			  facture.dateFactureOrigine as dateFactureOrigine,
-			  facture.observation as observation,			  
-			  facture.montant as montant,
-			  destinataire.nom as nomFournisseur,
-			  destinataire.id as idDest,
-			  destinataire.prenom as prenomFournisseur,
-			  priorite.nbJours as nbJours,
+if ($_SESSION['login'] == 'admin')
+{
+  $requeteFacture = "SELECT facture.id AS idFacture,
+			  facture.histo AS histo,
+  			  refFacture AS refFacture,
+			  refuse AS refuse,
+			  montant AS montant,
+			  dateFacture AS dateFacture,
+			  dateFactureOrigine AS dateFactureOrigine,
+			  observation AS observation,
+			  destinataire.nom AS nomFournisseur,
+			  destinataire.id AS idDest,
+			  destinataire.prenom AS prenomFournisseur,
+			  priorite.nbJours AS nbJours,
 			  unix_timestamp(datesaisie) AS internal_timestamp
- 		    from facture,destinataire,priorite
-		    where facture.id<=".$idTmp." 
-             		   and facture.validite = 0
-			   and facture.idServiceCreation = ".$_SESSION['idService']."
-			   and facture.idPriorite = priorite.id
-			   and facture.idFournisseur = destinataire.id
-		           order by ".$order." DESC
-			   LIMIT ".$nbAffiche.";";
+ 		   FROM facture, destinataire, priorite
+		   WHERE facture.idFournisseur = destinataire.id
+		   AND validite = 0
+		   AND facture.idPriorite = priorite.id";
 }
-else{
-$requeteFacture = "select facture.id as idFacture,
-			  facture.histo as histo,
-			  refuse as refuse,
-  			  facture.refFacture as refFacture,
-			  facture.dateFacture as dateFacture,
-			  facture.dateFactureOrigine as dateFactureOrigine,
-			  facture.observation as observation,			  
-			  facture.montant as montant,
-			  destinataire.nom as nomFournisseur,
-			  destinataire.id as idDest,
-			  destinataire.prenom as prenomFournisseur,
-			  priorite.nbJours as nbJours,
+else
+{
+  $requeteFacture = "SELECT facture.id AS idFacture,
+			  facture.histo AS histo,
+			  refuse AS refuse,
+  			  facture.refFacture AS refFacture,
+			  facture.dateFacture AS dateFacture,
+			  facture.dateFactureOrigine AS dateFactureOrigine,
+			  facture.observation AS observation,			  
+			  facture.montant AS montant,
+			  destinataire.nom AS nomFournisseur,
+			  destinataire.id AS idDest,
+			  destinataire.prenom AS prenomFournisseur,
+			  priorite.nbJours AS nbJours,
 			  unix_timestamp(datesaisie) AS internal_timestamp
- 		    from facture,destinataire,priorite
-		    where facture.id=".$_GET['idFactureRecherche']." 
-             		   and facture.validite = 0
-			   and facture.idServiceCreation = ".$_SESSION['idService']."
-			   and facture.idPriorite = priorite.id
-			   and facture.idFournisseur = destinataire.id
-		           order by ".$order." DESC
-			   LIMIT ".$nbAffiche.";";
+ 		    FROM facture,destinataire,priorite
+		    WHERE facture.validite = 0
+			  AND facture.idServiceCreation = ".$_SESSION['idService']."
+			  AND facture.idPriorite = priorite.id
+			  AND facture.idFournisseur = destinataire.id";
 }
-
-
-}
-
-$resultatFacture = mysql_query($requeteFacture) or die("erreur facture ".mysql_error() );
-
-echo "<table align=center font-color ='white' class='resultats'>";
-	echo "<tr>";
-	echo "<td align=center><a href=voirFacture.php?order=facture.id style=\"font-weight:normal\">numero</a> </td>";
-	echo "<td align=center><a href=voirFacture.php?order=facture.idFournisseur style=\"font-weight:normal\">fournisseur</a></td>";
-	echo "<td align=center><a href=voirFacture.php?order=facture.refFacture style=\"font-weight:normal\">refFacture</a></td>";
-	echo "<td align=center><a href=voirFacture.php?order=facture.montant style=\"font-weight:normal\">montant</a></td>";
-	echo "<td align=center><a href=voirFacture.php?order=facture.dateFacture style=\"font-weight:normal\">dateMairie</a></td>";
-	echo "<td align=center><a href=voirFacture.php?order=facture.dateFactureOrigine style=\"font-weight:normal\">dateFacture</a></td>";
-	echo "<td align=center>observation</td>";
-	echo "<td align=center>historique</td>";
-if(strcmp($_SESSION['login'] , 'admin') != 0){
-
-	echo "<td align=center>transmettre</td>";
-	echo "<td align=center>terminer</td>";
-}
-	echo "<td align=center>jours restant</td>";
-	echo"</tr>";
-$boul = 0;
-while($ligne = mysql_fetch_array($resultatFacture)){
-	$idTmp = $ligne['idFacture']-1;
-	if($boul == 0){
-		$couleur = 'lightblue';
-		$boul = 1;
-	}
-	else{
-		$couleur = 'white';
-		$boul = 0;	
-	}
-		echo "<tr>";
-
-//	echo "nbJours:".$ligne['nbJours'];
-	$refuse=$ligne['refuse'];	
-	$dest=$ligne['nomFournisseur'];
-	$idCourrier = $ligne['idFacture'];
-	$nomDestinataire = $ligne['nomFournisseur']." ".$ligne['prenomFournisseur'];
-	$refFacture = $ligne['refFacture'];
-	$montant = $ligne['montant'];
-	$tmpdateArrivee = $ligne['dateFacture']; 
-	$dateArrivee=substr($tmpdateArrivee,8,2)."-".substr($tmpdateArrivee,5,2)."-".substr($tmpdateArrivee,0,4);
-	$tmpdateFacture = $ligne['dateFactureOrigine'];
-	$dateFacture=substr($tmpdateFacture,8,2)."-".substr($tmpdateFacture,5,2)."-".substr($tmpdateFacture,0,4);
-	$observation = $ligne['observation'];
-	
-	$tmpMontant = $montant;
-	$tmpMontant.="00";
-	$tmpMontant2 = $montant * 100;
-		
-	if(strcmp($tmpMontant,$tmpMontant2) == 0){
-		$montant.=",00";
-	}
-	
-	if(strcmp($refFacture,"") ==0)
-		$refFacture="modifier";
-	if(strcmp($montant,"") ==0)
-		$montant="modifier";
-	if(strcmp($dest,"") ==0)
-		$nomDestinataire="modifier";
-	if(strcmp($observation,"")==0)
-		$observation ="modifier";
-	
-	if($refuse==1)
-		$couleur = 'red';
-
-	echo "<td bgcolor=".$couleur.">".$idCourrier."</td>";
-	echo "<td bgcolor=".$couleur."><a href=modifDestinataire.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$nomDestinataire."</a></td>";
-	echo "<td bgcolor=".$couleur." style=\"text-align:center\"><a href=modifRef.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$refFacture."</a></td>";
-	echo "<td bgcolor=".$couleur." style=\"text-align:right\"><a href=modifMontant.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$montant."</a></td>";
-	echo "<td bgcolor='$couleur'>".
-	  (((time() - $ligne['internal_timestamp']) < 86400)
-	   ? "<a href='editBillDate.php?id=$idCourrier'>$dateArrivee</a>"
-	   : "$dateArrivee")
-	  . "</td>";
-	echo "<td bgcolor='$couleur'><a href='editBillDate.php?id=$idCourrier'>$dateFacture</a></td>";
-
-	echo "<td bgcolor=".$couleur."><a href=modifObservationFacture.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$observation."</a></td>";
-
-
-
-	echo"<td bgcolor=".$couleur."><a href=cheminFacture.php?idCourrier=".$idCourrier." style=\"text-decoration :none;font-weight:normal\">".$ligne['histo']."</center></a></td>";
-
-
-
-if(strcmp($_SESSION['login'] , 'admin') != 0){
-
-	echo"<td bgcolor=".$couleur."><a href=transmettreFacture.php?idCourrier=".$idCourrier.">transmettre</a></td>";
-	echo"<td bgcolor=".$couleur."><a href=validerFacture.php?idCourrier=".$idCourrier.">terminer</a></td>";
-
-
-}
-
-
-	//test pour urgence du courrier
-		$dateActuel = date("Y-m-d");
-		$jourActuel = substr($dateActuel,8,2);
-		$moisActuel = substr($dateActuel,5,2);
-		$anneeActuel= substr($dateActuel,0,4);
-
-		$tmpDateArrivee = $ligne['dateFacture'];
-		$jourArrivee =substr($tmpDateArrivee,8,2);
-		$moisArrivee =substr($tmpDateArrivee,5,2);
-		$anneeArrivee =substr($tmpDateArrivee,0,4);
-		
-//		echo " feafaoho".$tmpdateArrivee;
-
-		$nbJours = $ligne['nbJours'];
-		
-		$timestampActuel = mktime(0,0,0,$moisActuel,$jourActuel,$anneeActuel);
-		$timestampArrivee= mktime(0,0,0,$moisArrivee,$jourArrivee,$anneeArrivee);
-		$urgence = ($timestampActuel - $timestampArrivee ) / 86400;
-
-		// round value to take 'dailight saving time' into account (=> no float)
-		$nbJoursRestant = (int) ($nbJours - $urgence);
-
-//		echo " fze ".$urgence." : ".$nbJours." :: ".$ligne['nbJours']."<br>";
-		if ($nbJoursRestant >= 5)
-			$alerte = "green";
-		else
-			$alerte = "red";
-		
-
-                   echo "<td bgcolor=".$couleur." style=\"color:".$alerte.";font-weight:bold\"><center>".$nbJoursRestant."</center></td></tr>";
-	
-}
-	echo"</table>";
-if(mysql_num_rows($resultatFacture) == $nbAffiche) 
-	echo "<center><a href = voirFacture.php?id=".$idTmp."&nbAffiche=".$nbAffiche.">Page suivante</a> &gt;</center>";
-?>	
-
-<center>&lt; <a href="javascript:history.go(-1)"><b>Page précédente</b></a></center>
-
-<?php
-
-if(!isset( $_GET['id'] )){
-
-$re = "select max(id) as id from facture;";
-$res = mysql_query( $re ) or die (mysql_error() );
-	while($ligne = mysql_fetch_array( $res ) ){
-		$id = $ligne['id']; 
-	}
-$idTmp = $id;
-}
-
-else{
-	$idTmp = $_GET['id'];
-}
-
-
-
-
-
-$requeteFacture = "select facture.id as idFacture,
-			  facture.histo as histo,
-			  refuse as refuse,
-  			  facture.refFacture as refFacture,
-			  facture.dateFacture as dateFacture,
-			  facture.dateFactureOrigine as dateFactureOrigine,
-			  facture.observation as observation,			  
-			  facture.montant as montant,
-			  destinataire.nom as nomFournisseur,
-			  destinataire.id as idDest,
-			  destinataire.prenom as prenomFournisseur,
-			  priorite.nbJours as nbJours,
-			  unix_timestamp(datesaisie) AS internal_timestamp
- 		    from facture,destinataire,priorite
-		    where facture.id<=".$idTmp." 
-             		   and facture.validite = 0
-			   and facture.idServiceCreation = ".$_SESSION['idService']."
-			   and facture.idPriorite = priorite.id
-			   and facture.idFournisseur = destinataire.id";
 
 $sdg = new SQLDataGrid($requeteFacture,
-		       array('Numéro' => 'idFacture',
+		       array('No' => array('sqlcol' => 'idFacture',
+					   'callback' => 'printId'),
 			     'Fournisseur' => array('sqlcol' => 'nomFournisseur',
 						    'callback' => 'printProvider'),
-			     'Ref.' => 'refFacture',
-			     'Montant' => 'montant',
-			     'Date Mairie' => 'dateFacture',
-			     'Date Facture' => 'dateFactureOrigine',
-			     'Observation' => 'observation',
-			     'Historique' => 'histo',
+			     'Ref.' => array('sqlcol' => 'refFacture',
+					     'callback' => 'printReference'),
+			     'Mont.' => array('sqlcol' => 'montant',
+						'callback' => 'printAmount'),
+			     'Date Mairie' => array('sqlcol' => 'dateFacture',
+						    'callback' => 'printArrivalDate'),
+			     'Date Facture' => array('sqlcol' => 'dateFactureOrigine',
+						     'callback' => 'printEmissionDate'),
+			     'Observation' => array('sqlcol' => 'observation',
+						    'callback' => 'printComments'),
+			     'Historique' => array('sqlcol' => 'histo',
+						   'callback' => 'printHistory'),
+			     'Transmettre' => array('callback' => 'printTransmit'),
+			     'Terminer' => array('callback' => 'printFinish'),
 			     'Jours restant' => array('style' => 'text-align: center',
 						      'callback' => 'printRemainingDays'),
 			     ));
-$sdg->setPagerSize($_SESSION['pagersize']);
+if (empty($_GET['nbAffiche']))
+  $sdg->setPagerSize($_SESSION['pagersize']);
+else
+  $sdg->setPagerSize($_GET['nbAffiche']);
 $sdg->setDefaultSort(array('idFacture' => 'DESC'));
 $sdg->setClass('resultats');
-if (isset($_GET['idFactureRecherche']))
-{
+if (!empty($_GET['idFactureRecherche']))
   $sdg->setDefaultPageWhere(array('idFacture' => $_GET['idFactureRecherche']));
-}
+if (!empty($_GET['id']))
+  $sdg->setDefaultPageWhere(array('idFacture' => $_GET['id']));
 $sdg->display();
 
 
 
+function printId($params)
+{
+  $row = $params['record'];
+  if ($row['refuse'] == 1)
+    return "<span style='background: red'>{$row['idFacture']}</span>";
+  else
+    return $row['idFacture'];
+}
 
 function printProvider($params)
 {
@@ -383,9 +161,80 @@ function printProvider($params)
     . "</a>";
 }
 
+function printReference($params)
+{
+  $row = $params['record'];
+  $ref = $row['refFacture'];
+  if ($ref == '')
+    $ref = _('Modifier');
+  return "<a href='modifRef.php?idCourrier={$row['idFacture']}'>$ref</a>";
+}
+
+function printAmount($params)
+{
+  $row = $params['record'];
+  $amount = $row['montant'];
+  if ($amount == '')
+    $amount = _('Modifier');
+  return "<a href='modifMontant.php?idCourrier={$row['idFacture']}'>$amount</a>";
+}
+
+function printArrivalDate($params)
+{
+  $row = $params['record'];
+  $tmpdateArrivee = $row['dateFacture'];
+  $dateArrivee = substr($tmpdateArrivee,8,2)
+    . '/' . substr($tmpdateArrivee,5,2)
+    . '/' . substr($tmpdateArrivee,0,4);
+  return
+    ((time() - $row['internal_timestamp']) < (24 * 60 * 60))
+    ? "<a href='editBillDate.php?id={$row['idFacture']}'>$dateArrivee</a>"
+    : $dateArrivee;
+}
+
+function printEmissionDate($params)
+{
+  $row = $params['record'];
+  $emission_date = $row['dateFactureOrigine'];
+  $emission_date = substr($emission_date, 8, 2)
+    . '/' . substr($emission_date, 5, 2)
+    . '/' . substr($emission_date, 0, 4);
+  return "<a href='editBillDate.php?id={$row['idFacture']}'>$emission_date</a>";
+
+}
+
+function printComments($params)
+{
+  $row = $params['record'];
+  $comments = $row['observation'];
+  if ($comments == '')
+    $comments = _('Modifier');
+  return "<a href='modifObservationFacture.php?idCourrier={$row['idFacture']}'".
+    " style='font-size: smaller'>$comments</a>";
+}
+
+function printHistory($params)
+{
+  $row = $params['record'];
+  $histo = $row['histo'];
+  return "<a href='cheminFacture.php?idCourrier={$row['idFacture']}'>$histo</a>";
+}
+
+function printTransmit($params)
+{
+  $row = $params['record'];
+  return "<a href='transmettreFacture.php?idCourrier={$row['idFacture']}'>Transmettre</a>";
+}
+
+function printFinish($params)
+{
+  $row = $params['record'];
+  return "<a href='validerFacture.php?idCourrier={$row['idFacture']}'>Terminer</a>";
+}
+
 function printRemainingDays($params)
 {
-  //test pour urgence du courrier
+  // test pour urgence du courrier
   $dateActuel = date("Y-m-d");
   $jourActuel = substr($dateActuel,8,2);
   $moisActuel = substr($dateActuel,5,2);

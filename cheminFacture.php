@@ -99,7 +99,7 @@ if(strcmp($log,"admin") == 0){
 }
 
 else{
-	echo"<center><a href = voirFacture.php?id=".$idCourrier.">voir mes factures</a><center><br><br>";
+	echo "<center><a href='voirFacture.php?id=".$idCourrier."#result'>Voir mes factures</a><center><br><br>";
 }
 ?>
 </div>

@@ -46,13 +46,13 @@ while($ligne = mysql_fetch_array($result) ){
 </center>
 <form method=POST action=modifRef.php>
 <?php
-echo"<center>";
-echo"<label>refFacture : </label>";
-echo"<input type=text name=refFacture value=".$refFacture."></input>";
-echo"<br/><br/>";
-echo"<input type=hidden name=idCourrier value=".$idCourrier."></input>";
-echo"<input type=submit name=modifier value=modifier><br/><br/>";
-echo"</center>";
+echo "<center>";
+echo "<label>refFacture: </label>";
+echo "<input type='text' name='refFacture' value='$refFacture'></input>";
+echo "<br/><br/>";
+echo "<input type='hidden' name='idCourrier' value='$idCourrier'></input>";
+echo "<input type='submit' name='modifier' value='Modifier'><br/><br/>";
+echo "</center>";
 ?>
 </form>
 </div>
@@ -64,9 +64,9 @@ echo"</center>";
 else{
 $refFacture = $_POST['refFacture'];
 $idCourrier = $_POST['idCourrier'];
-$requete = "update facture set refFacture='".$refFacture."' where id=".$idCourrier.";";
+$requete = "UPDATE facture SET refFacture='$refFacture' WHERE id='$idCourrier';";
 $result = mysql_query($requete) or die(mysql_error());
 
-header("LOCATION:voirFacture.php");
+header("Location: voirFacture.php");
 }
 ?>

@@ -20,8 +20,9 @@ along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-require_once('HTML/Table.php');
-require_once('Structures/DataGrid.php');
+#require_once('HTML/Table.php');
+#require_once('Structures/DataGrid.php');
+require_once('classes/SQLDataGrid.php');
 
 function grid_table (&$dg, $caption=NULL) {
   $table = new HTML_Table();

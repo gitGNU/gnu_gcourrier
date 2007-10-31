@@ -22,7 +22,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 require_once('classes/HTML/QuickForm/FR.php');
 require_once('classes/SQLDataGrid.php');
-require_once('Structures/DataGrid.php');
+#require_once('Structures/DataGrid.php');
 
 require_once('init.php');
 require_once('functions/db.php');
@@ -172,38 +172,12 @@ $form->display();
 
 if ($_SESSION['login'] == 'admin') {
   if ($display_mode != 'create') {
-    echo "<div><a href='?'>Nouveau Compte</a></div>";
+    echo "<div><a href='?'>Nouveau Compte</a></div><br />";
   }
   
   function printModify($params) {
     return "<a href='?id={$params['record']['id']}'>M</a>";
   }
-
-
-  // Instantiate the DataGrid
-  $dg = new Structures_DataGrid($_SESSION['pagersize']);
-  $dg->setDefaultSort(array('login' => 'ASC'));
-  $test = $dg->bind('SELECT utilisateur.id AS id, login,
-    nom AS lastname, prenom AS firstname,
-    service.designation AS service,
-    preferenceNbCourrier AS pagersize
-    FROM utilisateur, service WHERE idService=service.id',
-		   array('dsn' => $db_dsn));
-  if (PEAR::isError($test)) {
-    echo $test->getMessage();
-    exit;
-  }
-  
-  $dg->addColumn(new Structures_DataGrid_Column('Identifiant', 'login', 'login'));
-  $dg->addColumn(new Structures_DataGrid_Column('Nom', 'lastname', 'lastname'));
-  $dg->addColumn(new Structures_DataGrid_Column('Prénom', 'firstname', 'firstname'));
-  $dg->addColumn(new Structures_DataGrid_Column('Service', 'service', 'service'));
-  $dg->addColumn(new Structures_DataGrid_Column('Nb', 'pagersize', 'pagersize'));
-  $dg->addColumn(new Structures_DataGrid_Column('Modifier', null,null,
-						array('style' => 'text-align: center'),
-						null, 'printModify'));
-  grid_table($dg, _("Comptes existants"));
-
  
   $sdg = new SQLDataGrid('SELECT utilisateur.id AS id, login,
     nom AS lastname, prenom AS firstname,
@@ -221,7 +195,9 @@ if ($_SESSION['login'] == 'admin') {
   $sdg->setPagerSize($_SESSION['pagersize']);
   $sdg->setDefaultSort(array('login' => 'ASC'));
   if (isset($_GET['id']))
-    $sdg->setDefaultPageWhere(array('id' => $_GET['id']));
+    {
+      $sdg->setDefaultPageWhere(array('id' => $_GET['id']));
+    }
   $sdg->display();
 }
 

@@ -41,6 +41,9 @@ class SQLDataGrid {
 
   private $order_sql = '';
   private $limit_sql = '';
+
+  private $search_field = null;
+  private $search_value = null;
   
   public function __construct($query, $cols)
   {
@@ -89,11 +92,17 @@ class SQLDataGrid {
   function setDefaultPageWhere($arr)
   {
     // $arr == ('field' => value)
+    // False foreach loop just to get the params:
     foreach ($arr as $f => $v)
       {
 	$location_field = $f;
 	$location_value = $v;
       }
+
+    // Store field/value for special processing during display
+    $this->search_field = $location_field;
+    $this->search_value = $location_value;
+
     if (!isset($this->cur_page) && isset($this->pager_size))
       {
 	// Implementation 1: naive
@@ -124,7 +133,7 @@ class SQLDataGrid {
       $row = mysql_fetch_array($res);
       $pos = $row['pos'];
 	*/
-	
+
 	$this->default_page = floor($pos / $this->pager_size) + 1;
       }
   }
@@ -237,7 +246,8 @@ class SQLDataGrid {
 	if (isset($params['sqlcol']))
 	  {
 	    $direction = 'ASC';
-	    if ($params['sqlcol'] == $this->order_field
+	    if (isset($params['sqlcol'])
+		and $params['sqlcol'] == $this->order_field
 		and $this->order_direction == 'ASC')
 	      $direction = 'DESC';
 	    
@@ -245,7 +255,7 @@ class SQLDataGrid {
 	    $myget = $_GET;
 	    $myget['orderBy'] = $params['sqlcol'];
 	    $myget['direction'] = $direction;
-	    $myget['page'] = 1;
+	    unset($myget['page']);
 	    $link = $this->GET2query_string($myget);
 	    
 	    print "<a href='{$link}'>";
@@ -285,6 +295,10 @@ class SQLDataGrid {
 	      print '<td>';
 	    else
 	      print "<td style='$style'>";
+
+	    if ($params['sqlcol'] == $this->search_field
+		&& $record[$params['sqlcol']] == $this->search_value)
+	      print '<a name="result" />';
 	    
 	    if (isset($params['callback']))
 	      print call_user_func($params['callback'],
