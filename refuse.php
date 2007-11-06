@@ -22,30 +22,34 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 
+/** Reject a facture means "unarchive" here **/
+
 require_once('init.php');
+require_once('functions/db.php');
 
 if(!isset($_GET['valider'])){
 ?>
 <html>
 	<head> <title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet"></head>
+<link href="styles2.css" rel="stylesheet"></head>
 	<body>
 
 
-<div id = pageTGd><br>
+<div id="pageTGd"><br>
 	<center>
-	<img src = images/banniere2.jpg></img><br><br><br>
+	<img src="images/banniere2.jpg"></img><br><br><br>
 <?
-echo "etes vous sur de vouloir refuser ce courrier ?<br>";
-echo "<a href=refuse.php?idCourrier=".$_GET['idCourrier']."&valider='o'>oui</a> &nbsp; &nbsp; <a href=index.php>non</a><br><br>";
+echo _("Êtes-vous sûr(e) de vouloir refuser cette facture?");
+echo "<br />";
+echo _("La facture repartira dans la liste des factures en cours et ne sera plus marquée comme archivée.");
+echo "<br />";
+echo "<a href='refuse.php?idCourrier={$_GET['idCourrier']}&valider=o'>Oui</a> &nbsp; &nbsp; <a href='index.php'>Non</a><br /><br />";
 }
 else{
 
 $idCourrier = $_GET['idCourrier'];
 
-$requete = "update facture set refuse = 1,validite=0 where id=".$idCourrier.";";
-$result = mysql_query($requete) or die(mysql_error());
+db_execute("UPDATE facture SET refuse=1, validite=0 WHERE id=?", array($idCourrier));
 
 header("LOCATION:index.php");
 }
-?>

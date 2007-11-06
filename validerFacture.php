@@ -25,14 +25,21 @@ require_once('init.php');
 
 if (!isset($_GET['valider'])) {
   include('templates/header2.php');
+
+$idCourrier = $_GET['idCourrier'];
 ?>
   <div id="pageTGd"><br />
   <center>
   <img src="images/banniere2.jpg" /><br /><br /><br />
-  Êtes-vous sûr(e) de vouloir archiver cette facture?<br />
-  <a href="validerFacture.php?idCourrier=<?php echo $_GET['idCourrier']?>&valider=o">Oui</a>
+<?php
+     echo _("Êtes-vous sûr(e) de vouloir archiver cette facture?");
+?>
+  <br />
+  <a href="validerFacture.php?idCourrier=<?php echo $idCourrier?>&valider=o">Oui</a>
   &nbsp; &nbsp;
-  <a href="voirFacture.php">Non</a>
+<?php
+  echo "<a href='voirFacture.php?id=$idCourrier#result'>Non</a>";
+?>
   <br /><br />
 <?php
 # include('templates/footer.php');

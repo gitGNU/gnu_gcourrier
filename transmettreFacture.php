@@ -39,11 +39,11 @@ if(!isset( $_POST["enregistrer"])){
 	
 	<table align = center>
 
-	<form name = transmettreForm method="POST" action="transmettreFacture.php">
+	<form name = transmettreForm method="post" action="transmettreFacture.php">
 	<tr><td>service</td><td>
 	<select name = service>
 		<?php //'
-		$requete = "select * from service order by libelle; ";
+		$requete = "SELECT * FROM service ORDER BY libelle; ";
 		$result = mysql_query($requete) or die( mysql_error() );
 		while( $ligne = mysql_fetch_array( $result ) ){
 		  if($ligne['libelle'] != "ADMIN")
@@ -57,12 +57,12 @@ if(!isset( $_POST["enregistrer"])){
 	?>
 	</table>
 	<center>
-	<input type = submit name = enregistrer value = transmettre></input></center>
+	<input type="submit" name="enregistrer" value="Transmettre"></input></center>
 </form>
 
 <center><br>
 <?php
-echo"<a href = voirFacture.php?id=".$idCourrier.">voir mes factures</a>";
+echo "<a href='voirFacture.php?id=$idCourrier'>Voir mes factures</a>";
 ?>
 </center>
 <br><br>

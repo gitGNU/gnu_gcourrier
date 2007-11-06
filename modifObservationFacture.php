@@ -63,9 +63,9 @@ echo"</center>";
 else{
 $obs = $_POST['observation'];
 $idCourrier = $_POST['idCourrier'];
-$requete = "update facture set observation='".$obs."' where id=".$idCourrier.";";
+$requete = "UPDATE facture SET observation='".$obs."' WHERE id=".$idCourrier.";";
 $result = mysql_query($requete) or die(mysql_error());
 
-header("LOCATION:index.php");
+header("LOCATION: voirFacture.php?id=$idCourrier#result");
 }
 ?>

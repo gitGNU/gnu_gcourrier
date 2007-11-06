@@ -44,9 +44,9 @@ $boul = 0;
 echo "<table align=center>";
 echo "<tr>";
 echo "<tr>";
-echo "<td align=center>service</td>";
-echo "<td align=center>date de transmission</td>";
-echo "<td align=center>date de retour</td>";
+echo "<td align=center>Service</td>";
+echo "<td align=center>Date de transmission</td>";
+echo "<td align=center>Date de retour</td>";
 echo"</tr>";
 
 $requete ="SELECT estTransmisCopie.dateTransmission as dateTransmission,
@@ -57,7 +57,8 @@ $requete ="SELECT estTransmisCopie.dateTransmission as dateTransmission,
 	   FROM facture,estTransmisCopie,service
            WHERE facture.id=".$idCourrier."
 	   AND facture.id = estTransmisCopie.idFacture
-	   AND estTransmisCopie.idService = service.id;";
+	   AND estTransmisCopie.idService = service.id
+	   ORDER BY estTransmisCopie.id";
 $result = mysql_query( $requete ) or die (mysql_error() );
 while ( $ligne = mysql_fetch_array($result) ){
 
@@ -94,12 +95,12 @@ echo "</table><br>";
 
 if(strcmp($log,"admin") == 0){
 	$_SESSION['login'] = $log;
-	echo"<center><a href = voirFacture.php?id=".$idCourrier.">superviser les factures</a>";
+	echo"<center><a href = voirFacture.php?id=".$idCourrier.">Superviser les factures</a>";
 
 }
 
 else{
-	echo "<center><a href='voirFacture.php?id=".$idCourrier."#result'>Voir mes factures</a><center><br><br>";
+	echo "<center><a href='voirFacture.php?id=$idCourrier#result'>Voir mes factures</a><center><br><br>";
 }
 ?>
 </div>

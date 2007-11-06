@@ -36,7 +36,7 @@ $form->addElement('submit', null, 'Créer');
 
 $form->addRule('libelle', _("Ce champ est requis"), 'required');
 $form->addRule('libelle', _("Entrez uniquement des lettres et des chiffres"),
-	       'callback', 'ctype_alphanum');
+	       'callback', 'ctype_alnum');
 $form->addRule('libelle', _("Ce service existe déjà"), 'callback', 'service_exists_not');
 
 if ($form->validate()) {

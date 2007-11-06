@@ -462,7 +462,7 @@ La transmission est la base et le but de GCourrier.
 \layout Standard
 
 En ce qui concerne les courriers, vous pouvez décider de forcer une transmission
- à tranvers le module de recherche.
+ à travers le module de recherche.
  Cela permet de continuer à ventiler le courrier en cas d'erreur ou d'absence
  du service par exemple.
  Lors de cette manipulation un symbole de notification apparaîtra dans l'histori

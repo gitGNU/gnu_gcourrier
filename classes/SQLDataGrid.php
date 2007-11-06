@@ -150,7 +150,7 @@ class SQLDataGrid {
 	  }
 	else
 	  {
-	    $query_string .= '&';
+	    $query_string .= '&amp;';
 	  }
 	$query_string .= "$name=$value";
       }
@@ -194,6 +194,10 @@ class SQLDataGrid {
     $myget['orderBy'] = $this->order_field;
     $myget['direction'] = $this->order_direction;
     $page_link = 0;
+
+    if ($this->total_rows <=  $this->pager_size)
+      return;
+
     if ($this->cur_page != 1)
       {
 	$myget['page'] = $this->cur_page-1;
@@ -296,9 +300,10 @@ class SQLDataGrid {
 	    else
 	      print "<td style='$style'>";
 
-	    if ($params['sqlcol'] == $this->search_field
+	    if (!empty($params['sqlcol'])
+		&& $params['sqlcol'] == $this->search_field
 		&& $record[$params['sqlcol']] == $this->search_value)
-	      print '<a name="result" />';
+	      print '<a name="result"></a>';
 	    
 	    if (isset($params['callback']))
 	      print call_user_func($params['callback'],

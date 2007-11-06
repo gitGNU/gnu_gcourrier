@@ -32,26 +32,26 @@ if(!isset($_POST["enregistrer"])){
 <LINK HREF="styles2.css" REL="stylesheet"></head>
 <body>
 <div id =pageGd><br>
-	<center><img src = images/banniere2.jpg></img></center><br><br><br>
-	<table align = center>
-	<form name = creerDestForm method = POST action = creerDestinataire.php>
-		<tr><td>nom</td>
-		<td><input type = text name = nom ></input></td></tr>
-		<tr><td>prenom</td>
-		<td><input type = text name = prenom></input></td></tr>
-		<tr><td>adresse</td>
-		<td><input type = text name = adresse ></input></td></tr>
-		<tr><td>code postal</td>
-		<td><input type = text name =codePostal></input></td></tr>
-		<tr><td>ville</td>
-		<td><input type = text name =ville></input></td></tr>
+	<center><img src="images/banniere2.jpg"></img></center><br><br><br>
+	<table align="center">
+	<form name="creerDestForm" method="POST" action="creerDestinataire.php">
+		<tr><td>Nom</td>
+		<td><input type="text" name="nom"></input></td></tr>
+		<tr><td>Prénom</td>
+		<td><input type="text" name="prenom"></input></td></tr>
+		<tr><td>Adresse</td>
+		<td><input type="text" name="adresse"></input></td></tr>
+		<tr><td>Code postal</td>
+		<td><input type="text" name="codePostal"></input></td></tr>
+		<tr><td>Ville</td>
+		<td><input type="text" name="ville"></input></td></tr>
 
 	</table>
-		<center><input type = submit name = enregistrer value = enregistrer></input></center>
+		<center><input type="submit" name="enregistrer" value="Enregistrer"></input></center>
 	</form>
 
 <center><br>
-<a href = index.php>index</a>
+<a href="index.php">Index</a>
 </center><br><br>
 </div>
 </body>
@@ -64,7 +64,7 @@ if(!isset($_POST["enregistrer"])){
 	$codePostal = $_POST['codePostal'];
 	$ville = $_POST['ville'];
 	
-	$requeteExist = "select count(*) as nb from destinataire where nom ='".$nom."' and prenom ='".$prenom."';";
+	$requeteExist = "SELECT count(*) AS nb FROM destinataire WHERE nom ='".$nom."' AND prenom ='".$prenom."';";
 	$resultExist = mysql_query($requeteExist) or die (mysql_error( ));
 	$ligne = mysql_fetch_array( $resultExist );
 	if($ligne['nb'] != 0){
@@ -72,7 +72,7 @@ if(!isset($_POST["enregistrer"])){
 		exit();
 	}
 
-	$requete= "insert into destinataire(nom,prenom,adresse,codePostal,ville) values('".$nom."','".$prenom."','".$adresse."','".$codePostal."','".$ville."');";
+	$requete= "INSERT INTO destinataire(nom,prenom,adresse,codePostal,ville) VALUES('".$nom."','".$prenom."','".$adresse."','".$codePostal."','".$ville."');";
 	$resultat = mysql_query($requete ) or die ("erreur requete ".mysql_error( ) );
 	
 	echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";

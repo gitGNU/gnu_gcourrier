@@ -23,24 +23,25 @@ author VELU Jonathan
 */
 
 require_once('init.php');
+require_once('functions/db.php');
 
-if(!isset($_POST['enregistrer'])){
+if (!isset($_POST['enregistrer']) and !isset($_POST['save_and_archive'])) {
 ?>
 <html>
 <head><title>gCourrier</title>
 <LINK HREF="styles2.css" REL="stylesheet">
 </head>
 <body>
-<div id = page><br>
+<div id="page"><br>
 <center>
-<img src = images/banniere2.jpg><br><br>
+<img src="images/banniere2.jpg"><br /><br />
 </center>
 
-<form name = dateRetourForm method = POST action = dateRetour.php>
+<form name="dateRetourForm" method="post" action="dateRetour.php">
 <center>
-<table align = center>
+<table align="center">
 
-<tr><td>date retour</td><td>
+<tr><td>Date retour</td><td>
 <?php
 	$dateToday = date("d-m-Y"); 
 	echo "<input type = text name= date value ='".$dateToday."'></input>";
@@ -52,10 +53,11 @@ echo "<input type = hidden name = idCourrier value =".$idCourrier."></input>";
 if(isset($_GET['flag']))
 echo "<input type = hidden name = flag value = 1></input>";
 ?>
-<input type = submit name = enregistrer value = enregistrer>
+<input type="submit" name="enregistrer" value="Enregistrer">
+<input type="submit" name="save_and_archive" value="Enregistrer et archiver la facture">
 </form>
 <br><?php
-echo "<br><a href = index.php>index</a>";
+echo "<br><a href='index.php'>Index</a>";
 ?>
 </center>
 <br><br>
@@ -63,21 +65,33 @@ echo "<br><a href = index.php>index</a>";
 </body>
 </html>
 <?php
-}else{
+} else {
 $date = $_POST['date'];
 
-$tmp= substr($date, 6,4);
-$tmp.='-';
-$tmp.=substr($date, 3,2);
-$tmp.='-';
-$tmp.=substr($date, 0,2);
+$tmp = substr($date, 6,4);
+$tmp .= '-';
+$tmp .= substr($date, 3,2);
+$tmp .= '-';
+$tmp .= substr($date, 0,2);
 
 $date = $tmp;
 
 $idCourrier = $_POST['idCourrier'];
 
-$requete ="update estTransmisCopie set dateRetour = '".$date."' where id =".$idCourrier.";";
-$result = mysql_query($requete) or die ("3".mysql_error( ) );
+db_execute("UPDATE estTransmisCopie SET dateRetour=? WHERE id=?",
+	   array($date, $idCourrier));
+
+/* Also archive the invoice if requested */
+if (isset($_POST['save_and_archive']))
+{
+  $res = db_execute("SELECT idFacture FROM estTransmisCopie WHERE id=?", array($idCourrier));
+  while ($row = mysql_fetch_array($res))
+    $idFacture = $row['idFacture'];
+
+  db_execute("UPDATE facture SET validite=1, dateArchivage=?
+    WHERE id=? AND idServiceCreation=? AND validite=0",
+    array($date, $idFacture, $_SESSION['idService']));
+}
 
 if(!isset($_POST['flag']))
 header("Location: voirFacture.php");
@@ -85,6 +99,3 @@ else
 header("Location: rechercherFacture.php");
 
 }//fin else
-?>
-
-

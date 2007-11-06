@@ -75,9 +75,9 @@ class GPLQuickForm_Element
 
   public function getValue()
   {
-    if ($this->constant != NULL)
+    if ($this->constant !== NULL)
       return $this->constant;
-    if ($this->value != NULL)
+    if ($this->value !== NULL)
       return $this->value;
     return $this->default;
   }
@@ -93,17 +93,17 @@ class GPLQuickForm_Element
       $value = $this->dateConvert($value);
     $this->value = $value;
   }
-  public function setDefault($value)
+  public function setDefault($default)
   {
-    if ($this->type == 'date' and is_string($value))
-      $value = $this->dateConvert($value);
-    $this->default = $value;
+    if ($this->type == 'date' and is_string($default))
+      $default = $this->dateConvert($default);
+    $this->default = $default;
   }
-  public function setConstant($value)
+  public function setConstant($constant)
   {
-    if ($this->type == 'date' and is_string($value))
-      $value = $this->dateConvert($value);
-    $this->constant = $value;
+    if ($this->type == 'date' and is_string($constant))
+      $constant = $this->dateConvert($constant);
+    $this->constant = $constant;
   }
   public function freeze()
   {
@@ -351,8 +351,11 @@ class GPLQuickForm
   {
     $elt = $this->elements[$name];
     $old_value = $elt->getValue();
-    $new_value = call_user_func($callback, $old_value);
-    $elt->setValue($new_value);
+    if ($old_value !== NULL)
+      {
+	$new_value = call_user_func($callback, $old_value);
+	$elt->setValue($new_value);
+      }
   }
 
   // string $element, string $message, string $type, [string $format = null], [string $validation = 'server'], [boolean $reset = false], [boolean $force = false]

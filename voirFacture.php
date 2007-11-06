@@ -30,14 +30,13 @@ include('templates/header.php');
 $requeteInit = "Select id from facture Limit 1;";
 $result = mysql_query($requeteInit) or die(mysql_error());
 if(mysql_num_rows($result) == 0){
-echo "<center><br>aucune facture pour le moment<br><br>";
-echo "<a href = index.php>index</a></center>";
+echo "<div style='text-align: center'>" . _("Aucune facture pour le moment.") . "</div>";
+echo "<div style='text-align: center'><a href='index.php'>Index</a></div>";
 exit();
 }
-
 ?>
 
-<form method = POST action=voirFactureAffiche.php>
+<form method="post" action="voirFactureAffiche.php">
 <table align="center" style="border: 1px dotted black;"><tr><td>
 <label>Nombre de factures à afficher:</label>
 
@@ -47,22 +46,26 @@ echo"<input type='text' name='affiche' value='{$_GET['nbAffiche']}' size=2></inp
 echo"<input type='hidden' name='idTmp' value='{$_GET['id']}'></input>";
 ?>
 
-<input type="submit" name="ok" value="ok"></input>
+<input type="submit" name="ok" value="OK"></input>
 </td></tr>
 </table>
 </form>
 
-<form method="POST" action="rechercheRapideFacture.php#result">
+<form method="post" action="rechercheRapideFacture.php#result">
 <table align=center style="border: 1px dotted black;"><tr><td>
 <label>Aller à la facture numéro:</label>
-<input type=text name=numero value=1 size=2></input>
-<input type=submit name=ok value=ok></input>
-<br><center><span style="font-size: x-small"><a href="rechercherFacture.php">Recherche avancée</a></span></center>
-</tr></td></table></form>
+<input type="text" name="numero" value="1" size="2"></input>
+<input type="submit" name="ok" value="OK"></input>
+<br /><center><span style="font-size: x-small"><a href="rechercherFacture.php">Recherche avancée</a></span></center>
+</td></tr></table></form>
 
 <?php
 
-echo"<center><div id= titre>Factures  / <a href=copieFacture.php >Copies de Factures</a><br/><br/><i style=\"font-size:10px;font-weight:normal\">Note: sont affichées les factures de votre service uniquement</i><br/><br/></div></center>";
+echo"<center><div id= titre>Factures / <a href='copieFacture.php'>Copies de Factures</a>";
+echo "<br/><br/>";
+echo "<i style='font-size:10px; font-weight:normal'>";
+echo _("Voici les les factures en cours de votre service.");
+echo "</i><br/><br/></div></center>";
 
 
 if ($_SESSION['login'] == 'admin')
@@ -125,7 +128,7 @@ $sdg = new SQLDataGrid($requeteFacture,
 			     'Historique' => array('sqlcol' => 'histo',
 						   'callback' => 'printHistory'),
 			     'Transmettre' => array('callback' => 'printTransmit'),
-			     'Terminer' => array('callback' => 'printFinish'),
+			     'Archiver' => array('callback' => 'printArchive'),
 			     'Jours restant' => array('style' => 'text-align: center',
 						      'callback' => 'printRemainingDays'),
 			     ));
@@ -226,10 +229,10 @@ function printTransmit($params)
   return "<a href='transmettreFacture.php?idCourrier={$row['idFacture']}'>Transmettre</a>";
 }
 
-function printFinish($params)
+function printArchive($params)
 {
   $row = $params['record'];
-  return "<a href='validerFacture.php?idCourrier={$row['idFacture']}'>Terminer</a>";
+  return "<a href='validerFacture.php?idCourrier={$row['idFacture']}'>Archiver</a>";
 }
 
 function printRemainingDays($params)

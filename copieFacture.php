@@ -52,7 +52,13 @@ if(!isset( $_GET['id'] )){
 }
 
 
-echo"<center><div id= titre><a href=voirFacture.php>Factures</a>  / Copies de Factures<br/><br/><i style=\"font-size:10px;font-weight:normal\">Note: Ceci est les factures de votre service uniquement</i><br/><br/></div></center>";
+echo "<center><div id='titre'><a href='voirFacture.php'>Factures</a> / Copies de Factures";
+echo "<br/><br/>";
+echo "<i style='font-size:10px; font-weight:normal'>";
+echo _("La compatibilité a transmis à votre service une copie papier de ces factures, pour validation.");
+echo "<br />";
+echo _("Une fois ces factures validées et retournées, la comptabilité les supprimera de cet écran.");
+echo "</i><br/><br/></div></center>";
 
 
 if(strcmp($_SESSION['login'], 'admin') == 0) {
@@ -98,14 +104,14 @@ $resultatFacture = mysql_query($requeteFacture) or die("erreur facture ".mysql_e
 
 echo "<table align=center font-color ='white'>";
 	echo "<tr>";
-	echo "<td align=center>numero </td>";
-	echo "<td align=center>fournisseur</td>";
-	echo "<td align=center>refFacture</td>";
-	echo "<td align=center>montant</td>";
-	echo "<td align=center>dateMairie</td>";
-	echo "<td align=center>dateFacture</td>";
-	echo "<td align=center>observation</td>";
-	echo "<td align=center>date reception</td>";
+	echo "<td align=center>Numéro</td>";
+	echo "<td align=center>Fournisseur</td>";
+	echo "<td align=center>Réf.</td>";
+	echo "<td align=center>Montant</td>";
+	echo "<td align=center>Date Mairie</td>";
+	echo "<td align=center>Date Émission</td>";
+	echo "<td align=center>Observation</td>";
+	echo "<td align=center>Date réception</td>";
 	echo"</tr>";
 
 
@@ -161,7 +167,7 @@ if(mysql_num_rows($resultatFacture) == 5) {
 ?>	
 
 <center><br>
-<a href="index.php">index</a>
+<a href="index.php">Index</a>
 </center>
 <br><br>
 </div>

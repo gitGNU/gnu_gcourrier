@@ -105,4 +105,8 @@ if(empty($_REQUEST['id']) or !ctype_digit($_REQUEST['id'])) {
   $form->display();
 }
 
+echo "<center><a href='voirFacture.php?id={$_REQUEST['id']}#result'>";
+echo _("Voir mes factures");
+echo "</a><center>";
+
 include('templates/footer.php');
