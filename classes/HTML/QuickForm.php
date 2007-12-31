@@ -1,7 +1,8 @@
-<?php
+<?php /*-*-PHP-*-*/
 /*
 Quick HTML_QuickForm clone without the GPL-incompatible license
 Copyright (C) 2007  Cliss XXI
+Copyright (C) 2007  Sylvain Beucler
 This file is part of GCourrier.
 
 GCourrier is free software; you can redistribute it and/or modify
@@ -46,6 +47,8 @@ class GPLQuickForm_Element
       case "password":
       case "submit":
       case "text":
+      case "checkbox":
+      case "textarea":
 	if (isset($params[0]))
 	  $this->label = $params[0];
 	break;
@@ -122,9 +125,13 @@ class GPLQuickForm_Element
       }
     else if ($this->type == 'submit')
       {
+	$disabled = "";
+	if ($this->frozen)
+	  $disabled = 'disabled="disabled"';
+
 	print "<tr><td></td><td class='element'>";
 	print "<input type='submit'"
-	  . " name='{$this->name}' value='{$this->label}' />";
+	  . " name='{$this->name}' value='{$this->label}' $disabled />";
 	print '</td></tr>';
       }
     else if ($this->type == 'hidden')
@@ -194,18 +201,18 @@ class GPLQuickForm_Element
 	    if ($this->frozen)
 	      print "*****";
 	    else
-	      print "<input type='password' name='{$this->name}' value='$value' />";
+	      print "<input type='password' name='{$this->name}' value='" . htmlspecialchars($value, ENT_QUOTES) . "' />";
 	    break;
 
 	  case 'text':
 	    if ($this->frozen)
 	      {
 		print "$value";
-		print "<input type='hidden' name='{$this->name}' value='$value' />";
+		print "<input type='hidden' name='{$this->name}' value='" . htmlspecialchars($value, ENT_QUOTES) . "' />";
 	      }
 	    else
 	      {
-		print "<input type='text' name='{$this->name}' value='$value' />";
+		print "<input type='text' name='{$this->name}' value='" . htmlspecialchars($value, ENT_QUOTES) . "' />";
 	      }
 	    break;
 
@@ -232,6 +239,26 @@ class GPLQuickForm_Element
 	      }
 	    break;
 
+	  case 'textarea':
+	    $readonly = "";
+	    if ($this->frozen)
+	      $readonly = "readonly='readonly'";
+	    print "<textarea name='{$this->name}' wrap='virtual' cols='60' rows='10' $readonly>"
+	      . htmlspecialchars($value, ENT_QUOTES)
+	      . "</textarea>";
+	    break;
+
+	  case 'checkbox':
+	    $checked = "";
+	    if ($value === NULL)
+	      $value = '1';
+	    else
+	      $checked = 'checked="checked"';
+	    $disabled = "";
+	    if ($this->frozen)
+	      $disabled = 'disabled="disabled"';
+	    print "<input type='checkbox' name='{$this->name}' value='$value' $checked $disabled />";
+	    break;
 	  }
 	print '</td>';
 	print '</tr>';
@@ -367,11 +394,11 @@ class GPLQuickForm
   {
     $elt_is_valid = array();
     $form_is_valid = true;
-
+    
     if (empty($this->in))
       // form not submitted yet
       return false;
-
+    
     foreach($this->rules as $rule)
       {
 	list ($name, $error_message, $type, $type_param, $side) = $rule;
@@ -413,6 +440,16 @@ class GPLQuickForm
 	      case 'alphanumeric':
 		$rule_is_valid = preg_match('/^[a-zA-Z0-9]*$/', $value);
 		break;
+	      case 'minlength':
+		$rule_is_valid = (strlen($value) >= $type_param);
+		break;
+	      case 'maxlength':
+		$rule_is_valid = (strlen($value) <= $type_param);
+		break;
+	      case 'rangelength':
+		$rule_is_valid = (strlen($value) >= $type_param[0]
+				  && strlen($value) <= $type_param[1]);
+		break;
 	      case 'compare':
 		$name2 = $name_array[1];
 		$elt2 = $this->elements[$name2];
@@ -422,12 +459,12 @@ class GPLQuickForm
 	      default:
 		die("Unsupported rule type: $type");
 	      }
-	  }
-	if (!$rule_is_valid)
-	  {
-	    $form_is_valid = false;
-	    $elt_is_valid[$name] = false;
-	    $elt->setError($error_message);
+	    if (!$rule_is_valid)
+	      {
+		$form_is_valid = false;
+		$elt_is_valid[$name] = false;
+		$elt->setError($error_message);
+	      }
 	  }
       }
     return $form_is_valid;
