@@ -1,3 +1,4 @@
+<IfModule mod_php5.c>
 # Code linting - PHP6-compliant:
 # Not yet - we need to review all SQL queries first
 #php_flag magic_quotes_gpc Off
@@ -8,3 +9,4 @@ php_value mbstring.internal_encoding UTF-8
 php_value mbstring.func_overload 7
 # PHP E_STRICT if not set:
 php_value date.timezone Europe/Paris
+</IfModule>
