@@ -50,9 +50,6 @@ die("Connection MySQL impossible pour l'utilisateur " . $db_user . " sur l'hôte
 mysql_select_db($db_base) or
 die("Connection impossible sur la base " . $db_base . "(" . $db_user . ", " . $db_host . ")");
 
-// For PEAR::MDB2
-$db_dsn = "mysql://$db_user:$db_pass@$db_host/$db_base";
-
 session_start();
 
 if (isset($_COOKIE['gcourrier_session'])) {

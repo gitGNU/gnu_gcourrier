@@ -26,7 +26,7 @@ require_once('init.php');
 ?>
 
 <html>
-<head><title>gCourrier</title>
+<head><title>GCourrier</title>
 <LINK HREF="styles2.css" REL="stylesheet">
 </head>
 <body>

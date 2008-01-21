@@ -20,18 +20,18 @@ Mails can be transmitted to another service later on. In this case
 they are not visible anymore for the previous owner - you do not need
 to care about it anymore.
 
-Bills can also be transmitted to a different service, but "in
+Invoices can also be transmitted to a different service, but "in
 copy". Currently this is implemented differently than with mails:
-you're still the owner of the bill, but there's a special page where
-you can see which bills were copied to your service - this is done by
-looking at the bill's transmission history. This way you still can see
-where your transmitted bills are, and you keep track of who needs
+you're still the owner of the invoice, but there's a special page where
+you can see which invoices were copied to your service - this is done by
+looking at the invoice's transmission history. This way you still can see
+where your transmitted invoices are, and you keep track of who needs
 to get back to you.
 
 The history of transmissions is kept and one can analyse an object's
 journey through services later on.
 
-Bills can be refused, in which case they are not showed anymore,
+Invoices can be refused, in which case they are not shown anymore,
 though they still exist somewhere in the system.
 
 
@@ -74,3 +74,20 @@ developpement will continue the --mainline branch.
 
 This allows people to follow that branch without worrying about
 disruptive / backward-incompatible changes.
+
+
+
+Invoices
+========
+
+4 screens:
+
+- current / opened: they need to be validated. Once they are
+  validated, they are marked as archived and disappear from this
+  screen
+
+- search current
+
+- search archived
+
+- foreign invoices transmitted to my service for validation
