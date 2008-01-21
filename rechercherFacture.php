@@ -68,31 +68,33 @@ if(!isset( $_GET["rechercher"] ) ){
 <td><input type="text" name="eDate1" value="jj-mm-aaaa" />
  et <input type="text" name="eDate2" value="jj-mm-aaaa" /></td>
 </tr>
+
 <tr>
 <td>Fournisseur</td>
 <td><select name="fournisseur">
-	<option value="rien"></option>
+	<option value="rien">(tous)</option>
 		<?php
-		$requete = "select * from destinataire order by nom ; ";
+		$requete = "SELECT * FROM destinataire ORDER BY nom";
 		$result = mysql_query($requete) or die( mysql_error() );
 		while( $ligne = mysql_fetch_array( $result ) ){
 		    echo "<option value = '".$ligne['id']."'>".$ligne['nom']." ".$ligne['prenom']."</option>";
 		}
 		?></select></td>
 </tr>
-		<tr>
-		<td>Service</td>
-		<td><select name="serviceDest">
-	<option value="rien"></option>
+
+<tr>
+<td>Service</td>
+	<td><select name="serviceDest">
+	<option value="rien">(tous)</option>
 		<?php
-			$requete = "select * from service where libelle <>'admin' order by libelle;";
+			$requete = "SELECT * FROM service WHERE libelle <> 'admin' ORDER BY libelle";
 			$result = mysql_query($requete) or die ( mysql_error() );
 			while( $ligne = mysql_fetch_array( $result ) ){
 				 echo "<option value = '".$ligne['id']."'>".$ligne['libelle']." ".$ligne['designation']."</option>";
 			}
 		?>
-		</td>
-		</tr>
+	</td>
+</tr>
 
 <td><label>Courrier retard</label></td>
 <td><input type="checkbox" name="retard"/></td>
@@ -123,16 +125,16 @@ $montant = $_GET['montant'];
 $montant_op = $_GET['montant_op'];
 $observation = $_GET['observation'];
 
-$requetetmp = 	"SELECT	facture.id as idCourrier,
-			facture.montant as montant,
-			facture.refFacture as refFacture,
-			facture.dateFacture as dateArrivee,
-			facture.dateFactureOrigine as dateOrigine,
-			destinataire.nom as nomDest,
-			destinataire.prenom as prenomDest,
-			priorite.nbJours as nbJours,
-			facture.montant as montant,
-			facture.observation as observation
+$requetetmp = 	"SELECT	facture.id AS idCourrier,
+			facture.montant AS montant,
+			facture.refFacture AS refFacture,
+			facture.dateFacture AS dateArrivee,
+			facture.dateFactureOrigine AS dateOrigine,
+			destinataire.nom AS nomDest,
+			destinataire.prenom AS prenomDest,
+			priorite.nbJours AS nbJours,
+			facture.montant AS montant,
+			facture.observation AS observation
 		";
 
 $from ="    FROM facture,destinataire,priorite ";
@@ -140,29 +142,29 @@ $where =" WHERE facture.validite = 0 and facture.idServiceCreation=".$_SESSION['
 	  priorite.id = facture.idPriorite ";
 
 $requete = '';
-if(strcmp($numero,"")!=0){
-	$requete.= " and facture.id = '".$numero."' ";
+if ($numero != "") {
+  $requete.= " AND facture.id = '".$numero."' ";
 
 }
 
 if ($montant != '' and is_numeric($montant)) {
   if ($montant_op == '<')
-    $requete.= " and montant < $montant ";
+    $requete.= " AND montant < $montant ";
   else if ($montant_op == '=')
-    $requete.= " and montant = $montant ";
+    $requete.= " AND montant = $montant ";
   else if ($montant_op == '>')
-    $requete.= " and montant > $montant ";
+    $requete.= " AND montant > $montant ";
 }
 
-if ($observation != "") {
+if ($observation != '') {
   $observation = mysql_real_escape_string($observation);
   $requete .= " AND observation LIKE '%$observation%' ";
 }
 
 
 
-if(strcmp($refFacture,"")!=0){
-	$requete.= " and facture.refFacture = '".$refFacture."' ";
+if($refFacture != '') {
+	$requete.= " AND facture.refFacture = '".$refFacture."' ";
 
 }
 
@@ -175,7 +177,7 @@ if(strcmp($dateArrivee,"jj-mm-aaaa")!=0){
 	$tmpdatearrivee.=substr($dateArrivee, 0,2);
 	$dateArrivee = $tmpdatearrivee;
 
-	$requete.= " and facture.dateFacture = '".$dateArrivee."' ";
+	$requete.= " AND facture.dateFacture = '".$dateArrivee."' ";
 
 }
 
@@ -187,22 +189,20 @@ if(strcmp($dateOrigine,"jj-mm-aaaa")!=0){
 	$tmpdateorigine.=substr($dateOrigine, 0,2);
 	$dateOrigine = $tmpdateorigine;
 
-	$requete.= " and facture.dateOrigine = '".$dateOrigine."' ";
+	$requete.= " AND facture.dateOrigine = '".$dateOrigine."' ";
 
 }
 
 
-if(strcmp($serviceDest,"rien")!=0){
-	$requete .=" and facture.id = estTransmisCopie.idFacture and estTransmisCopie.idService = service.id and service.id =".$serviceDest." ";
-	$from.=" ,service,estTransmisCopie ";
+if($serviceDest != "rien") {
+  $requete .=" AND facture.id = estTransmisCopie.idFacture AND estTransmisCopie.idService = service.id AND service.id =".$serviceDest." ";
+  $from.=" ,service,estTransmisCopie ";
 }
 
-if(strcmp($fournisseur,"rien")!=0){
-	$requete.=" and facture.idFournisseur = destinataire.id and destinataire.id = ".$fournisseur." ";
-}
-
-else{
-	$requete.=" and facture.idFournisseur = destinataire.id ";
+if ($fournisseur != "rien") {
+  $requete .= " AND facture.idFournisseur = destinataire.id AND destinataire.id = {$fournisseur}";
+} else {
+  $requete .= " AND facture.idFournisseur = destinataire.id ";
 }
 
 
@@ -224,7 +224,7 @@ $tmpdate.='-';
 $tmpdate.=substr($eDate2, 0,2);
 $eDate2 = $tmpdate;
 
-$requete.=" and facture.dateFacture >='".$eDate1."' and facture.dateFacture<='".$eDate2."' ";
+$requete.=" AND facture.dateFacture >='".$eDate1."' AND facture.dateFacture<='".$eDate2."' ";
 		
 }
 
@@ -260,88 +260,62 @@ if($boul == 0){
 	}
 
 
-echo "<tr>";	
+$display_current = true;
 
-if(isset($_GET['retard'])){
+if (isset($_GET['retard']))
+  {
+    $dateActuel = date("Y-m-d");
+    $jourActuel = substr($dateActuel,8,2);
+    $moisActuel = substr($dateActuel,5,2);
+    $anneeActuel= substr($dateActuel,0,4);
+    
+    $tmpDateArrivee = $ligne['dateArrivee'];
+    $jourArrivee = substr($tmpDateArrivee,8,2);
+    $moisArrivee = substr($tmpDateArrivee,5,2);
+    $anneeArrivee = substr($tmpDateArrivee,0,4);
+    
+    
+    
+    $nbJours = $ligne['nbJours'];
+    
+    $timestampActuel = mktime(0, 0, 0, $moisActuel,  $jourActuel,  $anneeActuel);
+    $timestampArrivee= mktime(0, 0, 0, $moisArrivee, $jourArrivee, $anneeArrivee);
+    $urgence = ($timestampActuel - $timestampArrivee ) / 86400;
+    
+    $nbJoursRestant = $nbJours - $urgence;
+    
+    if ($nbJoursRestant <= 5)
+      $display_current = false;
+  }
 
-		$dateActuel = date("Y-m-d");
-		$jourActuel = substr($dateActuel,8,2);
-		$moisActuel = substr($dateActuel,5,2);
-		$anneeActuel= substr($dateActuel,0,4);
+if ($display_current)
+  {
+    echo "<tr>";	
 
-		$tmpDateArrivee = $ligne['dateArrivee'];
-		$jourArrivee =substr($tmpDateArrivee,8,2);
-		$moisArrivee =substr($tmpDateArrivee,5,2);
-		$anneeArrivee =substr($tmpDateArrivee,0,4);
-		
+    $tmp= substr($ligne['dateArrivee'], 8,2);
+    $tmp.='-';
+    $tmp.=substr($ligne['dateArrivee'], 5,2);
+    $tmp.='-';
+    $tmp.=substr($ligne['dateArrivee'], 0,4);
+    
+    $tmp2= substr($ligne['dateOrigine'], 8,2);
+    $tmp2.='-';
+    $tmp2.=substr($ligne['dateOrigine'], 5,2);
+    $tmp2.='-';
+    $tmp2.=substr($ligne['dateOrigine'], 0,4);
+    
+    echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
+    echo "<td bgcolor = ".$couleur.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
+    echo "<td bgcolor = ".$couleur.">".$ligne['refFacture']."</td>";
+    echo "<td bgcolor = ".$couleur.">".$ligne['montant']."</td>";
+    echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
+    echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
+    echo "<td bgcolor = ".$couleur.">".$ligne['observation']."</td>";
+    echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
+    echo "<td bgcolor = ".$couleur."><a href=validerFactureRecherche.php?idCourrier=".$ligne['idCourrier'].">archiver</a></td>";
 
-
-		$nbJours = $ligne['nbJours'];
-		
-		$timestampActuel = mktime(0,0,0,$moisActuel,$jourActuel,$anneeActuel);
-		$timestampArrivee= mktime(0,0,0,$moisArrivee,$jourArrivee,$anneeArrivee);
-		$urgence = ($timestampActuel - $timestampArrivee ) / 86400;
-
-		$nbJoursRestant = $nbJours - $urgence;
-
-
-
-		if ($nbJoursRestant <= 5){
-
-
-
-$tmp= substr($ligne['dateArrivee'], 8,2);
-$tmp.='-';
-$tmp.=substr($ligne['dateArrivee'], 5,2);
-$tmp.='-';
-$tmp.=substr($ligne['dateArrivee'], 0,4);
-
-
-$tmp2= substr($ligne['dateOrigine'], 8,2);
-$tmp2.='-';
-$tmp2.=substr($ligne['dateOrigine'], 5,2);
-$tmp2.='-';
-$tmp2.=substr($ligne['dateOrigine'], 0,4);
-
-echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
-echo "<td bgcolor = ".$couleur.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
-echo "<td bgcolor = ".$couleur.">".$ligne['refFacture']."</td>";
-echo "<td bgcolor = ".$couleur.">".$ligne['montant']."</td>";
-echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
-echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
-echo "<td bgcolor = ".$couleur.">".$ligne['observation']."</td>";
-echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
-echo "<td bgcolor = ".$couleur."><a href=validerFactureRecherche.php?idCourrier=".$ligne['idCourrier'].">archiver</a></td>";
-}
-
-}//fin if retard
-
-
-else{
-$tmp= substr($ligne['dateArrivee'], 8,2);
-$tmp.='-';
-$tmp.=substr($ligne['dateArrivee'], 5,2);
-$tmp.='-';
-$tmp.=substr($ligne['dateArrivee'], 0,4);
-
-
-$tmp2= substr($ligne['dateOrigine'], 8,2);
-$tmp2.='-';
-$tmp2.=substr($ligne['dateOrigine'], 5,2);
-$tmp2.='-';
-$tmp2.=substr($ligne['dateOrigine'], 0,4);
-
-echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
-echo "<td bgcolor = ".$couleur.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
-echo "<td bgcolor = ".$couleur.">".$ligne['refFacture']."</td>";
-echo "<td bgcolor = ".$couleur.">".$ligne['montant']."</td>";
-echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
-echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
-echo "<td bgcolor = ".$couleur.">".$ligne['observation']."</td>";
-echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
-echo "<td bgcolor = ".$couleur."><a href=validerFactureRecherche.php?idCourrier=".$ligne['idCourrier'].">archiver</a></td>";
-
-}//fin else retard
+    echo "</tr>";
+  }
 }//fin while
 echo "</table>";
 

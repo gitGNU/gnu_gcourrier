@@ -56,10 +56,14 @@ echo"<form action=archiveFacture.php>";
 </td>
 
 <tr>
-<td>Date arrivée</td>
+<td>Observation</td>
+<td><input type="text" name="observation"> (contient cette phrase)</td>
+</tr>
+<tr>
+<td>Date arrivée mairie</td>
 <td><input type="text" name="dateArrivee" value="jj-mm-aaaa" /></td>
 </tr>
-<td>Date fournisseur</td>
+<td>Date origine fournisseur</td>
 <td><input type="text" name="dateOrigine" value="jj-mm-aaaa" /></td>
 </tr>
 <tr>
@@ -67,7 +71,6 @@ echo"<form action=archiveFacture.php>";
 <td><input type="text" name="eDate1" value="jj-mm-aaaa" />
  et <input type="text" name="eDate2" value="jj-mm-aaaa" /></td>
 </tr>
-
 
 <tr>
 <td>Fournisseur</td>
@@ -82,7 +85,24 @@ echo"<form action=archiveFacture.php>";
 		?></select></td>
 </tr>
 
-
+<tr>
+<td>Service</td>
+	<td><select name="serviceDest">
+	<option value="rien">(tous)</option>
+		<?php
+			$requete = "select * from service where libelle <>'admin' order by libelle;";
+			$result = mysql_query($requete) or die ( mysql_error() );
+			while( $ligne = mysql_fetch_array( $result ) ){
+				 echo "<option value = '".$ligne['id']."'>".$ligne['libelle']." ".$ligne['designation']."</option>";
+			}
+		?>
+	</td>
+</tr>
+<!--
+<td><label>Courrier retard</label></td>
+<td><input type="checkbox" name="retard"/></td>
+</tr>
+-->
 </table>
 
 <br><input type="submit" name="rechercher" value="Rechercher">
@@ -91,10 +111,11 @@ echo"<form action=archiveFacture.php>";
 <?php
 }
 else{
-echo "<div id = titre>RESULTAT DE LA RECHERCHE</div><br></b>";
+echo "<div id='titre'>RESULTAT DE LA RECHERCHE</div><br></b>";
 
 
 
+$serviceDest = $_GET['serviceDest'];
 $numero = $_GET['numero'];
 $refFacture = $_GET['refFacture'];
 $dateArrivee = $_GET['dateArrivee'];
@@ -104,7 +125,7 @@ $eDate2 = $_GET['eDate2'];
 $fournisseur = $_GET['fournisseur'];
 $montant = $_GET['montant'];
 $montant_op = $_GET['montant_op'];
-
+$observation = $_GET['observation'];
 
 $requetetmp = 	"SELECT	facture.refuse as refuse,
 			facture.observation as observation,
@@ -136,6 +157,11 @@ if ($montant != '' and is_numeric($montant)) {
     $requete.= " and montant > $montant ";
 }
 
+if ($observation != '') {
+  $observation = mysql_real_escape_string($observation);
+  $requete .= " AND observation LIKE '%$observation%' ";
+}
+
 
 if (strcmp($refFacture,"") != 0) {
 	$requete.= " and facture.refFacture = '".$refFacture."' ";
@@ -165,6 +191,11 @@ if (strcmp($dateOrigine,"jj-mm-aaaa") != 0) {
 
 }
 
+
+if($serviceDest != "rien") {
+  $requete .=" AND facture.id = estTransmisCopie.idFacture AND estTransmisCopie.idService = service.id AND service.id =".$serviceDest." ";
+  $from.=" ,service,estTransmisCopie ";
+}
 
 if (strcmp($fournisseur, 'rien') != 0) {
 //	$from .= " ,destinataire";
@@ -227,43 +258,42 @@ if($boul == 0){
 	}
 
 if($ligne["refuse"] == 1)
-	$couleurTmp = 'red';
+	$couleur = 'red';
 else
-	$couleurTmp = $couleur;
+	$couleur = $couleur;
 
 
-echo "<tr>";	
+    echo "<tr>";
 
-$tmp= substr($ligne['dateArrivee'], 8,2);
-$tmp.='-';
-$tmp.=substr($ligne['dateArrivee'], 5,2);
-$tmp.='-';
-$tmp.=substr($ligne['dateArrivee'], 0,4);
+    $tmp= substr($ligne['dateArrivee'], 8,2);
+    $tmp.='-';
+    $tmp.=substr($ligne['dateArrivee'], 5,2);
+    $tmp.='-';
+    $tmp.=substr($ligne['dateArrivee'], 0,4);
+    
+    $tmp2= substr($ligne['dateOrigine'], 8,2);
+    $tmp2.='-';
+    $tmp2.=substr($ligne['dateOrigine'], 5,2);
+    $tmp2.='-';
+    $tmp2.=substr($ligne['dateOrigine'], 0,4);
+    
+    if ($ligne['observation'] != '')
+      $obs = "modifier";
+    else
+      $obs = $ligne['observation'];
+    
+    echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
+    echo "<td bgcolor = ".$couleur.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
+    echo "<td bgcolor = ".$couleur.">".$ligne['refFacture']."</td>";
+    echo "<td bgcolor = ".$couleur.">".$ligne['montant']."</td>";
+    echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
+    echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
+    echo "<td bgcolor = ".$couleur."><a href=modifObservationFacture.php?idCourrier=".$ligne['idCourrier']."  style=\"text-decoration :none;font-weight:normal\">".$obs."</a></td>";
+    echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
+    
+    echo "<td bgcolor = ".$couleur."><a href=refuse.php?idCourrier=".$ligne['idCourrier'].">refuse</a></td></tr>";
 
-
-$tmp2= substr($ligne['dateOrigine'], 8,2);
-$tmp2.='-';
-$tmp2.=substr($ligne['dateOrigine'], 5,2);
-$tmp2.='-';
-$tmp2.=substr($ligne['dateOrigine'], 0,4);
-
-if(strcmp($ligne['observation'],"")==0){
-$obs = "modifier";
-}
-else
-$obs = $ligne['observation'];
-
-echo "<td bgcolor = ".$couleurTmp.">".$ligne['idCourrier']."</td>";
-echo "<td bgcolor = ".$couleurTmp.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
-echo "<td bgcolor = ".$couleurTmp.">".$ligne['refFacture']."</td>";
-echo "<td bgcolor = ".$couleurTmp.">".$tmp."</td>";
-echo "<td bgcolor = ".$couleurTmp.">".$tmp2."</td>";
-echo "<td bgcolor = ".$couleurTmp.">".$ligne['montant']."</td>";
-echo "<td bgcolor = ".$couleurTmp."><a href=modifObservationFacture.php?idCourrier=".$ligne['idCourrier']."  style=\"text-decoration :none;font-weight:normal\">".$obs."</a></td>";
-echo "<td bgcolor=".$couleurTmp."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
-
-
-echo "<td bgcolor = ".$couleurTmp."><a href=refuse.php?idCourrier=".$ligne['idCourrier'].">refuse</a></td></tr>";
+    echo "</tr>";
 
 }//fin while
 echo "</table>";
