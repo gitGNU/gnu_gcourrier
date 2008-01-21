@@ -264,6 +264,7 @@ else
 
 
     echo "<tr>";
+    $id = $ligne['idCourrier'];
 
     $tmp= substr($ligne['dateArrivee'], 8,2);
     $tmp.='-';
@@ -277,21 +278,21 @@ else
     $tmp2.='-';
     $tmp2.=substr($ligne['dateOrigine'], 0,4);
     
-    if ($ligne['observation'] != '')
+    if ($ligne['observation'] == '')
       $obs = "modifier";
     else
       $obs = $ligne['observation'];
     
-    echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
-    echo "<td bgcolor = ".$couleur.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
-    echo "<td bgcolor = ".$couleur.">".$ligne['refFacture']."</td>";
-    echo "<td bgcolor = ".$couleur.">".$ligne['montant']."</td>";
-    echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
-    echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
-    echo "<td bgcolor = ".$couleur."><a href=modifObservationFacture.php?idCourrier=".$ligne['idCourrier']."  style=\"text-decoration :none;font-weight:normal\">".$obs."</a></td>";
-    echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
+    echo "<td bgcolor='$couleur'>".$ligne['idCourrier']."</td>";
+    echo "<td bgcolor='$couleur'>".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
+    echo "<td bgcolor='$couleur'>".$ligne['refFacture']."</td>";
+    echo "<td bgcolor='$couleur'>".$ligne['montant']."</td>";
+    echo "<td bgcolor='$couleur'>".$tmp."</td>";
+    echo "<td bgcolor='$couleur'>".$tmp2."</td>";
+    echo "<td bgcolor='$couleur'><a href='modifObservationFacture.php?idCourrier=$id'>{$obs}</a></td>";
+    echo "<td bgcolor='$couleur'><a href='rechercherFactureHistorique.php?idCourrier=$id'>historique</a></td>";
     
-    echo "<td bgcolor = ".$couleur."><a href=refuse.php?idCourrier=".$ligne['idCourrier'].">refuse</a></td></tr>";
+    echo "<td bgcolor='$couleur'><a href='refuse.php?idCourrier=$id'>refusé</a></td>";
 
     echo "</tr>";
 
@@ -301,6 +302,7 @@ echo "</table>";
 echo "<br><a href='archiveFacture.php'>Nouvelle Recherche</a>";
 
 echo "</center>";
+
 }//fin du premier else
 
 include('templates/footer.php');

@@ -291,6 +291,7 @@ if (isset($_GET['retard']))
 if ($display_current)
   {
     echo "<tr>";	
+    $id = $ligne['idCourrier'];
 
     $tmp= substr($ligne['dateArrivee'], 8,2);
     $tmp.='-';
@@ -304,24 +305,31 @@ if ($display_current)
     $tmp2.='-';
     $tmp2.=substr($ligne['dateOrigine'], 0,4);
     
-    echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
-    echo "<td bgcolor = ".$couleur.">".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
-    echo "<td bgcolor = ".$couleur.">".$ligne['refFacture']."</td>";
-    echo "<td bgcolor = ".$couleur.">".$ligne['montant']."</td>";
-    echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
-    echo "<td bgcolor = ".$couleur.">".$tmp2."</td>";
-    echo "<td bgcolor = ".$couleur.">".$ligne['observation']."</td>";
-    echo "<td bgcolor=".$couleur."><a href=rechercherFactureHistorique.php?idCourrier=".$ligne['idCourrier'].">historique</a></td>";
-    echo "<td bgcolor = ".$couleur."><a href=validerFactureRecherche.php?idCourrier=".$ligne['idCourrier'].">archiver</a></td>";
+    if ($ligne['observation'] == '')
+      $obs = "modifier";
+    else
+      $obs = $ligne['observation'];
+    
+    echo "<td bgcolor='$couleur'>".$ligne['idCourrier']."</td>";
+    echo "<td bgcolor='$couleur'>".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
+    echo "<td bgcolor='$couleur'>".$ligne['refFacture']."</td>";
+    echo "<td bgcolor='$couleur'>".$ligne['montant']."</td>";
+    echo "<td bgcolor='$couleur'>".$tmp."</td>";
+    echo "<td bgcolor='$couleur'>".$tmp2."</td>";
+    echo "<td bgcolor='$couleur'><a href='modifObservationFacture.php?idCourrier=$id'>{$obs}</a></td>";
+    echo "<td bgcolor='$couleur'><a href='rechercherFactureHistorique.php?idCourrier=$id'>historique</a></td>";
+
+    echo "<td bgcolor='$couleur'><a href='validerFactureRecherche.php?idCourrier=$id'>archiver</a></td>";
 
     echo "</tr>";
   }
 }//fin while
 echo "</table>";
 
-echo "<br><a href = rechercherFacture.php>nouvelle recherche</a>";
+echo "<br><a href='rechercherFacture.php'>Nouvelle recherche</a>";
 
 echo "</center>";
 
 }//fin du premier else
+
 include('templates/footer.php');
