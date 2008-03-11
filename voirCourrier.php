@@ -215,11 +215,11 @@ echo"</tr>";
 $boul = 0;
 while( $ligne = mysql_fetch_array($resultatEntrant) ){
 	if($boul == 0){
-		$couleur = lightblue;
+		$couleur = 'lightblue';
 		$boul = 1;
 	}
 	else{
-		$couleur = white;
+		$couleur = 'white';
 		$boul = 0;	
 	}
 
@@ -301,7 +301,7 @@ if(mysql_num_rows($resultatEntrant) == $nbAffiche){
 
 ?>	
 <center><br>
-<a href = index.php>index</a><br><br>
+<a href="index.php">Index</a><br /><br />
 
 </center>
 </body>

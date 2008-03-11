@@ -23,9 +23,12 @@ author VELU Jonathan
 */
 
 require_once('init.php');
+require_once('functions/db.php');
 
-$affiche = $_GET['affiche'];
-if(!isset( $_POST["enregistrer"])){
+if (isset($_GET['affiche']))
+     $affiche = $_GET['affiche'];
+
+if (!isset( $_POST["enregistrer"])) {
 ?>
 <html>
 <head><title>gCourrier</title>
@@ -54,15 +57,12 @@ if(!isset( $_POST["enregistrer"])){
 	echo"<input type = hidden name = idCourrier value=".$idCourrier."></input>";
 	?>
 	<tr><td>Observation</td>
-	<td><textarea name=observation cols=30 rows=4>
-	<?php
-	$requete = "Select observation from courrier where id = ".$idCourrier." ; ";
-	$result = mysql_query( $requete ) or die (mysql_error( ) );
-	$ligne = mysql_fetch_array( $result );
-echo $ligne['observation'];
-	?>
-
-	</textarea></td></tr>
+	<td><textarea name=observation cols=30 rows=4><?php
+	$result = db_execute("SELECT observation FROM courrier WHERE id = ?", array($idCourrier));
+	$ligne = mysql_fetch_array($result);
+	echo $ligne['observation'];
+	?></textarea>
+        </td></tr>
 	</table>
 	<center>
 <?php
@@ -82,23 +82,78 @@ echo"<a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$affiche."&type="
 </html>
 <?php
 } else {
-  $service = $_POST['service'];
+  //
+  // Get information
+  //
+  $new_service = $_POST['service'];
   $idCourrier = $_POST['idCourrier'];
+  $result = db_execute('
+SELECT service.libelle AS label
+FROM courrier
+  JOIN estTransmis T1 ON courrier.id = T1.idCourrier
+  JOIN estTransmis T2 ON T1.idCourrier = T2.idCourrier
+  JOIN service ON T1.idService = service.id
+WHERE courrier.id = ?
+GROUP BY T1.id HAVING T1.id >= MAX(T2.id)',
+		     array($idCourrier));
+  $row = mysql_fetch_array($result);
+  $old_service_label = $row['label'];
 
-  $requete = "SELECT * FROM estTransmis WHERE idCourrier=$idCourrier";
-  $result = mysql_query($requete) or die(mysql_error());
+  //
+  // DB update
+  //
 
-
-  $requete = "INSERT INTO estTransmis (dateTransmission,idCourrier,idService)
-              VALUES ('".date("Y-m-d")."','$idCourrier','$service')";
-
-
-  $result = mysql_query($requete) or die(mysql_error());
+  $result = db_autoexecute('estTransmis',
+    array('dateTransmission' => date("Y-m-d"),
+	  'idCourrier' => $idCourrier,
+	  'idService' => $new_service),
+    DB_AUTOQUERY_INSERT);
 
   $observation = $_POST['observation'];
-  $requete = "UPDATE courrier SET observation='$observation', serviceCourant='$service'
-              WHERE id=$idCourrier";
-  $result = mysql_query($requete) or die(mysql_error());
-  
+  $result = db_autoexecute('courrier',
+    array('observation' => $observation,
+          'serviceCourant' => $new_service),
+    DB_AUTOQUERY_UPDATE,
+    'id=?', array($idCourrier));
+
+  //
+  // E-mail notification
+  //
+
+  $result = db_execute("SELECT libelle AS label, email FROM service WHERE id=?",
+		       array($new_service));
+  $row = mysql_fetch_array($result);
+  $email = $row['email'];
+  $new_service_label = $row['label'];
+  // libelle emetteur arrivee observation
+  if (!empty($email))
+    {
+      $result = db_execute("SELECT libelle AS label,
+                              nom, prenom,
+                              dateArrivee AS arrival_date,
+                              observation AS observation
+                            FROM courrier JOIN destinataire ON courrier.idDestinataire = destinataire.id
+                            WHERE courrier.id=?",
+			   array($idCourrier));
+      $row = mysql_fetch_array($result);
+      $label = 
+      $observation = 
+      // ...
+
+      mail($email,
+	   sprintf(_("Transmission du courrier %d: %s"),
+		   $idCourrier, $row['label']),
+	   sprintf(_("Bonjour,
+
+Le courrier %d a été transféré du service %s à votre service %s
+De: %s %s
+Objet: %s
+Observation: %s"),
+		   $idCourrier, $old_service_label, $new_service_label,
+		   $row['nom'], $row['prenom'],
+		   $row['label'],
+		   $row['observation']),
+	   "Content-type: text/plain; charset=UTF-8");
+    }
   header("Location: voirCourrier.php?id=$idCourrier&nbAffiche={$_POST['nbAffiche']}&type={$_POST['type']}");
 }

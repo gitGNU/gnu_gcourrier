@@ -32,6 +32,7 @@ $form = new HTML_QuickForm_FR('creerService');
 $form->addElement('header', 'title', 'Créer un service');
 $form->addElement('text', 'libelle', 'Libellé/Abréviation');
 $form->addElement('text', 'designation', 'Désignation');
+$form->addElement('text', 'email', 'Courriel de notification');
 $form->addElement('submit', null, 'Créer');
 
 $form->addRule('libelle', _("Ce champ est requis"), 'required');
@@ -41,10 +42,10 @@ $form->addRule('libelle', _("Ce service existe déjà"), 'callback', 'service_ex
 
 if ($form->validate()) {
   $values = $form->exportValues();
-  service_new($values['libelle'], $values['designation']);
+  service_new($values['libelle'], $values['designation'], $values['email']);
   text_notice(_("Service créé."));
   // empty the form
-  $form->setConstants(array('libelle' => '', 'designation' => ''));
+  $form->setConstants(array('libelle' => '', 'designation' => '', 'email' => ''));
 }
 
 $form->display();

@@ -30,9 +30,10 @@ function service_exists_not($service) {
   return !service_exists($service);
 }
 
-function service_new($libelle, $designation) {
+function service_new($libelle, $designation, $email) {
   db_autoexecute('service',
 		 array('libelle' => $libelle,
-		       'designation' => $designation),
+		       'designation' => $designation,
+		       'email' => $email),
 		 DB_AUTOQUERY_INSERT);
 }

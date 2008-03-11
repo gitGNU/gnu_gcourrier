@@ -58,7 +58,7 @@ $requete = "select service.libelle as libService,
 	echo "<td align=center>service</td>";
 	echo "<td align=center>date de modification</td>";
 	echo "<td></td>";
-	echo"</tr>";
+	echo "</tr>";
 
 
 
@@ -69,11 +69,11 @@ $result = mysql_query( $requete ) or die (mysql_error() );
 while ( $ligne = mysql_fetch_array($result) ){
 
 	if($boul == 0){
-		$couleur = lightblue;
+		$couleur = 'lightblue';
 		$boul = 1;
 	}
 	else{
-		$couleur = white;
+		$couleur = 'white';
 		$boul = 0;	
 	}
 

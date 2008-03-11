@@ -119,8 +119,8 @@ function db_autoexecute($table, $dict, $mode=DB_AUTOQUERY_INSERT,
     }
     $sql_fields = rtrim($sql_fields, ',');
     $values = array_merge($values, $where_inputarr);
-    $where_sql = $where_clause ? "WHERE $where_clause" : '';
-    return db_execute("UPDATE $table $sql_fields $where_sql", $values);
+    $where_sql = $where_condition ? "WHERE $where_condition" : '';
+    return db_execute("UPDATE $table SET $sql_fields $where_sql", $values);
     break;
   default:
     // no default
