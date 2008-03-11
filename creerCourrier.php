@@ -46,6 +46,10 @@ if (isset($_POST["enregistrer"])) {
     if( !move_uploaded_file($tmp_file, $content_dir . $name_file) )
     {
 //        exit("Impossible de copier le fichier dans $content_dir");
+    } else {
+      // Give permissions to other users, including Apache. This is
+      // necessary in a suPHP setup.
+      chmod($content_dir . $name_file, 0644);
     }
 
   //  echo "Le fichier a bien été uploade";

@@ -155,9 +155,15 @@ header('Content-Length: ' . strlen($temp));
 echo $temp;
 */
 
-$inF = fopen("accuse/".$objet.".pdf", "w");
+$filename = "accuse/".$objet.".pdf";
+$inF = fopen($filename, "wn");
 fputs($inF, $pdf->generate(0));
 fclose($inF);
+
+// Give permissions to other users, including Apache. This is
+// necessary in a suPHP setup.
+chmod($filename, 0644);
+
 /*
 header("Content-Disposition: filename=accuseReception.pdf");
 header("Content-Type: application/pdf");
