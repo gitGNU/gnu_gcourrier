@@ -98,6 +98,7 @@ if ($form->validate()) {
       echo "<div class='status'>"
 	. _("Il faut être administrateur pour pouvoir créer un compte.") . "</div>";
     } else {
+      $pass = base64_encode($form_values['password1']);
       db_execute("INSERT INTO utilisateur
                     (login, passwd,
                      prenom, nom,
@@ -105,7 +106,7 @@ if ($form->validate()) {
                   VALUES (?, ?,
                           ?, ?,
                           ?, ?)",
-		 array($form_values['login'], $form_values['password1'],
+		 array($form_values['login'], $pass,
 		       $form_values['firstname'], $form_values['lastname'],
 		       $form_values['idService'], $form_values['pagersize']));
       echo "<div class='status'>" . _("Compte créé.") . "</div>";
