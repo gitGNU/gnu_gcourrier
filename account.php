@@ -64,17 +64,17 @@ $form->applyFilter('login', 'trim');
 $form->applyFilter('firstname', 'trim');
 $form->applyFilter('lastname', 'trim');
 
-$form->addRule('login', "Veuillez entrer un identifiant.", 'required', null, 'client');
-$form->addRule('login', "L'identifiant ne peut contenir que des lettres.", 'lettersonly');
+$form->addRule('login', _("Veuillez entrer un identifiant."), 'required', null, 'client');
+$form->addRule('login', _("L'identifiant ne peut contenir que des lettres."), 'lettersonly');
 if ($form->exportValue('mode') == 'create')
-     $form->addRule('login', "Cet identifiant existe déjà.", 'callback', 'user_exists_not');
+     $form->addRule('login', _("Cet identifiant existe déjà."), 'callback', 'user_exists_not');
 else
-     $form->addRule('login', "Cet identifiant n'existe pas.", 'callback', 'user_exists');
-$form->addRule('login', "Vous ne pouvez pas modifier ce compte.", 'callback', 'can_modify');
+     $form->addRule('login', _("Cet identifiant n'existe pas."), 'callback', 'user_exists');
+$form->addRule('login', _("Vous ne pouvez pas modifier ce compte."), 'callback', 'can_modify');
 
 $form->addRule('idService', NULL, 'required');
 $form->addRule(array('password1', 'password2'),
-	       'Les mots de passe ne correspondent pas.',
+	       _('Les mots de passe ne correspondent pas.'),
 	       'compare', 'eq', 'client');
 $form->addRule('mode', NULL, 'regex', '/^(create|modify)/');
 $form->addRule('pagersize', _("Entrez un nombre entier."), 'required');
@@ -186,11 +186,11 @@ if ($_SESSION['login'] == 'admin') {
     preferenceNbCourrier AS pagersize
     FROM utilisateur, service WHERE idService=service.id',
     array('Identifiant' => 'login',
-	  'Nom' => 'lastname',
-	  'Prénom' => 'firstname',
-	  'Service' => 'service',
-	  'Nb' => 'pagersize',
-	  'Modifier' => array('style' => 'text-align: center',
+	  _('Nom') => 'lastname',
+	  _('Prénom') => 'firstname',
+	  _('Service') => 'service',
+	  _('Nb') => 'pagersize',
+	  _('Modifier') => array('style' => 'text-align: center',
 			      'callback' => 'printModify')));
   $sdg->setTitle(_("Comptes existants"));
   $sdg->setPagerSize($_SESSION['pagersize']);

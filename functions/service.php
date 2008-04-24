@@ -30,10 +30,28 @@ function service_exists_not($service) {
   return !service_exists($service);
 }
 
-function service_new($libelle, $designation, $email) {
+function service_new($label, $description, $email) {
   db_autoexecute('service',
-		 array('libelle' => $libelle,
-		       'designation' => $designation,
+		 array('libelle' => $label,
+		       'designation' => $description,
 		       'email' => $email),
 		 DB_AUTOQUERY_INSERT);
+}
+
+function service_modify($label, $description, $email) {
+  db_autoexecute('service',
+		 array('designation' => $description,
+		       'email' => $email),
+		 DB_AUTOQUERY_UPDATE,
+		 'libelle = ?', array($label));
+}
+
+function service_getbyid($id) {
+  $req = "SELECT id, libelle AS label, designation AS description, email
+          FROM service
+          WHERE id = '" . mysql_real_escape_string($id) . "'";
+  $result = mysql_query($req) or die(mysql_error());
+  $line = mysql_fetch_assoc($result);
+  
+  return $line;
 }

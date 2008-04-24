@@ -29,7 +29,7 @@ if ($_SESSION['login'] == 'admin')
 <table id="menu_index">
   <tr>
     <td>
-      <a href="creerService.php">Créer service</a><br />
+      <a href="units.php">Gérer les services</a><br />
       <a href="account.php">Gestion des comptes</a><br />
       <a href="creerPriorite.php">Créer priorite</a><br />
       <a href="modifierAccuse.php">Gérer l'accusé</a><br />
