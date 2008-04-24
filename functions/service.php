@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005,2006 Cliss XXI
+Copyright (C) 2005, 2006, 2008  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -36,14 +36,16 @@ function service_new($label, $description, $email) {
 		       'designation' => $description,
 		       'email' => $email),
 		 DB_AUTOQUERY_INSERT);
+  return mysql_insert_id();
 }
 
-function service_modify($label, $description, $email) {
+function service_modify($id, $label, $description, $email) {
   db_autoexecute('service',
-		 array('designation' => $description,
+		 array('libelle' => $label,
+		       'designation' => $description,
 		       'email' => $email),
 		 DB_AUTOQUERY_UPDATE,
-		 'libelle = ?', array($label));
+		 'id = ?', array($id));
 }
 
 function service_getbyid($id) {

@@ -1,7 +1,7 @@
 <?php
 /*
 Organization units management
-Copyright (C) 2005, 2006, 2007  Cliss XXI
+Copyright (C) 2005, 2006, 2007, 2008  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -43,6 +43,7 @@ $form->addElement('header', 'title', _('Créer un service'));
 $form->addElement('text', 'label', _('Libellé'));
 $form->addElement('text', 'description', _('Désignation'));
 $form->addElement('text', 'email', _('Courriel'));
+$form->addElement('hidden', 'id');
 $form->addElement('hidden', 'mode', 'create');
 $form->addElement('submit', 'save', _("Enregistrer"));
 
@@ -54,14 +55,20 @@ $form->addRule('label', _("Ce champ est requis"), 'required');
 $form->addRule('label', _("Entrez uniquement des lettres et des chiffres"),
 	       'callback', 'ctype_alnum');
 if ($form->exportValue('mode') == 'create')
-     $form->addRule('label', _("Ce service existe déjà"), 'callback', 'service_exists_not');
+{
+  $form->addRule('label', _("Ce service existe déjà"), 'callback', 'service_exists_not');
+}
 else
-     $form->addRule('label', _("Ce service n'existe pas"), 'callback', 'service_exists');
+{
+  $unit = service_getbyid($form->exportValue('id'));
+  if ($unit['label'] == $form->exportValue('label'))
+    // the admin didn't change the unit label
+    $form->addRule('label', _("Ce service n'existe pas"), 'callback', 'service_exists');
+  else
+    // the admin changed the unit label, make sure we avoid duplicates
+    $form->addRule('label', _("Ce service existe déjà"), 'callback', 'service_exists_not');
+}
 $form->addRule('mode', NULL, 'regex', '/^(create|modify)/');
-if ($form->exportValue('mode') == 'create')
-     $form->addRule('label', "Ce libellé existe déjà.", 'callback', 'service_exists_not');
-else
-     $form->addRule('label', "Cet identifiant n'existe pas.", 'callback', 'service_exists');
 
 if ($form->exportValue('mode') == 'create')
      $display_mode = 'create';
@@ -87,15 +94,12 @@ if ($param_user->validate()) {
 if ($display_mode == 'modify') {
   $elt1 = $form->getElement('title');
   $elt1->setText("Modifier le service");
-  $elt3 = $form->getElement('label');
-  $elt3->freeze();
   $form->setConstants(array('mode' => 'modify'));
 }
 
-if ($form->validate()) {
-  // Redisplay the form in 'modify' mode
-  $display_mode = 'modify';
 
+// Apply the changes
+if ($form->validate()) {
   // Insertion des données dans la table utilisateur
   $form_values = $form->exportValues();
   
@@ -105,9 +109,12 @@ if ($form->validate()) {
     text_notice(_("Service créé."));
   } else {
     $values = $form->exportValues();
-    service_modify($values['label'], $values['description'], $values['email']);
+    service_modify($values['id'], $values['label'], $values['description'], $values['email']);
     text_notice(_("Service modifié."));
   }
+
+  // Redisplay the form in 'modify' mode
+  $display_mode = 'modify';
 }
 
 $form->display();

@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005,2006 CLISS XXI
+Copyright (C) 2005, 2006, 2007, 2008  CLISS XXI
 
 This file is part of GCourrier.
 
@@ -30,7 +30,7 @@ if ($_SESSION['login'] == 'admin')
   <tr>
     <td>
       <a href="units.php">Gérer les services</a><br />
-      <a href="account.php">Gestion des comptes</a><br />
+      <a href="account.php">Gestion les comptes</a><br />
       <a href="creerPriorite.php">Créer priorite</a><br />
       <a href="modifierAccuse.php">Gérer l'accusé</a><br />
     </td>

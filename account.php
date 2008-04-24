@@ -1,7 +1,7 @@
 <?php
 /*
 User accounts management
-Copyright (C) 2005, 2006, 2007  Cliss XXI
+Copyright (C) 2005, 2006, 2007, 2008  Cliss XXI
 
 This file is part of GCourrier.
 
