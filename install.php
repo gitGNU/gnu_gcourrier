@@ -34,37 +34,11 @@ require_once('init.php');
 
 <?php
 echo "<h3><i>Installation en cours ...</i></h3>";
-echo "<h3><i>Verification de la base de donnees ...</i></h3>";
 
-$requete = " DROP TABLE IF EXISTS courrier;";
-$result = mysql_query( $requete ) or die ("erreur1".mysql_error() );
-
-$requete = " DROP TABLE IF EXISTS accuse;";
-$result = mysql_query( $requete ) or die ("erreur2". mysql_error() );
-
-$requete = " DROP TABLE IF EXISTS destinataire;";
-$result = mysql_query( $requete ) or die ( "erreur3".mysql_error() );
-
-$requete = " DROP TABLE IF EXISTS estTransmis;";
-$result = mysql_query( $requete ) or die ("erreur4". mysql_error() );
-
-
-$requete = " DROP TABLE IF EXISTS estTransmisCopie;";
-$result = mysql_query( $requete ) or die ("erreur5". mysql_error() );
-
-
-$requete = " DROP TABLE IF EXISTS facture;";
-$result = mysql_query( $requete ) or die ( "erreur6".mysql_error() );
-
-$requete = " DROP TABLE IF EXISTS priorite;";
-$result = mysql_query( $requete ) or die ("erreur7". mysql_error() );
-
-$requete = " DROP TABLE IF EXISTS service;";
-$result = mysql_query( $requete ) or die ("erreur8". mysql_error() );
-
-$requete = " DROP TABLE IF EXISTS utilisateur;";
-$result = mysql_query( $requete ) or die ("erreur9". mysql_error() );
-
+$requete = "SHOW TABLES;";
+$result = mysql_query($requete) or die ("erreur1".mysql_error());
+if (mysql_numrows($result) > 0)
+  die("Error: Database is not empty");
 
 echo "<h3><i>Creation des tables ...</i></h3>";
 
@@ -158,6 +132,7 @@ CREATE TABLE `service` (
   `id` int(11) NOT NULL auto_increment,
   `libelle` varchar(60) NOT NULL default '',
   `designation` varchar(60) NOT NULL default '',
+  `email` tinytext,
   PRIMARY KEY  (`id`)
 );";
 $result = mysql_query( $requete ) or die ("erreur16". mysql_error() );
