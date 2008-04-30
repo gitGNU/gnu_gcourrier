@@ -36,21 +36,6 @@ exit();
 }
 ?>
 
-<form method="post" action="voirFactureAffiche.php">
-<table align="center" style="border: 1px dotted black;"><tr><td>
-<label>Nombre de factures à afficher:</label>
-
-<?php
-//echo"<input type = hidden name=type value=".$_GET['type']." size=2></input>";
-echo"<input type='text' name='affiche' value='{$_GET['nbAffiche']}' size=2></input>";
-echo"<input type='hidden' name='idTmp' value='{$_GET['id']}'></input>";
-?>
-
-<input type="submit" name="ok" value="OK"></input>
-</td></tr>
-</table>
-</form>
-
 <form method="post" action="rechercheRapideFacture.php#result">
 <table align=center style="border: 1px dotted black;"><tr><td>
 <label>Aller à la facture numéro:</label>
@@ -132,10 +117,8 @@ $sdg = new SQLDataGrid($requeteFacture,
 			     'Jours restant' => array('style' => 'text-align: center',
 						      'callback' => 'printRemainingDays'),
 			     ));
-if (empty($_GET['nbAffiche']))
-  $sdg->setPagerSize($_SESSION['pagersize']);
-else
-  $sdg->setPagerSize($_GET['nbAffiche']);
+
+$sdg->setPagerSize($_SESSION['pagersize']);
 $sdg->setDefaultSort(array('idFacture' => 'DESC'));
 $sdg->setClass('resultats');
 if (!empty($_GET['idFactureRecherche']))

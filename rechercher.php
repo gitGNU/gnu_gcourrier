@@ -25,16 +25,22 @@ author VELU Jonathan
 require_once('init.php');
 
 include('templates/header.php');
+
+if (!isset($_GET['type']))
+  {
+    $_GET['type'] = 1;
+  }
+
 if(!isset( $_GET["rechercher"] ) ){
 
 ?>
 <center><b>RECHERCHE COURRIER
 <?php
-if($_GET['type']==1){
+
+if($_GET['type'] == 1) {
 	echo " ENTRANT";
 	$emetteur = "Émetteur";
-}
-else{
+} else {
 	echo " DEPART";
 	$emetteur = "Destinataire";
 }

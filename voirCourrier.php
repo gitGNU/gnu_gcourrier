@@ -23,6 +23,7 @@ author VELU Jonathan
 */
 
 require_once('init.php');
+require_once('functions/db.php');
 
 if($_GET['type']==1){
 	$tmpCouleur ="white";
@@ -33,11 +34,11 @@ else{
 
 ?>
 <html>
-<head><title>gCourrier</title>
+<head><title>GCourrier</title>
 <link rel="stylesheet" href=styles3.css type="text/css">
 </head>
 <?php
-echo"<body style='background:".$tmpCouleur."' >";
+echo "<body style='background:".$tmpCouleur."' >";
 ?>
 <br>
 	<center>
@@ -64,42 +65,33 @@ echo "<a href = index.php>index</a>";
 exit();
 }
 
-echo" <br/><i style=\"font-size:10px;font-weight:normal\">note :Ceci est le courrier de votre service uniquement</i></div></center><br>";
+echo " <br/><i style=\"font-size:10px;font-weight:normal\">";
+echo _("Note: Ne sont affichés que les courriers de votre service");
+echo "</i></div></center><br>";
 
-if(!isset( $_GET['id'] )){
-
-$re = "select max(id)as id from courrier where type = ".$_GET["type"].";";
-$res = mysql_query( $re ) or die (mysql_error() );
-while($ligne = mysql_fetch_array( $res ) ){
-	$id = $ligne['id']; 
+if (empty($_GET['id']) || !ctype_digit($_GET['id'])) {
+  $res = db_execute("SELECT MAX(id) AS id FROM courrier WHERE type=?", array($_GET["type"]));
+  while ($ligne = mysql_fetch_array($res)) {
+    $id = $ligne['id']; 
+  }
+  $idTmp = $id;
+} else {
+  $idTmp = $_GET['id'];
 }
 
-$idTmp = $id;
-}
-
-else{
-	$idTmp = $_GET['id'];
-}
-
-if(!isset( $_GET['nbAffiche'] )){
-$requete = "select * from utilisateur where login = '".$_SESSION['login']."';";
-$result = mysql_query($requete) or die(mysql_error());
-while($ligne = mysql_fetch_array($result)){
-$nbAffiche = $ligne['preferenceNbCourrier'];
-
-}
-
-
-}
-
-else{
-	$nbAffiche = $_GET['nbAffiche'];
+if (!isset($_GET['nbAffiche'])) {
+  $result = db_execute('SELECT * FROM utilisateur WHERE login=?', array($_SESSION['login']));
+  while($ligne = mysql_fetch_array($result)){
+    $nbAffiche = $ligne['preferenceNbCourrier'];
+  }
+} else {
+  $nbAffiche = $_GET['nbAffiche'];
 }
 
 ?>
 <form method = POST action=voirCourrierAffiche.php>
 <table align=center style="border:1px dotted black;"><tr><td>
-<label>nombre de courrier a afficher : </label>
+<label>Nombre de courrier à afficher:</label>
 
 <?php 
 echo"<input type = hidden name=type value=".$_GET['type']." size=2></input>";
@@ -112,13 +104,13 @@ echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
 </form>
 
 <?php
-echo"<form method = POST action=rechercheRapideCourrier.php?type=".$_GET['type'].">";
+echo "<form method='POST' action='rechercheRapideCourrier.php?type={$_GET['type']}'>";
 ?>
 <table align=center style="border:1px dotted black;"><tr><td>
-<label>rechercher le courrier numero : </label>
+<label>Rechercher le courrier numéro:</label>
 <input type=text name=numero value=1 size=2></input>
 <input type=submit name=ok value=ok></input>
-<br><a href=rechercher.php><font size=1px><center>rechercheAvancee</center></font></a>
+<br><a href="rechercher.php?type=1"><font size=1px><center>Recherche Avancée</center></font></a>
 </tr></td></table></form>
 
 
