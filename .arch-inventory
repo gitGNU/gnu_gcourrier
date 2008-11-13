@@ -1,3 +1,0 @@
-precious ^config.php$
-precious ^gcourrier-.*.tar.gz$
-source ^\.htaccess$
