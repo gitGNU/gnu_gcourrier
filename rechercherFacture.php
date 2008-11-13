@@ -24,8 +24,7 @@ require_once('init.php');
 
 include('templates/header.php');
 
-if(!isset( $_GET["rechercher"] ) ){
-
+if (!isset($_GET["rechercher"])) {
 ?>
 <div id =pageTGd><br>
 <center><b>RECHERCHE FACTURE</b><br><br>
@@ -107,11 +106,12 @@ if(!isset( $_GET["rechercher"] ) ){
 </div>
 
 <?php
-}
-else{
+} else {
+//
+// Results
+//
 echo"<center>";
 echo "<div id = titre>RESULTAT DE LA RECHERCHE</div><br></b>";
-
 
 $serviceDest = $_GET['serviceDest'];
 $numero = $_GET['numero'];
@@ -244,92 +244,81 @@ echo "<td align=center>date facture</td>";
 echo "<td align=center>observation</td>";
 echo "<td align=center>historique</td>";
 echo "<td align=center>archiver</td>";
+echo "<td align=center>Jours restant</td>";
 echo "</tr>";
 
 $boul = 0;
 
-while($ligne = mysql_fetch_array( $result ) ){
+while ($ligne = mysql_fetch_array($result)) {
+  if ($boul == 0) {
+    $couleur = 'lightblue';
+    $boul = 1;
+  } else {
+    $couleur = 'white';
+    $boul = 0;	
+  }
 
-if($boul == 0){
-		$couleur = 'lightblue';
-		$boul = 1;
-	}
-	else{
-		$couleur = 'white';
-		$boul = 0;	
-	}
+  # remaining days
+  $tmpDateArrivee = $ligne['dateArrivee'];
+  $jourArrivee = substr($tmpDateArrivee,8,2);
+  $moisArrivee = substr($tmpDateArrivee,5,2);
+  $anneeArrivee = substr($tmpDateArrivee,0,4);
+  
+  $nbJours = $ligne['nbJours'];
+  
+  $timestampActuel = time();
+  $timestampArrivee= mktime(0, 0, 0, $moisArrivee, $jourArrivee, $anneeArrivee);
+  $urgence = ($timestampActuel - $timestampArrivee ) / 86400;
+  
+  $nbJoursRestant = $nbJours - (int)$urgence;
 
 
-$display_current = true;
-
-if (isset($_GET['retard']))
-  {
-    $dateActuel = date("Y-m-d");
-    $jourActuel = substr($dateActuel,8,2);
-    $moisActuel = substr($dateActuel,5,2);
-    $anneeActuel= substr($dateActuel,0,4);
-    
-    $tmpDateArrivee = $ligne['dateArrivee'];
-    $jourArrivee = substr($tmpDateArrivee,8,2);
-    $moisArrivee = substr($tmpDateArrivee,5,2);
-    $anneeArrivee = substr($tmpDateArrivee,0,4);
-    
-    
-    
-    $nbJours = $ligne['nbJours'];
-    
-    $timestampActuel = mktime(0, 0, 0, $moisActuel,  $jourActuel,  $anneeActuel);
-    $timestampArrivee= mktime(0, 0, 0, $moisArrivee, $jourArrivee, $anneeArrivee);
-    $urgence = ($timestampActuel - $timestampArrivee ) / 86400;
-    
-    $nbJoursRestant = $nbJours - $urgence;
-    
-    if ($nbJoursRestant <= 5)
+  $display_current = true;
+  if (isset($_GET['retard']) && ($nbJoursRestant > 5))
       $display_current = false;
-  }
-
-if ($display_current)
-  {
-    echo "<tr>";	
-    $id = $ligne['idCourrier'];
-
-    $tmp= substr($ligne['dateArrivee'], 8,2);
-    $tmp.='-';
-    $tmp.=substr($ligne['dateArrivee'], 5,2);
-    $tmp.='-';
-    $tmp.=substr($ligne['dateArrivee'], 0,4);
-    
-    $tmp2= substr($ligne['dateOrigine'], 8,2);
-    $tmp2.='-';
-    $tmp2.=substr($ligne['dateOrigine'], 5,2);
-    $tmp2.='-';
-    $tmp2.=substr($ligne['dateOrigine'], 0,4);
-    
-    if ($ligne['observation'] == '')
-      $obs = "modifier";
-    else
-      $obs = $ligne['observation'];
-    
-    echo "<td bgcolor='$couleur'>".$ligne['idCourrier']."</td>";
-    echo "<td bgcolor='$couleur'>".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
-    echo "<td bgcolor='$couleur'>".$ligne['refFacture']."</td>";
-    echo "<td bgcolor='$couleur'>".$ligne['montant']."</td>";
-    echo "<td bgcolor='$couleur'>".$tmp."</td>";
-    echo "<td bgcolor='$couleur'>".$tmp2."</td>";
-    echo "<td bgcolor='$couleur'><a href='modifObservationFacture.php?idCourrier=$id'>{$obs}</a></td>";
-    echo "<td bgcolor='$couleur'><a href='rechercherFactureHistorique.php?idCourrier=$id'>historique</a></td>";
-
-    echo "<td bgcolor='$couleur'><a href='validerFactureRecherche.php?idCourrier=$id'>archiver</a></td>";
-
-    echo "</tr>";
-  }
-}//fin while
+  
+  if ($display_current)
+    {
+      echo "<tr>";	
+      $id = $ligne['idCourrier'];
+      
+      $tmp= substr($ligne['dateArrivee'], 8,2);
+      $tmp.='-';
+      $tmp.=substr($ligne['dateArrivee'], 5,2);
+      $tmp.='-';
+      $tmp.=substr($ligne['dateArrivee'], 0,4);
+      
+      $tmp2= substr($ligne['dateOrigine'], 8,2);
+      $tmp2.='-';
+      $tmp2.=substr($ligne['dateOrigine'], 5,2);
+      $tmp2.='-';
+      $tmp2.=substr($ligne['dateOrigine'], 0,4);
+      
+      if ($ligne['observation'] == '')
+	$obs = "modifier";
+      else
+	$obs = $ligne['observation'];
+      
+      echo "<td bgcolor='$couleur'>".$ligne['idCourrier']."</td>";
+      echo "<td bgcolor='$couleur'>".$ligne['nomDest']." ".$ligne['prenomDest']."</td>";
+      echo "<td bgcolor='$couleur'>".$ligne['refFacture']."</td>";
+      echo "<td bgcolor='$couleur'>".$ligne['montant']."</td>";
+      echo "<td bgcolor='$couleur'>".$tmp."</td>";
+      echo "<td bgcolor='$couleur'>".$tmp2."</td>";
+      echo "<td bgcolor='$couleur'><a href='modifObservationFacture.php?idCourrier=$id'>{$obs}</a></td>";
+      echo "<td bgcolor='$couleur'><a href='rechercherFactureHistorique.php?idCourrier=$id'>historique</a></td>";
+      
+      echo "<td bgcolor='$couleur'><a href='validerFactureRecherche.php?idCourrier=$id'>archiver</a></td>";
+      echo "<td bgcolor='$couleur'>$nbJoursRestant</td>";
+      
+      echo "</tr>";
+    }
+} // while
 echo "</table>";
 
 echo "<br><a href='rechercherFacture.php'>Nouvelle recherche</a>";
 
 echo "</center>";
-
-}//fin du premier else
+} // Results
 
 include('templates/footer.php');
