@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005,2006 CLISS XXI
+Copyright (C) 2005, 2006, 2009 CLISS XXI
 
 This file is part of GCourrier.
 
@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-author VELU Jonathan
+author VELU Jonathan, Sylvain BEUCLER
 */
 
 require_once('init.php');
@@ -154,7 +154,8 @@ if (isset($status)) {
 		<tr><td>Observation</td>
 		<td><textarea name=observation cols=30 rows=4></textarea></td></tr>
 <?php
-		priority_display();
+$id = priority_getdefaultmail();
+priority_display($id);
 ?>
 
 	<tr>

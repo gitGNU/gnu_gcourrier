@@ -1,7 +1,7 @@
 <?php
 /*
 Priority input form
-Copyright (C) 2007  Cliss XXI
+Copyright (C) 2007, 2009  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -53,4 +53,56 @@ function priority_display($default_index=NULL) {
         </td>
       </tr>
 <?php
+}
+
+function priority_new($designation, $nbJours, $defautCourrier, $defautFacture) {
+  db_autoexecute('priorite',
+		 array('designation' => $designation,
+		       'nbJours' => $nbJours,
+		       'defautCourrier' => $defautCourrier ? 1 : 0,
+		       'defautFacture' => $defautFacture ? 1 : 0,
+		       ),
+		 DB_AUTOQUERY_INSERT);
+  return mysql_insert_id();
+}
+
+function priority_modify($id, $designation, $nbJours, $defautCourrier, $defautFacture) {
+  db_autoexecute('priorite',
+		 array('designation' => $designation,
+		       'nbJours' => $nbJours,
+		       'defautCourrier' => $defautCourrier ? 1 : 0,
+		       'defautFacture' => $defautFacture ? 1 : 0,
+		       ),
+		 DB_AUTOQUERY_UPDATE,
+		 'id = ?', array($id));
+}
+
+function priority_getbyid($id) {
+  $req = "SELECT id, designation, nbJours, defautCourrier, defautFacture
+          FROM priorite
+          WHERE id = '" . mysql_real_escape_string($id) . "'";
+  $result = mysql_query($req) or die(mysql_error());
+  $line = mysql_fetch_assoc($result);
+  
+  return $line;
+}
+
+function priority_getdefaultmail()
+{
+  $req = "SELECT id
+          FROM priorite
+          WHERE defautCourrier = 1;";
+  $result = mysql_query($req) or die(mysql_error());
+  $line = mysql_fetch_assoc($result);
+  return @$line['id'];
+}
+
+function priority_getdefaultinvoice()
+{
+  $req = "SELECT id
+          FROM priorite
+          WHERE defautFacture = 1;";
+  $result = mysql_query($req) or die(mysql_error());
+  $line = mysql_fetch_assoc($result);
+  return @$line['id'];
 }

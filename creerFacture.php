@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005, 2006, 2007  Cliss XXI
+Copyright (C) 2005, 2006, 2007, 2009  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -157,10 +157,12 @@ echo "<input type='text' name='dateFactureOrigine' value='{$date}' />";
 <td><input type = text name = montant></input></td></tr>
 
 <?php
-if ($copy)
-{ priority_display($idPriorite); }
-else
-{ priority_display(); }
+  if ($copy) {
+    priority_display($idPriorite);
+  } else {
+    $id = priority_getdefaultinvoice();
+    priority_display($id);
+  }
 ?>
 
 <tr>

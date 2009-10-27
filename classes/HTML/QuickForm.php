@@ -1,7 +1,7 @@
 <?php /*-*-PHP-*-*/
 /*
 Quick HTML_QuickForm clone without the GPL-incompatible license
-Copyright (C) 2007  Cliss XXI
+Copyright (C) 2007, 2009  Cliss XXI
 Copyright (C) 2007  Sylvain Beucler
 This file is part of GCourrier.
 
@@ -250,14 +250,12 @@ class GPLQuickForm_Element
 
 	  case 'checkbox':
 	    $checked = "";
-	    if ($value === NULL)
-	      $value = '1';
-	    else
+	    if ($value)
 	      $checked = 'checked="checked"';
 	    $disabled = "";
 	    if ($this->frozen)
 	      $disabled = 'disabled="disabled"';
-	    print "<input type='checkbox' name='{$this->name}' value='$value' $checked $disabled />";
+	    print "<input type='checkbox' name='{$this->name}' value='1' $checked $disabled />";
 	    break;
 	  }
 	print '</td>';
