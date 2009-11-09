@@ -28,10 +28,32 @@ include('templates/header.php');
 
 if(!isset( $_GET["rechercher"] ) ){
 
+
+if (@$_REQUEST['year'] == '')
+  {
+    echo "<p>" . _("Sélectionnez une année:") . "</p>";
+    $res = mysql_query("SELECT DISTINCT(YEAR(dateFactureOrigine)) FROM facture;") or die(mysql_error());
+    $annees = array();
+    while ($line = mysql_fetch_array($res))
+      {
+	$annees[] = $line[0];
+      }
+
+    sort($annees);
+    foreach ($annees as $annee)
+      {
+	echo "<a href='?year=$annee'>$annee</a><br />";
+      }
+
+    include('templates/footer.php');
+    exit();
+  }
 ?>
+
 <center><b>Recherche facture archivée</b><br><br>
 <?php
 echo"<form action=archiveFacture.php>";
+echo "<input type='hidden' name='year' value='{$_REQUEST['year']}' />";
 ?>
 <table>
 <tr>
@@ -140,6 +162,7 @@ $requetetmp = 	"SELECT	facture.refuse as refuse,
 
 $from ="    FROM facture,destinataire ";
 $where =" WHERE facture.validite = 1 and facture.idServiceCreation=".$_SESSION['idService']."";
+$where .=" AND YEAR(dateFactureOrigine) = " . intval(mysql_real_escape_string($_REQUEST['year']));
 
 $requete = '';
 if(strcmp($numero,"")!=0){

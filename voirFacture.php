@@ -34,7 +34,6 @@ echo "<div style='text-align: center'>" . _("Aucune facture pour le moment.") . 
 echo "<div style='text-align: center'><a href='index.php'>Index</a></div>";
 exit();
 }
-?>
 
 <form method="post" action="rechercheRapideFacture.php#result">
 <table align=center style="border: 1px dotted black;"><tr><td>
