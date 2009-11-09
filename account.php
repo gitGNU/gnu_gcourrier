@@ -65,7 +65,7 @@ $form->applyFilter('firstname', 'trim');
 $form->applyFilter('lastname', 'trim');
 
 $form->addRule('login', _("Veuillez entrer un identifiant."), 'required', null, 'client');
-$form->addRule('login', _("L'identifiant ne peut contenir que des lettres."), 'lettersonly');
+$form->addRule('login', _("L'identifiant ne peut contenir que des lettres."), 'regex', '/^[a-zA-Z-]+$/');
 if ($form->exportValue('mode') == 'create')
      $form->addRule('login', _("Cet identifiant existe déjà."), 'callback', 'user_exists_not');
 else
