@@ -25,35 +25,12 @@ author VELU Jonathan
 require_once('init.php');
 
 include('templates/header.php');
-
-if(!isset( $_GET["rechercher"] ) ){
-
-
-if (@$_REQUEST['year'] == '')
-  {
-    echo "<p>" . _("Sélectionnez une année:") . "</p>";
-    $res = mysql_query("SELECT DISTINCT(YEAR(dateFactureOrigine)) FROM facture;") or die(mysql_error());
-    $annees = array();
-    while ($line = mysql_fetch_array($res))
-      {
-	$annees[] = $line[0];
-      }
-
-    sort($annees);
-    foreach ($annees as $annee)
-      {
-	echo "<a href='?year=$annee'>$annee</a><br />";
-      }
-
-    include('templates/footer.php');
-    exit();
-  }
+if (!isset($_GET["rechercher"])) {
 ?>
 
 <center><b>Recherche facture archivée</b><br><br>
 <?php
 echo"<form action=archiveFacture.php>";
-echo "<input type='hidden' name='year' value='{$_REQUEST['year']}' />";
 ?>
 <table>
 <tr>
@@ -88,6 +65,33 @@ echo "<input type='hidden' name='year' value='{$_REQUEST['year']}' />";
 <td>Date origine fournisseur</td>
 <td><input type="text" name="dateOrigine" value="jj-mm-aaaa" /></td>
 </tr>
+
+<tr>
+<td>Année origine</td>
+<td><select name="year">
+<option value="">Toutes</option>
+<?php
+$res = mysql_query("SELECT DISTINCT(YEAR(dateFactureOrigine)) FROM facture;") or die(mysql_error());
+$annees = array();
+while ($line = mysql_fetch_array($res))
+  {
+    $annees[] = $line[0];
+  }
+
+// 
+if (count($annees) > 0)
+  {
+    sort($annees);
+    foreach ($annees as $annee)
+      {
+	if ($annee == intval(date("Y"))) // current year
+	  echo "<option value='$annee' selected='selected'>$annee</option>";
+	else
+	  echo "<option value='$annee'>$annee</option>";
+      }
+  }
+?>
+</select></td></tr>
 <tr>
 <td>Enregistré entre</td>
 <td><input type="text" name="eDate1" value="jj-mm-aaaa" />
@@ -132,7 +136,8 @@ echo "<input type='hidden' name='year' value='{$_REQUEST['year']}' />";
 
 <?php
 }
-else{
+else
+{
 echo "<div id='titre'>RESULTAT DE LA RECHERCHE</div><br></b>";
 
 
@@ -162,7 +167,8 @@ $requetetmp = 	"SELECT	facture.refuse as refuse,
 
 $from ="    FROM facture,destinataire ";
 $where =" WHERE facture.validite = 1 and facture.idServiceCreation=".$_SESSION['idService']."";
-$where .=" AND YEAR(dateFactureOrigine) = " . intval(mysql_real_escape_string($_REQUEST['year']));
+if (!empty($_GET['year']))
+  $where .=" AND YEAR(dateFactureOrigine) = " . intval(mysql_real_escape_string($_GET['year']));
 
 $requete = '';
 if(strcmp($numero,"")!=0){
