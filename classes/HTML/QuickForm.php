@@ -76,6 +76,10 @@ class GPLQuickForm_Element
     $this->error = $text;
   }
 
+  public function getError()
+  {
+    return $this->error;
+  }
   public function getValue()
   {
     if ($this->constant !== NULL)
@@ -328,6 +332,10 @@ class GPLQuickForm
     return $this->elements[$name];
   }
 
+  public function getElementError($name)
+  {
+    return $this->elements[$name]->getError();
+  }
 
   public function setConstants($constants)
   {

@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005, 2006, 2008  Cliss XXI
+Copyright (C) 2009  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -22,40 +22,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 require_once(dirname(__FILE__) . '/db.php');
 
-function service_exists($libelle) {
-  $result = db_execute("SELECT * FROM service WHERE libelle=?",
-		       array($libelle));
-  return (mysql_num_rows($result) > 0);
-}
-/* Variant to be used as QuickForm callback */
-function service_exists_not($service) {
-  return !service_exists($service);
-}
-
-function service_new($label, $description, $email) {
-  db_autoexecute('service',
-		 array('libelle' => $label,
-		       'designation' => $description,
-		       'email' => $email),
-		 DB_AUTOQUERY_INSERT);
-  return mysql_insert_id();
-}
-
-function service_modify($id, $label, $description, $email) {
-  db_autoexecute('service',
-		 array('libelle' => $label,
-		       'designation' => $description,
-		       'email' => $email),
-		 DB_AUTOQUERY_UPDATE,
-		 'id = ?', array($id));
-}
-
-function service_getbyid($id) {
-  $req = "SELECT id, libelle AS label, designation AS description, email
-          FROM service
+function invoice_getbyid($id) {
+  $req = "SELECT id, montant, refFacture, dateFacture,
+            dateFactureOrigine, observation, validite,
+            dateArchivage, idFournisseur, idServiceCreation,
+            idPriorite, histo, refuse,
+            UNIX_TIMESTAMP(dateSaisie) AS internal_timestamp
+          FROM facture
           WHERE id = '" . mysql_real_escape_string($id) . "'";
   $result = mysql_query($req) or die(mysql_error());
   $line = mysql_fetch_assoc($result);
   
   return $line;
+}
+
+function invoice_delete($id) {
+  db_execute('DELETE FROM facture WHERE id=?', array(intval($id)));
 }
