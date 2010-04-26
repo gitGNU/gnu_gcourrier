@@ -270,7 +270,7 @@ while( $ligne = mysql_fetch_array($resultatEntrant) ){
 		$nbJoursRestant = $nbJours - $urgence;
 
 		if($urgence >= $nbJours)
-                   echo "<td bgcolor=".$couleur."><center><img src=images/annuler.png title = \"reste ".$nbJoursRestant." jours\"></img></center></td></tr>";
+                   echo "<td bgcolor=".$couleur."><center><img src=images/annuler.png title = \"reste ".$nbJoursRestant." jours\"></img></center></td>";
 		else	
                    echo "<td bgcolor=".$couleur."><center><img src=images/ok.png title = \"reste ".$nbJoursRestant." jours\"></img></center></td>";
 
