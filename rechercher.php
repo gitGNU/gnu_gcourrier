@@ -149,7 +149,8 @@ $ext = $_GET['ext'];
 $requetetmp = "SELECT courrier.id as idCourrier,
 		   courrier.libelle as libelle,
 		   courrier.dateArrivee as dateArrivee,
-		   courrier.dateArchivage as dateArchivage ";
+		   courrier.dateArchivage as dateArchivage,
+		   courrier.url as url ";
 $from =" FROM courrier ".$fromTransmission.$fromRetard;
 $where =" WHERE courrier.validite = 0 and courrier.type=".$_GET['type']."";
 $where .= $reqTmpTransmission.$whereRetard;
@@ -220,6 +221,7 @@ echo "<td align=center>libelle</td>";
 echo "<td align=center>date arrivee</td>";
 echo "<td align=center>historique</td>";
 echo "<td align=center>transmettre</td>";
+echo "<td align=center>fichier</td>";
 echo "</tr>";
 
 $boul = 0;
@@ -265,7 +267,12 @@ if(isset($_GET['retard'])){
 			$tmp.=substr($ligne['dateArrivee'], 0,4);
 
 			echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>
-<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td></tr>";
+<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td>";
+echo "<td style='text-align:center' bgcolor='$couleur'>";
+if ($ligne['url'] != "")
+  echo "<a href='{$ligne['url']}'><img src='images/download.gif' style='border: 0'></a>";
+echo "</td>";
+echo "</tr>";
 		}//fin if urgence
 }//fin if retard
 
@@ -279,7 +286,12 @@ else{
 	$tmp.=substr($ligne['dateArrivee'], 0,4);
 
 	echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>
-<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td></tr>";
+<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td>";
+echo "<td style='text-align:center' bgcolor='$couleur'>";
+if ($ligne['url'] != "")
+  echo "<a href='{$ligne['url']}'><img src='images/download.gif' style='border: 0'></a>";
+echo "</td>";
+echo "</tr>";
 	
 	}//fin else
 }//fin while

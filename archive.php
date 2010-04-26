@@ -127,7 +127,8 @@ $ext = $_GET['ext'];
 $requetetmp = "SELECT courrier.id as idCourrier,
 		   courrier.libelle as libelle,
 		   courrier.dateArrivee as dateArrivee,
-		   courrier.dateArchivage as dateArchivage ";
+		   courrier.dateArchivage as dateArchivage,
+		   courrier.url as url ";
 $from ="    FROM courrier ";
 $where =" WHERE courrier.validite = 1 and courrier.type=".$_GET['type']."";
 
@@ -195,6 +196,7 @@ echo "<td align=center>numero</td>";
 echo "<td align=center>libelle</td>";
 echo "<td align=center>date arrivee</td>";
 echo "<td align=center>historique</td>";
+echo "<td align=center>fichier</td>";
 echo "</tr>";
 
 $boul = 0;
@@ -219,7 +221,14 @@ $tmp.=substr($ligne['dateArrivee'], 5,2);
 $tmp.='-';
 $tmp.=substr($ligne['dateArrivee'], 0,4);
 
-echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=archiveHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td></tr>";
+echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=archiveHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>";
+
+echo "<td style='text-align:center' bgcolor='$couleur'>";
+if ($ligne['url'] != "")
+  echo "<a href='{$ligne['url']}'><img src='images/download.gif' style='border: 0'></a>";
+echo "</td>";
+
+echo "</tr>";
 }//fin while
 echo "</table>";
 

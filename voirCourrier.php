@@ -274,10 +274,10 @@ while( $ligne = mysql_fetch_array($resultatEntrant) ){
 		else	
                    echo "<td bgcolor=".$couleur."><center><img src=images/ok.png title = \"reste ".$nbJoursRestant." jours\"></img></center></td>";
 
-if(strcmp($ligne['url'],"") !=0)
-	echo "<td style='text-align:center' bgcolor=".$couleur."><a href='".$ligne['url']."'><img src='images/download.gif' style='border:0px solid black'></a></td>";
-else
-	echo "<td bgcolor=".$couleur."> </td>";
+echo "<td style='text-align:center' bgcolor='$couleur'>";
+if ($ligne['url'] != "")
+  echo "<a href='{$ligne['url']}'><img src='images/download.gif' style='border: 0'></a>";
+echo "</td>";
 echo "</tr>";
 }//fin while
 echo "</table>";
