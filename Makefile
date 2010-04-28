@@ -20,8 +20,8 @@ send:        # Publish to gcourrier.cliss21.com
 
 permissions: # Set file permissions (chmod)
 	chown root:root -R .
-	find -type d | xargs chmod 755
-	find -type f | xargs chmod 644
+	find -type d -print0 | xargs -r0 chmod 755
+	find -type f -print0 | xargs -r0  chmod 644
 	chgrp $(HTTPD_USER) accuse/ upload/ config.php
 	chmod 775 accuse/ upload/
 	-chmod 640 config.php

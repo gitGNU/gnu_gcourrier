@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005,2006 CLISS XXI
+Copyright (C) 2005, 2006, 2010  CLISS XXI
 
 This file is part of GCourrier.
 
@@ -19,12 +19,13 @@ You should have received a copy of the GNU General Public License
 along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-author VELU Jonathan
+author VELU Jonathan, Sylvain BEUCLER
 */
 
 require_once('init.php');
 require_once('functions/priority.php');
 require_once('functions/status.php');
+require_once('functions/db.php');
 
 if (!isset($_POST["enregistrer"])) {
 
@@ -91,36 +92,7 @@ require_once('templates/header.php');
 </html>
 <?php
 
-}else{
-
-
-    $content_dir = 'upload/'; // dossier où sera déplacé le fichier
-
-    $tmp_file = $_FILES['fichier']['tmp_name'];
-
-    if( !is_uploaded_file($tmp_file) )
-    {
-	$url = "";
-    }
-
-    else{
-        $url = "upload/".$_FILES['fichier']['name'];
-    }
-    // on copie le fichier dans le dossier de destination
-    $name_file = $_FILES['fichier']['name'];
-
-    if( !move_uploaded_file($tmp_file, $content_dir . $name_file) )
-    {
-        //exit("Impossible de copier le fichier dans $content_dir");
-    } else {
-      // Give permissions to other users, including Apache. This is
-      // necessary in a suPHP setup.
-      chmod($content_dir . $name_file, 0644);
-    }
-
-//    echo "Le fichier a bien été uploade";
-
-
+} else {
 
 $destinataire = $_POST['destinataire'];
 $libelle = $_POST['libelle'];
@@ -138,23 +110,41 @@ $date.=substr($tmpDate, 0,2);
 $requeteCourrier = "insert into courrier(libelle,dateArrivee,observation,idPriorite,idServiceCreation,idDestinataire,serviceCourant,type,url) values('".$libelle."','".$date."','".$observation."','".$priorite."','".$_SESSION['idService']."','".$destinataire."','".$service."',2,'".$url."');";
 $resultatCourrier = mysql_query( $requeteCourrier ) or die ("erreur requete courrier :".mysql_error( ) );
 
+
 //Recuperation de l'id du courrier cree
-
-
-$requeteIdCourrier = "select id from courrier where type=2 and idServiceCreation=".$_SESSION['idService']." order by id;";
-$resultatIdCourrier = mysql_query( $requeteIdCourrier ) or die ("erreur requete idCourrier".mysql_error( ) );
-while($ligne = mysql_fetch_array($resultatIdCourrier ) )
-	$idCourrier = $ligne['id'];
+$idCourrier = mysql_insert_id();
 
 
 //transmission du courrier
-
-
 $requeteTransmis = "insert into estTransmis( idService, idCourrier,dateTransmission ) values('".$service."','".$idCourrier."','".date("Y-m-d")."');";
-$resultatTransmis = mysql_query( $requeteTransmis ) or die ("erreur requete transmis ".mysql_error( ) );
+$resultatTransmis = mysql_query($requeteTransmis) or die ("erreur requete transmis ".mysql_error( ) );
 
 
-$adresse ="infoCourrier.php?idCourrier=".$idCourrier;
+// Pièce jointe
+if ($_FILES['fichier']['error'] == UPLOAD_ERR_OK) {
+  $old_umask = umask(0);
+
+  $content_dir = "upload/courrier/$idCourrier"; // dossier où sera déplacé le fichier
+  mkdir($content_dir, 0755, true) or die("Impossible de créer $content_dir");
+
+  // on copie le fichier dans le dossier de destination
+  $tmp_file = $_FILES['fichier']['tmp_name'];
+  $dest_file = "$content_dir/{$_FILES['fichier']['name']}";
+  if (!move_uploaded_file($tmp_file, $dest_file)) {
+    exit("Impossible de copier $tmp_file dans $dest_file");
+  } else {
+    // Give permissions to other users, including Apache. This is
+    // necessary in a suPHP setup.
+    chmod($dest_file, 0644);
+    db_autoexecute('courrier', array('url' => $dest_file), DB_AUTOQUERY_UPDATE,
+                   'id=?', array($idCourrier));
+  }
+
+  umask($old_umask);
+} elseif ($_FILES['fichier']['error'] != UPLOAD_ERR_NO_FILE) {
+  exit("Erreur lors de l'envoi du fichier {$_FILES['userfile']['name']}"
+       . " (erreur {$_FILES['fichier']['error']})");
+}
 
 status_push("Vous venez de créer le courrier numéro: $idCourrier");
 header("Location: index.php");

@@ -24,7 +24,8 @@ function status_push($msg)
 {
   if (empty($_SESSION['status_queue']))
     $_SESSION['status_queue'] = array();
-  array_push($_SESSION['status_queue'], $msg);
+  if ($msg !== null)
+    array_push($_SESSION['status_queue'], $msg);
 }
 
 function status_pop()
