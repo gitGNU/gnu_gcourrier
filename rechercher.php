@@ -279,7 +279,7 @@ if(isset($_GET['retard'])){
 			echo "<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td>";
 echo "<td style='text-align:center' bgcolor='$couleur'>";
 if ($ligne['url'] != "")
-  echo "<a href='{$ligne['url']}'><img src='images/download.gif' style='border: 0'></a>";
+  echo "<a href='file_view.php/".basename($ligne['url'])."?object=courrier&object_id={$ligne['idCourrier']}'><img src='images/download.gif' style='border: 0'></a>";
 echo "</td>";
 echo "</tr>";
 		}//fin if urgence
@@ -304,7 +304,7 @@ else{
 	echo "<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td>";
 echo "<td style='text-align:center' bgcolor='$couleur'>";
 if ($ligne['url'] != "")
-  echo "<a href='{$ligne['url']}'><img src='images/download.gif' style='border: 0'></a>";
+  echo "<a href='file_view.php/".basename($ligne['url'])."?object=courrier&object_id={$ligne['idCourrier']}'><img src='images/download.gif' style='border: 0'></a>";
 echo "</td>";
 echo "</tr>";
 	
