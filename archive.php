@@ -23,29 +23,20 @@ author VELU Jonathan
 */
 
 require_once('init.php');
+include('templates/header.php');
 
-?>
-<html>
-<head><title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet">
-</head>
-<body>
-
-
-
-
-<?php
 if (!isset($_GET["rechercher"])) {
-
 ?>
-<div id =pageTGd><br>
-<center><img src = images/banniere2.jpg></center><br><br>
 <center><b>ARCHIVE COURRIER
 <?php
-if($_GET['type']==1)
+if($_GET['type'] == 1) {
 	echo " ENTRANT";
-else
+	$emetteur = "Émetteur";
+} else {
 	echo " DEPART";
+	$emetteur = "Destinataire";
+}
+
 ?>
 </b><br><br>
 <?
@@ -63,20 +54,20 @@ echo "<input type='hidden' name='type' value='{$_GET['type']}' />";
 </tr>
 
 <tr>
-<td>Date arrivée</td>
+<td>En date du</td>
 <td><input type="text" name="date" value="jj-mm-aaaa" /></td>
 </tr>
 
 
 <tr>
-<td>Arrivé entre</td>
+<td>Date entre</td>
 <td><input type="text" name="eDate1" value="jj-mm-aaaa" />
  et <input type="text" name="eDate2" value="jj-mm-aaaa" /></td>
 </tr>
 
 
 <tr>
-<td>Émetteur</td>
+<td><?php echo $emetteur; ?></td>
 <td><select name="ext">
 	<option value="rien">(tous)</option>
 		<?php
@@ -93,21 +84,9 @@ echo "<input type='hidden' name='type' value='{$_GET['type']}' />";
 
 <br><input type="submit" name="rechercher" value="Rechercher" />
 </form>
-<br><a href="index.php">index</a><br><br></div>
-</center>
-</body>
-</html>
 <?php
 }
 else{
-echo"<html>";
-echo"<head><title>gCourrier</title>";
-echo"<LINK HREF=styles3.css REL=stylesheet>";
-echo"</head>";
-echo"<body>"; 
-
-
-echo"<center><img src = images/banniere2.jpg></center><br><br>";
 echo"<center>";
 echo "<div id = titre>RESULTAT DE LA RECHERCHE</div><br></b>";
 
@@ -126,12 +105,14 @@ $ext = $_GET['ext'];
 
 $requetetmp = "SELECT courrier.id as idCourrier,
 		   courrier.libelle as libelle,
+		   destinataire.nom as nomDestinataire,
+		   destinataire.prenom as prenomDestinataire,
 		   courrier.dateArrivee as dateArrivee,
 		   courrier.dateArchivage as dateArchivage,
 		   courrier.url as url ";
-$from ="    FROM courrier ";
-$where =" WHERE courrier.validite = 1 and courrier.type=".$_GET['type']."";
-
+$from ="    FROM courrier, destinataire ";
+$where =" WHERE courrier.validite = 1 and courrier.type=".$_GET['type']
+  . " AND courrier.idDestinataire = destinataire.id";
 
 if ($libelle != '') {
   $libelle = mysql_real_escape_string($libelle);
@@ -157,10 +138,8 @@ if(strcmp($date,"jj-mm-aaaa")!=0){
 }
 
 
-if(strcmp($ext,"rien")!=0){
-	$from .= " ,destinataire";
-	$requete.=" and courrier.idDestinataire = destinataire.id and destinataire.id = ".$ext." ";
-
+if ($ext != "rien") {
+  $requete.=" AND destinataire.id = ".$ext." ";
 }
 
 
@@ -192,11 +171,18 @@ $requete = $requetetmp;
 $result = mysql_query($requete) or die(mysql_error());
 echo "<table align=center font-color ='white'>";
 echo "<tr>";
-echo "<td align=center>numero</td>";
-echo "<td align=center>libelle</td>";
-echo "<td align=center>date arrivee</td>";
-echo "<td align=center>historique</td>";
-echo "<td align=center>fichier</td>";
+echo "<td align=center>Numéro</td>";
+echo "<td align=center>Libellé</td>";
+echo "<td align=center>";
+if($_GET['type'] == 1) {
+  echo "Émetteur";
+} else {
+  echo "Destinataire";
+}
+echo "</td>";
+echo "<td align=center>Date</td>";
+echo "<td align=center>Historique</td>";
+echo "<td align=center>Fichier</td>";
 echo "</tr>";
 
 $boul = 0;
@@ -221,7 +207,13 @@ $tmp.=substr($ligne['dateArrivee'], 5,2);
 $tmp.='-';
 $tmp.=substr($ligne['dateArrivee'], 0,4);
 
-echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=archiveHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>";
+$destinataire = $ligne['nomDestinataire']." ".$ligne['prenomDestinataire'];
+
+echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
+echo "<td bgcolor = ".$couleur.">".$ligne['libelle']."</td>";
+echo "<td bgcolor = ".$couleur.">$destinataire</td>";
+echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
+echo "<td bgcolor=".$couleur."><a href=archiveHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>";
 
 echo "<td style='text-align:center' bgcolor='$couleur'>";
 if ($ligne['url'] != "")
@@ -233,8 +225,6 @@ echo "</tr>";
 echo "</table>";
 
 echo "<br><a href = archive.php?type=".$_GET['type'].">nouvelle recherche</a>";
-echo "<br><a href = index.php>index</a>";
-
 echo "</center>";
 }//fin du premier else
-?> 
+include('templates/footer.php');

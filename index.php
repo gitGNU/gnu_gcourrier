@@ -103,3 +103,4 @@ echo "Info : $nbEntrant courriers entrants - $nbDepart courriers départ - $nbFa
 
 <?php
 }
+include('templates/footer.php');

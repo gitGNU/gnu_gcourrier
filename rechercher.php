@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005,2006 CLISS XXI
+Copyright (C) 2005, 2006, 2010  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -19,11 +19,10 @@ You should have received a copy of the GNU General Public License
 along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-author VELU Jonathan
+author VELU Jonathan, Sylvain BEUCLER
 */
 
 require_once('init.php');
-
 include('templates/header.php');
 
 if (!isset($_GET['type']))
@@ -62,13 +61,13 @@ echo "<input type='hidden' name='type' value='{$_GET['type']}' />";
 </tr>
 
 <tr>
-<td>Date arrivée</td>
+<td>En date du</td>
 <td><input type="text" name="date" value ="jj-mm-aaaa" /></td>
 </tr>
 
 
 <tr>
-<td>Arrivé entre</td>
+<td>Date entre</td>
 <td><input type = text name = eDate1 value="jj-mm-aaaa" />
  et <input type = text name = eDate2 value="jj-mm-aaaa" /></td>
 </tr>
@@ -104,10 +103,6 @@ echo $emetteur;
 
 <br><input type="submit" name="rechercher" value="Rechercher" />
 </form>
-<br><a href = index.php>index</a><br><br></div>
-</center>
-</body>
-</html>
 <?php
 }
 else{
@@ -148,11 +143,14 @@ $ext = $_GET['ext'];
 
 $requetetmp = "SELECT courrier.id as idCourrier,
 		   courrier.libelle as libelle,
+		   destinataire.nom as nomDestinataire,
+		   destinataire.prenom as prenomDestinataire,
 		   courrier.dateArrivee as dateArrivee,
 		   courrier.dateArchivage as dateArchivage,
 		   courrier.url as url ";
-$from =" FROM courrier ".$fromTransmission.$fromRetard;
-$where =" WHERE courrier.validite = 0 and courrier.type=".$_GET['type']."";
+$from =" FROM courrier, destinataire ".$fromTransmission.$fromRetard;
+$where =" WHERE courrier.validite = 0 and courrier.type=".intval($_GET['type'])
+  . " AND courrier.idDestinataire = destinataire.id";
 $where .= $reqTmpTransmission.$whereRetard;
 $requete = '';
 
@@ -180,10 +178,8 @@ if(strcmp($date,"jj-mm-aaaa")!=0){
 }
 
 
-if(strcmp($ext,"rien")!=0){
-	$from .= " ,destinataire";
-	$requete.=" and courrier.idDestinataire = destinataire.id and destinataire.id = ".$ext." ";
-
+if($ext != "rien") {
+  $requete.=" AND destinataire.id = ".$ext." ";
 }
 
 
@@ -216,12 +212,19 @@ $requete = $requetetmp;
 $result = mysql_query( $requete ) or die ( mysql_error() ) ;
 echo "<table align=center font-color ='white'>";
 echo "<tr>";
-echo "<td align=center>numero</td>";
-echo "<td align=center>libelle</td>";
-echo "<td align=center>date arrivee</td>";
-echo "<td align=center>historique</td>";
-echo "<td align=center>transmettre</td>";
-echo "<td align=center>fichier</td>";
+echo "<td align=center>Numéro</td>";
+echo "<td align=center>Libellé</td>";
+echo "<td align=center>";
+if($_GET['type'] == 1) {
+  echo "Émetteur";
+} else {
+  echo "Destinataire";
+}
+echo "</td>";
+echo "<td align=center>Date</td>";
+echo "<td align=center>Historique</td>";
+echo "<td align=center>Transmettre</td>";
+echo "<td align=center>Fichier</td>";
 echo "</tr>";
 
 $boul = 0;
@@ -266,8 +269,14 @@ if(isset($_GET['retard'])){
 			$tmp.='-';
 			$tmp.=substr($ligne['dateArrivee'], 0,4);
 
-			echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>
-<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td>";
+			$destinataire = $ligne['nomDestinataire']." ".$ligne['prenomDestinataire'];
+
+			echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
+			echo "<td bgcolor = ".$couleur.">".$ligne['libelle']."</td>";
+			echo "<td bgcolor = ".$couleur.">$destinataire</td>";
+			echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
+			echo "<td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>";
+			echo "<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td>";
 echo "<td style='text-align:center' bgcolor='$couleur'>";
 if ($ligne['url'] != "")
   echo "<a href='{$ligne['url']}'><img src='images/download.gif' style='border: 0'></a>";
@@ -285,8 +294,14 @@ else{
 	$tmp.='-';
 	$tmp.=substr($ligne['dateArrivee'], 0,4);
 
-	echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td><td bgcolor = ".$couleur.">".$ligne['libelle']."</td><td bgcolor = ".$couleur.">".$tmp."</td><td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>
-<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td>";
+	$destinataire = $ligne['nomDestinataire']." ".$ligne['prenomDestinataire'];
+
+	echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
+	echo "<td bgcolor = ".$couleur.">".$ligne['libelle']."</td>";
+	echo "<td bgcolor = ".$couleur.">$destinataire</td>";
+	echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
+	echo "<td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>";
+	echo "<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td>";
 echo "<td style='text-align:center' bgcolor='$couleur'>";
 if ($ligne['url'] != "")
   echo "<a href='{$ligne['url']}'><img src='images/download.gif' style='border: 0'></a>";
@@ -304,4 +319,4 @@ echo "<br><a href = index.php>index</a>";
 echo "</center>";
 
 }//fin du premier else
-?> 
+include('templates/footer.php');
