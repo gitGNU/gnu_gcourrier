@@ -24,10 +24,11 @@ author VELU Jonathan
 
 require_once('init.php');
 require_once('functions/priority.php');
+require_once('functions/status.php');
 
 if (!isset($_POST["enregistrer"])) {
 
-include('templates/header.php');
+require_once('templates/header.php');
 
 ?>
 	<table align = center>
@@ -155,10 +156,8 @@ $resultatTransmis = mysql_query( $requeteTransmis ) or die ("erreur requete tran
 
 $adresse ="infoCourrier.php?idCourrier=".$idCourrier;
 
-echo"<SCRIPT LANGUAGE=JavaScript>";
-echo" window.open('".$adresse."','info',  'width=200,height=125,directories=no,scrollbars=no');"; 
-echo"</SCRIPT>";
-echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
+status_push("Vous venez de créer le courrier numéro: $idCourrier");
+header("Location: index.php");
 }
 
 include('templates/footer.php');

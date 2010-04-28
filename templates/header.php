@@ -17,3 +17,8 @@
         <a href="account.php?id=<?php echo $_SESSION['id']; ?>"><?php echo $_SESSION['login']; ?></a>
 	- <a href="logout.php">Quitter</a>
       </div>
+
+<?php
+require_once('functions/status.php');
+while (($msg = status_pop()) !== null)
+  echo "<div class='status'>$msg</div>";
