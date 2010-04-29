@@ -4,6 +4,8 @@
   <head>
     <title>GCourrier</title>
     <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="javascripts/prototype.js" type="text/javascript"></script>
+    <script src="javascripts/scriptaculous.js" type="text/javascript"></script>
   </head>
 
   <body>

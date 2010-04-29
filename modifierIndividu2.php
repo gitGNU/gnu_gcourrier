@@ -49,23 +49,23 @@ if (!isset($_POST["enregistrer"])) {
 ?>
 		<tr><td>Nom</td>
 <?php
-echo"		<td><input type = text name = nom value='".$nom."' ></input></td></tr>";
+echo"		<td><input type = text name = nom value='".htmlspecialchars($nom)."' ></input></td></tr>";
 ?>
         	<tr><td>Prénom</td>
 <?php
-echo"		<td><input type = text name = prenom value='".$prenom."'></input></td></tr>";
+echo"		<td><input type = text name = prenom value='".htmlspecialchars($prenom)."'></input></td></tr>";
 ?>
 		<tr><td>Adresse</td>
 <?php
-echo"		<td><input type = text name = adresse value='".$adresse."'></input></td></tr>";
+echo"		<td><input type = text name = adresse value='".htmlspecialchars($adresse, ENT_QUOTES)."'></input></td></tr>";
 ?>
 		<tr><td>Code postal</td>
 <?php
-echo"		<td><input type = text name =codePostal value='".$codePostal."'></input></td></tr>";
+echo"		<td><input type = text name =codePostal value='".htmlspecialchars($codePostal)."'></input></td></tr>";
 ?>
 		<tr><td>Ville</td>
 <?php
-echo"		<td><input type = text name =ville value='".$ville."'></input></td></tr>";
+echo"		<td><input type = text name =ville value='".htmlspecialchars($ville)."'></input></td></tr>";
 ?>
 	</table>
 		<center><input type="submit" name="enregistrer" value="Enregistrer"></input></center>
