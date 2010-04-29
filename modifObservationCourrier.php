@@ -47,7 +47,7 @@ while($ligne = mysql_fetch_array($result) ){
 <?php
 echo"<center>";
 echo"observation<br>";
-echo"<textarea name=observation cols=30 rows=4>".$obs."</textarea>";
+echo"<textarea name=observation cols=60 rows=10>".$obs."</textarea>";
 echo"<br/><br/>";
 echo"<input type=hidden name=type value=".$type."></input>";
 echo"<input type=hidden name=idCourrier value=".$idCourrier."></input>";
