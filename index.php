@@ -66,7 +66,7 @@ Archive:
     <td>
       <a href=creerCourrier.php>Créer courrier</a><br />
       <a href=creerFacture.php>Créer facture</a><br />
-      <a href=courrierDepart.php>Créer depart</a><br />
+      <a href=courrierDepart.php>Créer départ</a><br />
       <a href=creerDestinataire.php>Créer un individu</a><br />
       <a href=modifierIndividu.php>Modifier un individu</a>
     </td>
