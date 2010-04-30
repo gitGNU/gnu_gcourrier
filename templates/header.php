@@ -17,7 +17,13 @@
       </div>
       <div id="greeting">Connexion:
         <a href="account.php?id=<?php echo $_SESSION['id']; ?>"><?php echo $_SESSION['login']; ?></a>
-	- <a href="logout.php">Quitter</a>
+	(service <?php
+	 require_once('functions/db.php');
+	 $result = db_execute('SELECT libelle FROM service WHERE id=?', array($_SESSION['idService']));
+	 $row = mysql_fetch_array($result);
+	 echo $row['libelle'];
+	 ?>)
+	 - <a href="logout.php">Quitter</a>
       </div>
 
 <?php
