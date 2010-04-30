@@ -33,9 +33,9 @@ function contact_display($default_id=NULL) {
     }
 ?>
 <input type="hidden" name="contact_id" id="contact_id" value="<?php echo $default_id; ?>" />
-<div style="font-size: smaller; position: relative;">
-  <a href="creerDestinataire.php">Créer un nouveau</a>
-  - Utilisez % comme joker
+<div style="font-size: smaller; position: relative; text-align: left;">
+  Utilisez % comme joker de recherche
+  - <a href="creerDestinataire.php">Créer un nouveau</a>
   <div style="position:absolute; top: 0; right: 0; display: none;" id="indicator1">En cours...</div>
 </div>
 <input type="text" id="autocomplete" name="autocomplete_parameter" size=50 value="<?php echo $default_name; ?>"/>
