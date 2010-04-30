@@ -30,10 +30,11 @@ if (!isset($_POST["enregistrer"])) {
 	<table align="center">
 	<form name="creerDestForm" method="POST" action="modifierIndividu2.php">
 <?php
-   if (isset($_GET['fournisseur'])
-       and $_GET['fournisseur'] != ''
-       and ctype_digit($_GET['fournisseur'])) {
-     $requete = "SELECT * FROM destinataire WHERE id={$_GET['fournisseur']};";
+   if (empty($_GET['contact_id'])) exit("Le contact est vide!");
+   if (isset($_GET['contact_id'])
+       and $_GET['contact_id'] != ''
+       and ctype_digit($_GET['contact_id'])) {
+     $requete = "SELECT * FROM destinataire WHERE id={$_GET['contact_id']};";
      $result = mysql_query($requete) or die (mysql_error());
      
      while ($ligne = mysql_fetch_array($result)) {
@@ -44,8 +45,8 @@ if (!isset($_POST["enregistrer"])) {
        $ville= $ligne['ville'];
      }
    }
-  echo "<input type=hidden name=id value=".$_GET['fournisseur'].">";
-  echo "<tr><td>Numéro</td><td style='text-align: left'>{$_GET['fournisseur']}</td></tr>";
+  echo "<input type=hidden name=id value=".$_GET['contact_id'].">";
+  echo "<tr><td>Numéro</td><td style='text-align: left'>{$_GET['contact_id']}</td></tr>";
 ?>
 		<tr><td>Nom</td>
 <?php

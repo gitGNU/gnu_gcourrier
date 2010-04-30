@@ -24,6 +24,7 @@ author VELU Jonathan, Sylvain Beucler
 
 require_once('init.php');
 require_once('functions/db.php');
+require_once('functions/contact.php');
 
 include('templates/header.php');
 ?>
@@ -31,30 +32,19 @@ include('templates/header.php');
 <p>Modifier le destinataire ou fournisseur:</p>
 
 <form name="creerFactureForm" action="modifierIndividu2.php">
-<input type="hidden" name="fournisseur" id="fournisseur" />
 <table>
 <tr>
   <td valign="top">
-    Rechercher:<br /><span id="indicator1" style="display: none">En cours...</span>
+    Rechercher:
   </td>
   <td>
-    <input type="text" id="autocomplete" name="autocomplete_parameter" size=50 /><br />
-    <div id="autocomplete_choices" class="autocomplete"></div>
-    Utiliser % comme joker
+<?php
+  contact_display();
+?>
   </td>
 </tr>
 </table>
 
-<script type="text/javascript" language="javascript">
-// <![CDATA[
-  new Ajax.Autocompleter("autocomplete", "autocomplete_choices", "completion-recipients.php", {
-    indicator: 'indicator1', afterUpdateElement : getSelectionId});
-
-function getSelectionId(text, li) {
-  document.getElementById('fournisseur').value = li.id;
-}
-// ]]>
-</script>
   <br />
 
   <input type="submit" value="Modifier" />

@@ -24,17 +24,19 @@ author VELU Jonathan, Sylvain BEUCLER
 
 require_once('init.php');
 require_once('functions/priority.php');
+require_once('functions/contact.php');
 require_once('functions/status.php');
 require_once('functions/db.php');
 
 $copy = 0;
 $destinataire = null;
 if (isset($_POST["enregistrer"]) or isset($_POST["enregistrer_puis_copie"])) {
-  $destinataire = $_POST['destinataire'];
   $libelle = $_POST['libelle'];
   $observation = $_POST['observation'];
   $service = $_POST['serviceDest'];
   $priorite = $_POST['priorite'];
+  $destinataire = $_POST['contact_id'];
+  if (empty($destinataire)) exit("Le contact est vide!");
 
   $tmpDate = $_POST['dateArrivee'];
   $date= substr($tmpDate, 6,4);
@@ -97,20 +99,12 @@ require_once('templates/header.php');
 		
 		<tr>
 		<td>Destinataire</td>
-		<td><select name="destinataire">
-		<?php
-		  $requete = "SELECT * FROM destinataire ORDER BY nom;";
-		  $result = mysql_query($requete) or die(mysql_error());
-		while ($ligne = mysql_fetch_array($result)) {
-		  $selected = "";
-		  if ($copy and $ligne['id'] == $destinataire)
-		    $selected = 'selected="selected"';
-		  echo "<option value='{$ligne['id']}' $selected>"
-		    . "{$ligne['nom']} {$ligne['prenom']}"
-		    . "</option>";
-		}
-		?>
-		</select> <a href="creerDestinataire.php">Créer</a></td></tr>
+		<td>
+<?php
+		  contact_display();
+?>
+                </td>
+                </tr>
 		
 		<tr>
 		<td>Émetteur</td>
