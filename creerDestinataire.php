@@ -23,16 +23,11 @@ author VELU Jonathan
 */
 
 require_once('init.php');
-
+require_once('functions/status.php');
 
 if(!isset($_POST["enregistrer"])){
+  include('templates/header.php');
 ?>
-<html>
-<head> <title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet"></head>
-<body>
-<div id =pageGd><br>
-	<center><img src="images/banniere2.jpg"></img></center><br><br><br>
 	<table align="center">
 	<form name="creerDestForm" method="POST" action="creerDestinataire.php">
 		<tr><td>Nom</td>
@@ -49,14 +44,8 @@ if(!isset($_POST["enregistrer"])){
 	</table>
 		<center><input type="submit" name="enregistrer" value="Enregistrer"></input></center>
 	</form>
-
-<center><br>
-<a href="index.php">Index</a>
-</center><br><br>
-</div>
-</body>
-</html>
 <?php
+  include('templates/footer.php');
 }else{
 	$nom = $_POST['nom'];
 	$prenom = $_POST['prenom'];
@@ -64,19 +53,24 @@ if(!isset($_POST["enregistrer"])){
 	$codePostal = $_POST['codePostal'];
 	$ville = $_POST['ville'];
 	
+	if ($nom == "" and $prenom == "") {
+	  status_push("Entrez un nom ou un prénom.");
+	  header("Location: creerDestinataire.php");
+	  exit();
+	}
+
 	$requeteExist = "SELECT count(*) AS nb FROM destinataire WHERE nom ='".$nom."' AND prenom ='".$prenom."';";
 	$resultExist = mysql_query($requeteExist) or die (mysql_error( ));
 	$ligne = mysql_fetch_array( $resultExist );
-	if($ligne['nb'] != 0){
-		echo "<meta http-equiv=\"refresh\" content=\"0;url=creerDestinataire.php\">";
-		exit();
+	if ($ligne['nb'] != 0) {
+	  // Only warn user, several contacts may have the same name and a different address
+	  status_push("Note: un destinataire de ce nom existe déjà.");
 	}
 
 	$requete= "INSERT INTO destinataire(nom,prenom,adresse,codePostal,ville) VALUES('".$nom."','".$prenom."','".$adresse."','".$codePostal."','".$ville."');";
 	$resultat = mysql_query($requete ) or die ("erreur requete ".mysql_error( ) );
 	
-	echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
-
-
+	status_push("Destinataire créé.");
+	header("Location: index.php");
+	exit();
 }
-?>

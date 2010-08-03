@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005,2006  Cliss XXI
+Copyright (C) 2005, 2006, 2010  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -20,9 +20,12 @@ along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 author VELU Jonathan
+author Sylvain BEUCLER
 */
 
 require_once('init.php');
+require_once('functions/db.php');
+require_once('functions/contact.php');
 
 if (!isset($_POST["enregistrer"])) {
   include('templates/header.php');
@@ -71,8 +74,30 @@ echo"		<td><input type = text name =ville value='".htmlspecialchars($ville)."'><
 	</table>
 		<center><input type="submit" name="enregistrer" value="Enregistrer"></input></center>
 	</form>
+
 <?php
-	    include('templates/footer.php');
+  echo "<p>";
+
+  $refs = contact_get_references($_GET['contact_id']);
+  echo sprintf("%d courriers entrants", $refs[0]) . "<br />";
+  echo sprintf("%d courriers départs", $refs[1]) . "<br />";
+  echo sprintf("%d factures", $refs[2]) . "<br />";
+
+  if (contact_is_deletable($_GET['contact_id']))
+    {
+?>
+<p>Ce contact n'est pas référencé, vous pouvez le supprimer&nbsp;:</p>
+<form action="contact_delete.php" method="post">
+  <input type="hidden" name="contact_id" value="<?php echo $_GET['contact_id']; ?>" />
+  <input type="submit" value="Supprimer ce contact" />
+</form>
+<?php
+    }
+  else
+    {
+      echo "<p>"."Ce contact est référencé, vous ne pouvez pas le supprimer."."</p>";
+    }
+  include('templates/footer.php');
 } else {
 	$nom = $_POST['nom'];
 	$prenom = $_POST['prenom'];

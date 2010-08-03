@@ -52,3 +52,35 @@ function getSelectionId(text, li) {
 </script>
 <?php
 }
+
+function contact_get_references($id) {
+  $ret = array();
+
+  $res = db_execute("SELECT COUNT(*) FROM courrier WHERE type=1 AND idDestinataire=?",
+		    array($_GET['contact_id']));
+  $row = mysql_fetch_array($res);
+  $count = $row[0];
+  array_push($ret, $count);
+
+  $res = db_execute("SELECT COUNT(*) FROM courrier WHERE type=2 AND idDestinataire=?",
+		    array($_GET['contact_id']));
+  $row = mysql_fetch_array($res);
+  $count = $row[0];
+  array_push($ret, $count);
+
+  $res = db_execute("SELECT COUNT(*) FROM facture WHERE idFournisseur=?",
+		    array($_GET['contact_id']));
+  $row = mysql_fetch_array($res);
+  $count = $row[0];
+  array_push($ret, $count);
+
+  return $ret;
+}
+
+function contact_is_deletable($id) {
+  $refs = contact_get_references($id);
+  if (array_sum($refs) > 0)
+    return false;
+  else
+    return true;
+}

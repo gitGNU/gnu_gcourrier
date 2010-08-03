@@ -1,6 +1,6 @@
 <?php
 /*
-Queue of messages to display to the user
+GCourrier
 Copyright (C) 2010  Cliss XXI
 
 This file is part of GCourrier.
@@ -18,19 +18,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+author Sylvain BEUCLER
 */
 
-function status_push($msg)
-{
-  if (empty($_SESSION['status_queue']))
-    $_SESSION['status_queue'] = array();
-  if ($msg !== null)
-    array_push($_SESSION['status_queue'], $msg);
-}
+require_once('init.php');
+require_once('functions/db.php');
+require_once('functions/contact.php');
+require_once('functions/status.php');
 
-function status_shift()
-{
-  if (empty($_SESSION['status_queue']))
-    return null;
-  return array_shift($_SESSION['status_queue']);
+if (isset($_POST['contact_id']) and contact_is_deletable($_POST['contact_id'])) {
+  $res = db_execute("DELETE FROM destinataire WHERE id=?",
+		    array($_POST['contact_id']));
+  status_push("Contact {$_POST['contact_id']} supprimé");
 }
+header('Location: modifierIndividu.php');

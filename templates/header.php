@@ -28,5 +28,5 @@
 
 <?php
 require_once('functions/status.php');
-while (($msg = status_pop()) !== null)
+while (($msg = status_shift()) !== null)
   echo "<div class='status'>$msg</div>";
