@@ -94,7 +94,7 @@ if (isset($_POST['save_and_archive']))
 }
 
 if(!isset($_POST['flag']))
-header("Location: voirFacture.php");
+header("Location: invoice_list.php");
 else
 header("Location: rechercherFacture.php");
 

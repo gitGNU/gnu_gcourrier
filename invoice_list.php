@@ -1,6 +1,6 @@
 <?php
 /*
-GCourrier
+Display invoices so they can be reviewed and modified
 Copyright (C) 2005,2006 CLISS XXI
 
 This file is part of GCourrier.
@@ -182,7 +182,7 @@ function printArrivalDate($params)
     . '/' . substr($tmpdateArrivee,0,4);
   return
     ((time() - $row['internal_timestamp']) < (24 * 60 * 60))
-    ? "<a href='editBillDate.php?id={$row['idFacture']}'>$dateArrivee</a>"
+    ? "<a href='invoice_edit_date.php?id={$row['idFacture']}'>$dateArrivee</a>"
     : $dateArrivee;
 }
 
@@ -193,7 +193,7 @@ function printEmissionDate($params)
   $emission_date = substr($emission_date, 8, 2)
     . '/' . substr($emission_date, 5, 2)
     . '/' . substr($emission_date, 0, 4);
-  return "<a href='editBillDate.php?id={$row['idFacture']}'>$emission_date</a>";
+  return "<a href='invoice_edit_date.php?id={$row['idFacture']}'>$emission_date</a>";
 
 }
 
@@ -211,7 +211,7 @@ function printHistory($params)
 {
   $row = $params['record'];
   $histo = $row['histo'];
-  return "<a href='cheminFacture.php?idCourrier={$row['idFacture']}'>$histo</a>";
+  return "<a href='invoice_history.php?id={$row['idFacture']}'>$histo</a>";
 }
 
 function printTransmit($params)

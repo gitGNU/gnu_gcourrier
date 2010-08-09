@@ -307,7 +307,8 @@ class SQLDataGrid {
 	    
 	    if (isset($params['callback']))
 	      print call_user_func($params['callback'],
-				   array('record' => $record));
+				   array('record' => $record,
+					 'fieldName' => $params['sqlcol']));
 	    else if (isset($params['sqlcol']))
 	      print $record[$params['sqlcol']];
 	    print '</td>';

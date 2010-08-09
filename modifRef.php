@@ -67,6 +67,6 @@ $idCourrier = $_POST['idCourrier'];
 $requete = "UPDATE facture SET refFacture='$refFacture' WHERE id='$idCourrier';";
 $result = mysql_query($requete) or die(mysql_error());
 
-header("Location: voirFacture.php");
+header("Location: invoice_list.php");
 }
 ?>

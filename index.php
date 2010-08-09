@@ -38,7 +38,7 @@ if ($_SESSION['login'] == 'admin')
     <td>
       <img src="images/enveloppe.png" /> <a href="voirCourrier.php?type=1">Voir entrant</a><br />
       <img src="images/enveloppeD.png" /> <a href="voirCourrier.php?type=2">Voir départ</a><br />
-      <img src="images/euro.png" /> <a href="voirFacture.php">Voir facture</a><br />
+      <img src="images/euro.png" /> <a href="invoice_list.php">Voir facture</a><br />
     </td>
 </table>
 
@@ -73,7 +73,7 @@ Archive:
     <td>
       <img src="images/enveloppe.png" /> <a href= voirCourrier.php?type=1>Voir entrant</a><br />
       <img src="images/enveloppeD.png" /> <a href= voirCourrier.php?type=2>Voir départ</a><br />
-      <img src="images/euro.png" /> <a href= voirFacture.php>Voir facture</a><br />
+      <img src="images/euro.png" /> <a href= invoice_list.php>Voir facture</a><br />
     </td>
   </tr>
 </table>

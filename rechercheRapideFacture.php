@@ -1,4 +1,4 @@
 <?php
 $numero= $_POST['numero'];
-header("LOCATION:voirFacture.php?idFactureRecherche=".$numero." ");
+header("LOCATION:invoice_list.php?idFactureRecherche=".$numero." ");
 ?>

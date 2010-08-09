@@ -38,7 +38,7 @@ $idCourrier = $_GET['idCourrier'];
   <a href="validerFacture.php?idCourrier=<?php echo $idCourrier?>&valider=o">Oui</a>
   &nbsp; &nbsp;
 <?php
-  echo "<a href='voirFacture.php?id=$idCourrier#result'>Non</a>";
+  echo "<a href='invoice_list.php?id=$idCourrier#result'>Non</a>";
 ?>
   <br /><br />
 <?php
@@ -50,5 +50,5 @@ $idCourrier = $_GET['idCourrier'];
     WHERE id='$idCourrier' AND idServiceCreation='{$_SESSION['idService']}'
           AND validite=0";
   $result = mysql_query($requete) or die(mysql_error());
-  header('Location: voirFacture.php');
+  header('Location: invoice_list.php');
 }

@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005,2006 CLISS XXI
+Copyright (C) 2005, 2006, 2010  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -20,16 +20,15 @@ along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-require_once('HTML/QuickForm.php');
-require_once('HTML/Table.php');
-require_once('Structures/DataGrid.php');
+require_once('classes/HTML/QuickForm/FR.php');
+require_once('classes/SQLDataGrid.php');
 
 require_once('init.php');
 include('functions/grid.php');
 
 include('templates/header.php');
 
-$param_id = new HTML_QuickForm('bill_id', 'get');
+$param_id = new HTML_QuickForm_FR('invoice_id', 'get');
 $param_id->addElement('text', 'id');
 $param_id->addRule('id', "ID is required.", 'required');
 $param_id->addRule('id', "ID must be a digit.", 'callback', 'ctype_digit');
@@ -43,30 +42,43 @@ $id = $param_id->exportValue('id');
 
 function print_date($params) {
   extract($params);
-  if(strcmp($record[$fieldName], '0000-00-00') == 0)
+  if ($record[$fieldName] == '0000-00-00')
     return _("Non renseigné");
   else
-    return $record[$fieldName];
+    return strftime("%x", $record[$fieldName]);
 }
 
-$dg = new Structures_DataGrid($_SESSION['pagersize']);
-$test= $dg->bind("SELECT
+function print_date_returned($params) {
+  extract($params);
+  if ($record[$fieldName] == '0')
+    echo "<a href='dateRetour.php?idCourrier=".$record['idTransmis']."'>ajouter</a></td>";
+  else
+    return print_date($params);
+}
+
+echo '<p>' . _("Historique pour la facture n°") . $id . '</p>';
+
+$query = "SELECT
     CONCAT(service.libelle, ' ', service.designation) AS service,
-    estTransmisCopie.dateTransmission AS date_transmitted,
-    estTransmisCopie.dateRetour AS date_returned
+    UNIX_TIMESTAMP(estTransmisCopie.dateTransmission) AS date_transmitted,
+    UNIX_TIMESTAMP(estTransmisCopie.dateRetour) AS date_returned,
+    estTransmisCopie.id as idTransmis
   FROM facture, estTransmisCopie, service
   WHERE facture.id = '$id'
     AND facture.idServiceCreation = '{$_SESSION['idService']}'
     AND facture.id = estTransmisCopie.idFacture
-    AND estTransmisCopie.idService = service.id",
-		 array('dsn' => 'mysql://root@localhost/gcourrier'));
-if (PEAR::isError($test)) echo $test->getMessage();
+    AND estTransmisCopie.idService = service.id";
+$sdg = new SQLDataGrid($query,
+		       array(_('Service') => array('sqlcol' => 'service'),
+			     _('Date de transmission') => array('sqlcol' => 'date_transmitted',
+								'callback' => 'print_date'),
+			     _('Date de retour') => array('sqlcol' => 'date_returned',
+							  'callback' => 'print_date_returned'),
+			     ));
+$sdg->setPagerSize($_SESSION['pagersize']);
+$sdg->setDefaultSort(array('date_transmitted' => 'DESC'));
+$sdg->display();
 
-$dg->addColumn(new Structures_DataGrid_Column('Service', 'service'));
-$dg->addColumn(new Structures_DataGrid_Column('Date de transmission', 'date_transmitted',
-					      null, null, null, 'print_date'));
-$dg->addColumn(new Structures_DataGrid_Column('Date de retour', 'date_returned',
-					      null, null, null, 'print_date'));
-grid_table($dg, _("Historique pour la facture n°") . $id);
+echo "<center><a href='invoice_list.php?id=$id#result'>Voir mes factures</a><center>";
 
 include('templates/footer.php');

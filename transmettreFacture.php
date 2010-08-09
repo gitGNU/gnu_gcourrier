@@ -62,7 +62,7 @@ if(!isset( $_POST["enregistrer"])){
 
 <center><br>
 <?php
-echo "<a href='voirFacture.php?id=$idCourrier'>Voir mes factures</a>";
+echo "<a href='invoice_list.php?id=$idCourrier'>Voir mes factures</a>";
 ?>
 </center>
 <br><br>
@@ -90,5 +90,5 @@ echo "<a href='voirFacture.php?id=$idCourrier'>Voir mes factures</a>";
   $requete = "UPDATE facture SET histo='$libService' WHERE id='$idCourrier'";
   $result = mysql_query($requete) or die(mysql_error());
   
-  header("Location: voirFacture.php?id=$idCourrier");
+  header("Location: invoice_list.php?id=$idCourrier");
 }

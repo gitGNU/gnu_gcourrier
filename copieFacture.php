@@ -52,7 +52,7 @@ if(!isset( $_GET['id'] )){
 }
 
 
-echo "<center><div id='titre'><a href='voirFacture.php'>Factures</a> / Copies de Factures";
+echo "<center><div id='titre'><a href='invoice_list.php'>Factures</a> / Copies de Factures";
 echo "<br/><br/>";
 echo "<i style='font-size:10px; font-weight:normal'>";
 echo _("La compatibilité a transmis à votre service une copie papier de ces factures, pour validation.");

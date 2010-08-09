@@ -44,7 +44,7 @@ if(empty($_REQUEST['id']) or !ctype_digit($_REQUEST['id'])) {
 
   $form->addElement('hidden', 'id', 'identifiant facture');
   $form->addElement('header', 'title', _('Modifier la date de la facture n°')
-		    . "<a href='voirFacture.php?idFactureRecherche={$_REQUEST['id']}#result'>"
+		    . "<a href='invoice_list.php?idFactureRecherche={$_REQUEST['id']}#result'>"
 		    . $_REQUEST['id'] . '</a>');
   $form->addElement('date', 'date_mairie', "Date de saisie en mairie",
 		    array('language' => 'fr'));
@@ -105,7 +105,7 @@ if(empty($_REQUEST['id']) or !ctype_digit($_REQUEST['id'])) {
   $form->display();
 }
 
-echo "<center><a href='voirFacture.php?id={$_REQUEST['id']}#result'>";
+echo "<center><a href='invoice_list.php?id={$_REQUEST['id']}#result'>";
 echo _("Voir mes factures");
 echo "</a><center>";
 
