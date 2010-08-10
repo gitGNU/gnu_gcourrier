@@ -247,7 +247,7 @@ while( $ligne = mysql_fetch_array($resultatEntrant) ){
 	}
 
 	if($_GET['type'] == 1)
-		echo"<td bgcolor=".$couleur."><a href=avtAccuse.php?idCourrier=".$idCourrier."&nbAffiche=".$nbAffiche."&type=".$_GET['type'].">creer</a></td>";
+		echo"<td bgcolor=".$couleur."><a href=receipt_form.php?idCourrier=".$idCourrier."&nbAffiche=".$nbAffiche."&type=".$_GET['type'].">creer</a></td>";
 
 //test pour urgence du courrier
 		$dateActuel = date("Y-m-d");

@@ -33,7 +33,7 @@ $nbAffiche = $_GET['nbAffiche'];
 
 	
 <?php
-	echo"<form name = accuse method = POST action = creerAccuse.php>";
+	echo '<form name="accuse" method="post" action="receipt_add.php">';
 
 $requete = "select destinataire.* 
 	    from courrier,destinataire
