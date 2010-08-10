@@ -23,6 +23,8 @@ author VELU Jonathan, Sylvain BEUCLER
 */
 
 require_once('init.php');
+require_once('functions/contact.php');
+
 include('templates/header.php');
 
 if (!isset($_GET['type']))
@@ -81,15 +83,9 @@ echo $emetteur;
 </td>
 
 
-<td><select name = ext>
-	<option value = "rien">(tous)</option>
-		<?php
-		$requete = "SELECT * FROM destinataire ORDER BY nom";
-		$result = mysql_query($requete) or die( mysql_error() );
-		while ($ligne = mysql_fetch_array($result)) {
-		    echo "<option value = '".$ligne['id']."'>".$ligne['nom']." ".$ligne['prenom']."</option>";
-		}
-		?></select></td>
+<td>
+<?php contact_display(); ?>
+</td>
 </tr>
 <tr>
 <td><label>Déjà transmis</br> par le service</label></td>
@@ -138,7 +134,7 @@ $dateResult = $date;
 
 $eDate1 = $_GET['eDate1'];
 $eDate2 = $_GET['eDate2'];
-$ext = $_GET['ext'];
+$contact_id = $_GET['contact_id'];
 
 
 $requetetmp = "SELECT courrier.id as idCourrier,
@@ -178,8 +174,8 @@ if(strcmp($date,"jj-mm-aaaa")!=0){
 }
 
 
-if($ext != "rien") {
-  $requete.=" AND destinataire.id = ".$ext." ";
+if (!empty($contact_id)) {
+  $requete .= " AND destinataire.id = ".$contact_id." ";
 }
 
 
