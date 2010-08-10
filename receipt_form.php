@@ -22,16 +22,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 require_once('init.php');
+include('templates/header.php');
 $idCourrier = $_GET['idCourrier'];
 $nbAffiche = $_GET['nbAffiche'];
 ?>
 
-<html>
-<head><title>GCourrier</title></head>
-<LINK HREF="styles3.css" REL="stylesheet">
-<body>
-
-	
 <?php
 	echo '<form name="accuse" method="post" action="receipt_add.php">';
 
@@ -48,7 +43,7 @@ $codePostal = $ligne['codePostal'];
 $ville = $ligne['ville'];
 }
 
-$objet = "objet : accuse reception courrier num ".$idCourrier;
+$objet = "Objet : accusé réception courrier n°".$idCourrier;
 
 $requete = "select * from accuse where id=1;";
 $result = mysql_query($requete) or die(mysql_error());
@@ -64,7 +59,7 @@ $date.=date("d-m-Y");
 
 ?>
 	<table align = left>
-		<tr><td>Expediteur</td>
+		<tr><td>Expéditeur</td>
 <?php
 echo"		<td><input type = text name = expediteur value = \"".$expediteurAccuse."\" ></input></td> ";
 ?>
@@ -84,7 +79,7 @@ echo"		<td><input type = text name = codePostal value=\"".$codePostalAccuse."\" 
 echo"		<td><input type = text name = ville value=\"".$villeAccuse."\"></input></td>";
 ?>
 		</tr>
-		<tr><td>Telephone</td>
+		<tr><td>Téléphone</td>
 <?php
 echo"		<td><input type=text name = telephone value=\"".$telephoneAccuse."\"></input></td>";
 ?>
@@ -129,9 +124,9 @@ echo"		<td><input type=text name = telephone value=\"".$telephoneAccuse."\"></in
 		echo"<td><textarea name=corps cols=100 rows=20 wrap=virtual>
 Madame,Monsieur,~
 
-Nous avons bien recu votre courrier qui est actuellement en cours de traitement.~
+Nous avons bien reçu votre courrier qui est actuellement en cours de traitement.~
 
-Nous vous prions d'agreer, Madame, Monsieur, l'expression de nos salutations distinguees.~~
+Nous vous prions d'agréer, Madame, Monsieur, l'expression de nos salutations distinguées.~~
 
 |".$expediteurAccuse.".
 		</textarea></td>";
@@ -141,17 +136,17 @@ Nous vous prions d'agreer, Madame, Monsieur, l'expression de nos salutations dis
 	
 	
 	<i>~ retour chariot</i><br>
-	<i>| alignement a droite</i><br>
+	<i>| alignement à droite</i><br>
 	<i># tabulation</i><br><br>
 	
 	<center>
-	<input type = submit name = creer value = creer></input>
+	<input type="submit" name="creer" value="Créer" />
 	</center><br>
 <?php
-echo"<b><a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$nbAffiche."&type=".$_GET['type'].">voir mon courrier</a></b>";
+echo"<b><a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$nbAffiche."&type=".$_GET['type'].">Retour au courrier</a></b>";
 ?>
 
 	</form>
-
-</body>
-</html>
+<br style="clear: both;" />
+<?php
+include('templates/footer.php');
