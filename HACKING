@@ -7,7 +7,7 @@ Each user belongs to one and only one service.
 We track 3 different kinds of objects:
 - incoming snail mail
 - outgoing snail mail
-- bills validation
+- invoices validation
 Each object belongs to an initial service.
 
 Objects can be active or archived. When archived, they are not shown
@@ -19,6 +19,10 @@ the average internal processing time.
 Mails can be transmitted to another service later on. In this case
 they are not visible anymore for the previous owner - you do not need
 to care about it anymore.
+
+Mail messages are visible by anybody.  It may also be retransmitted by
+anybody.  However they can only be modified by the service where it
+currently resides.
 
 Invoices can also be transmitted to a different service, but "in
 copy". Currently this is implemented differently than with mails:

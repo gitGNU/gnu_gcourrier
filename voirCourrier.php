@@ -99,17 +99,16 @@ echo"<input type = text name=affiche value=".$nbAffiche." size=2></input>";
 echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
 ?>
 
-<input type=submit name=ok value=ok></input>
+<input type=submit value="OK"></input>
 </td></tr></table>
 </form>
 
-<?php
-echo "<form method='POST' action='rechercheRapideCourrier.php?type={$_GET['type']}'>";
-?>
+<form method='GET' action=''>
+<input type="hidden" name="type" value="<?php echo $_GET['type']; ?>" />
 <table align=center style="border:1px dotted black;"><tr><td>
 <label>Rechercher le courrier numéro:</label>
-<input type=text name=numero value=1 size=2></input>
-<input type=submit name=ok value=ok></input>
+<input type="text" name="idCourrierRecherche" value=1 size=2></input>
+<input type="submit" value="OK"></input>
 <br><a href="rechercher.php?type=1"><font size=1px><center>Recherche Avancée</center></font></a>
 </tr></td></table></form>
 
