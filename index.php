@@ -61,6 +61,9 @@ Archive:
   <a href="archive.php?type=2">Départ</a>
   <a href="archiveFacture.php">Facture</a>
 
+<br />
+<br />
+
 <table id="menu_index">
   <tr>
     <td>
@@ -71,9 +74,11 @@ Archive:
       <a href=modifierIndividu.php>Modifier un individu</a>
     </td>
     <td>
-      <img src="images/enveloppe.png" /> <a href= voirCourrier.php?type=1>Voir entrant</a><br />
-      <img src="images/enveloppeD.png" /> <a href= voirCourrier.php?type=2>Voir départ</a><br />
-      <img src="images/euro.png" /> <a href= invoice_list.php>Voir facture</a><br />
+      <strong>Mon service</strong><br />
+      <br />
+      <img src="images/enveloppe.png" /> <a href="voirCourrier.php?type=1">Voir entrant</a><br />
+      <img src="images/enveloppeD.png" /> <a href="voirCourrier.php?type=2">Voir départ</a><br />
+      <img src="images/euro.png" /> <a href="invoice_list.php">Voir facture</a><br />
     </td>
   </tr>
 </table>
