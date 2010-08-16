@@ -33,7 +33,7 @@ if (!isset($_GET['type']))
     $_GET['type'] = 1;
   }
 
-if(!isset( $_GET["rechercher"] ) ){
+if (!isset($_GET['rechercher'])) {
 
 ?>
 <center><b>RECHERCHE COURRIER
@@ -50,7 +50,7 @@ if($_GET['type'] == 1) {
 
 </b><br><br>
 <?php
-echo "<form name = rechercheAvanceeForm action='rechercher.php'>";
+echo "<form action='rechercher.php'>";
 echo "<input type='hidden' name='type' value='{$_GET['type']}' />";
 ?>
 <table>
@@ -90,11 +90,11 @@ echo $emetteur;
 </tr>
 <tr>
 <td><label>Déjà transmis</br> par le service</label></td>
-<td><input type = "checkbox" name ="gTransmis"/></td>
+<td><input type="checkbox" name="gTransmis" /></td>
 </tr>
 <tr>
 <td><label>Courrier retard</label></td>
-<td><input type = "checkbox" name ="retard"/></td>
+<td><input type="checkbox" name="retard" /></td>
 </tr>
 </table>
 
@@ -139,30 +139,27 @@ $eDate2 = $_GET['eDate2'];
 $contact_id = $_GET['contact_id'];
 
 
-$requetetmp = "SELECT courrier.id as idCourrier,
+$select = "SELECT courrier.id as idCourrier,
 		   courrier.libelle as libelle,
 		   destinataire.nom as nomDestinataire,
 		   destinataire.prenom as prenomDestinataire,
 		   UNIX_TIMESTAMP(courrier.dateArrivee) as dateArrivee,
 		   courrier.url as url ";
-$from =" FROM courrier, destinataire ".$fromTransmission.$fromRetard;
-$where =" WHERE courrier.validite = 0 and courrier.type=".intval($_GET['type'])
+$from = " FROM courrier, destinataire ".$fromTransmission.$fromRetard;
+$where = " WHERE courrier.validite = 0 and courrier.type=".intval($_GET['type'])
   . " AND courrier.idDestinataire = destinataire.id";
 $where .= $reqTmpTransmission.$whereRetard;
-$requete = '';
 
 if ($libelle != "") {
   $libelle = mysql_real_escape_string($libelle);
-  $requete .= " AND courrier.libelle LIKE '%$libelle%' ";
+  $where .= " AND courrier.libelle LIKE '%$libelle%' ";
 }
 
-if(strcmp($numero,"")!=0){
-	$requete.= " and courrier.id = '".$numero."' ";
-
+if ($numero != "") {
+  $where .= " AND courrier.id = ".intval($numero)." ";
 }
 
-
-if(strcmp($date,"jj-mm-aaaa")!=0){
+if (!empty($date) and $date != "jj-mm-aaaa") {
 	$tmpdate= substr($date, 6,4);
 	$tmpdate.='-';
 	$tmpdate.=substr($date, 3,2);
@@ -170,42 +167,36 @@ if(strcmp($date,"jj-mm-aaaa")!=0){
 	$tmpdate.=substr($date, 0,2);
 	$date = $tmpdate;
 
-	$requete.= " and courrier.dateArrivee = '".$date."' ";
-
+	$where .= " AND courrier.dateArrivee = '$date' ";
 }
 
 
 if (!empty($contact_id)) {
-  $requete .= " AND destinataire.id = ".$contact_id." ";
+  $where .= " AND destinataire.id = ".$contact_id." ";
 }
 
 
+if ((!empty($eDate1) and $eDate1 != "jj-mm-aaaa")
+    and (!empty($eDate2) and $eDate2 = "jj-mm-aaaa")) {
+  $tmpdate= substr($eDate1, 6,4);
+  $tmpdate.='-';
+  $tmpdate.=substr($eDate1, 3,2);
+  $tmpdate.='-';
+  $tmpdate.=substr($eDate1, 0,2);
+  $eDate1 = $tmpdate;
 
-if(strcmp($eDate1,"jj-mm-aaaa")!=0 && strcmp($eDate2,"jj-mm-aaaa")!=0){
-$tmpdate= substr($eDate1, 6,4);
-$tmpdate.='-';
-$tmpdate.=substr($eDate1, 3,2);
-$tmpdate.='-';
-$tmpdate.=substr($eDate1, 0,2);
-$eDate1 = $tmpdate;
+  $tmpdate= substr($eDate2, 6,4);
+  $tmpdate.='-';
+  $tmpdate.=substr($eDate2, 3,2);
+  $tmpdate.='-';
+  $tmpdate.=substr($eDate2, 0,2);
+  $eDate2 = $tmpdate;
 
-$tmpdate= substr($eDate2, 6,4);
-$tmpdate.='-';
-$tmpdate.=substr($eDate2, 3,2);
-$tmpdate.='-';
-$tmpdate.=substr($eDate2, 0,2);
-$eDate2 = $tmpdate;
-
-$requete.=" and courrier.dateArrivee >='".$eDate1."' and courrier.dateArrivee<='".$eDate2."' ";
-		
+  $where .= " AND courrier.dateArrivee >='$eDate1' AND courrier.dateArrivee<='$eDate2' ";
 }
 
 
-$requete .= " ".$from." ".$where." ".$requete." ";
-$requetetmp.=$requete;
-//$requete.=$requetetmp." group by courrier.id;";
-$requete = $requetetmp;
-//echo $requete."<br><br>";
+$requete .= $select." ".$from." ".$where;
 $result = mysql_query( $requete ) or die ( mysql_error() ) ;
 
 
@@ -270,10 +261,8 @@ $sdg = new SQLDataGrid($requete,
 $sdg->setPagerSize($_SESSION['pagersize']);
 $sdg->setDefaultSort(array('idCourrier' => 'DESC'));
 $sdg->setClass('resultats');
-#if (!empty($_GET['idFactureRecherche']))
-#  $sdg->setDefaultPageWhere(array('idFacture' => $_GET['idFactureRecherche']));
-#if (!empty($_GET['id']))
-#  $sdg->setDefaultPageWhere(array('idFacture' => $_GET['id']));
+if (!empty($_GET['idCourrierRecherche']))
+  $sdg->setDefaultPageWhere(array('idCourrier' => $_GET['idCourrierRecherche']));
 $sdg->display();
 
 

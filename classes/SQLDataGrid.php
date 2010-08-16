@@ -205,8 +205,8 @@ class SQLDataGrid {
     if ($middle + $ADJACENT + $FAR + 1 > $orig_last)
       $middle = $orig_last - $ADJACENT;
 
-    $middle_start = $middle - $ADJACENT;
-    $middle_end = $middle + $ADJACENT;
+    $middle_start = max($middle - $ADJACENT, 1);
+    $middle_end = min($orig_last, $middle + $ADJACENT);
     $short_page_range = range($middle_start, $middle_end);
     
     if ($middle_start > 1+$FAR)
