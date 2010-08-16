@@ -1,5 +1,5 @@
 Basic concepts
-~~~~~~~~~~~~~~
+==============
 
 There are many users in the system.
 Each user belongs to one and only one service.
@@ -35,8 +35,24 @@ Invoices can be refused, in which case they are not shown anymore,
 though they still exist somewhere in the system.
 
 
+Tables
+======
+
+- accuse: receipt configuration
+- courrier: stored mail messages (inbound and outbound)
+- destinataire: contacts
+- estTransmis: transmission history for mail messages
+- estTransmisCopie: transmission history for invoices
+- facture: invoices
+- priorite: priorities (used by mail messages and invoices)
+- service: services / users groups
+- sessions: long-lived sessions (authentication only)
+- upgrades: unused, planned to memember the applied upgraded
+- utilisateur: users
+
+
 Tools
-~~~~~
+=====
 
 We currently use HTML_QuickForm as a generic input validation
 framework. Structure_DataGrid is used to display the content of the
@@ -50,7 +66,7 @@ released under the PHP license, which is incompatible)
 
 
 Internationalization - i18n
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+===========================
 
 We plan to use gettext to provide translations, even though this is
 not available yet. That's why translatable strings are marked with
@@ -62,7 +78,7 @@ https://gna.org/p/savane project for an sample implementation.
 
 
 Version control
-~~~~~~~~~~~~~~~
+===============
 
 Create a release branch::
 
