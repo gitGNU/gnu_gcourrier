@@ -40,6 +40,7 @@ Tables
 
 - accuse: receipt configuration
 - courrier: stored mail messages (inbound and outbound)
+  courrier.validite: 0 == active, 1 == archived
 - destinataire: contacts
 - estTransmis: transmission history for mail messages
 - estTransmisCopie: transmission history for invoices
@@ -55,14 +56,17 @@ Tools
 =====
 
 We currently use HTML_QuickForm as a generic input validation
-framework. Structure_DataGrid is used to display the content of the
-database.
+framework.
 
 Both can be found at http://pear.php.net
 
 To be more precise: we actually use our own GPLQuickForm, which is a
 partial reimplementation released under the GNU GPL (HTML_QuickForm is
 released under the PHP license, which is incompatible)
+
+We also use a new implementation of Structure_DataGrid: SQLDataGrid.
+It's able to locate one particular record (id) in a paginated list,
+which Structure_DataGrid cannot do
 
 
 Internationalization - i18n

@@ -1,7 +1,8 @@
 <?php
 /*
 Display MySQL results in an HTML table
-Copyright (C) 2007  Cliss XXI
+Copyright (C) 2007, 2010  Cliss XXI
+Copyright (C) 2010  Sylvain Beucler
 
 This file is part of GCourrier.
 
@@ -187,13 +188,46 @@ class SQLDataGrid {
       }
   }
 
+  // Shorten a pagination range:
+  // 1 2 3 4 5 [6] 7 8 9 10 11
+  // -> 1 2 '...' 5 [6] 7 '...' 10 11
+  function short_range()
+  {
+    $ADJACENT = 4;
+    $FAR = 2;
+
+    $short_page_range = array();
+    $orig_last = ceil($this->total_rows * 1.0 / $this->pager_size);
+
+    $middle_start = max(1, $this->cur_page - $ADJACENT);
+    $middle_end = min($middle_start + $ADJACENT*2, $orig_last);
+    if ($middle_start < (1 + $FAR + 1))
+      {
+	$middle_start = 1;
+      }
+    if ($middle_end > ($orig_last - $FAR - 1))
+      {
+	$middle_end = $orig_last;
+      }
+    $short_page_range = range($middle_start, $middle_end);
+    
+    if ($middle_start > 1+$FAR)
+      {
+	$short_page_range = array_merge(range(1, $FAR), array('...'), $short_page_range);
+      }
+    if ($middle_end < $orig_last-$FAR)
+      {
+	$short_page_range = array_merge($short_page_range, array('...'), range($orig_last-$FAR+1, $orig_last));
+      }
+    return $short_page_range;
+  }
 
   function display_pager()
   {
     $myget = $_GET;
     $myget['orderBy'] = $this->order_field;
     $myget['direction'] = $this->order_direction;
-    $page_link = 0;
+    $i = 0;
 
     if ($this->total_rows <=  $this->pager_size)
       return;
@@ -204,21 +238,25 @@ class SQLDataGrid {
 	$link = $this->GET2query_string($myget);
 	print "<a href='$link'>&lt;&lt;</a>&nbsp;&nbsp;&nbsp;";
       }
-    for ($i = 0; $i < $this->total_rows; $i += $this->pager_size)
+    else
       {
-	$page_link++;
+	print "&lt;&lt;&nbsp;&nbsp;&nbsp;";
+      }
+    foreach ($this->short_range() as $page_link)
+      {
+	$i += $this->pager_size;
 	if ($page_link != 1)
 	  print "|";
 	print "&nbsp;&nbsp;&nbsp;";
-	if ($page_link != $this->cur_page)
+	if ($page_link == $this->cur_page or $page_link == '...')
+	  {
+	    print "<strong>$page_link</strong>";;
+	  }
+	else
 	  {
 	    $myget['page'] = $page_link;
 	    $link = $this->GET2query_string($myget);
 	    print "<a href='$link'>" . ($page_link) . "</a>";
-	  }
-	else
-	  {
-	    print "<strong>$page_link</strong>";;
 	  }
 	print "&nbsp;&nbsp;&nbsp;";
       }
@@ -228,6 +266,11 @@ class SQLDataGrid {
 	$link = $this->GET2query_string($myget);
 	print "&nbsp;&nbsp;&nbsp;<a href='$link'>&gt;&gt;</a>";
       }
+    else
+      {
+	print "&nbsp;&nbsp;&nbsp;&gt;&gt;";
+      }
+    print "&nbsp;&nbsp;&nbsp;({$this->total_rows} éléments)";
   }
   
   function display_data()
@@ -330,6 +373,7 @@ class SQLDataGrid {
 	$this->limit_sql = "LIMIT " . ($this->pager_size * ($this->cur_page-1)) . ",$this->pager_size";
 	if (!isset($this->total_rows))
 	  {
+	    // TODO: doesn't work if there's a GROUP BY
 	    preg_match('/select .* ( from .*)/is', $this->query, $matches);
 	    $query2 = "SELECT COUNT(*) AS total_rows {$matches[1]}";
 	    $res = db_execute($query2);

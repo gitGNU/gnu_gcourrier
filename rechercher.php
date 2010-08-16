@@ -23,6 +23,7 @@ author VELU Jonathan, Sylvain BEUCLER
 */
 
 require_once('init.php');
+require_once('classes/SQLDataGrid.php');
 require_once('functions/contact.php');
 
 include('templates/header.php');
@@ -115,7 +116,8 @@ $fromTransmission = "";
 
 if(isset($_GET['retard'])){
 $fromRetard = ",priorite ";
-$whereRetard = " and courrier.idPriorite = priorite.id";
+$whereRetard = " AND courrier.idPriorite = priorite.id"
+  . " AND (dateArrivee + INTERVAL priorite.nbJours DAY) < CURDATE()";
 }
 else{
 $whereRetard="";
@@ -141,8 +143,7 @@ $requetetmp = "SELECT courrier.id as idCourrier,
 		   courrier.libelle as libelle,
 		   destinataire.nom as nomDestinataire,
 		   destinataire.prenom as prenomDestinataire,
-		   courrier.dateArrivee as dateArrivee,
-		   courrier.dateArchivage as dateArchivage,
+		   UNIX_TIMESTAMP(courrier.dateArrivee) as dateArrivee,
 		   courrier.url as url ";
 $from =" FROM courrier, destinataire ".$fromTransmission.$fromRetard;
 $where =" WHERE courrier.validite = 0 and courrier.type=".intval($_GET['type'])
@@ -200,117 +201,83 @@ $requete.=" and courrier.dateArrivee >='".$eDate1."' and courrier.dateArrivee<='
 }
 
 
-$requetetmp .= " ".$from." ".$where." ".$requete." ";
-$requetetmp.=$requete."group by courrier.id";
+$requete .= " ".$from." ".$where." ".$requete." ";
+$requetetmp.=$requete;
 //$requete.=$requetetmp." group by courrier.id;";
 $requete = $requetetmp;
 //echo $requete."<br><br>";
 $result = mysql_query( $requete ) or die ( mysql_error() ) ;
-echo "<table align=center font-color ='white'>";
-echo "<tr>";
-echo "<td align=center>Numéro</td>";
-echo "<td align=center>Libellé</td>";
-echo "<td align=center>";
-if($_GET['type'] == 1) {
-  echo "Émetteur";
-} else {
-  echo "Destinataire";
+
+
+function printId($params)
+{
+  extract($params);
+  return $record['idCourrier'];
 }
-echo "</td>";
-echo "<td align=center>Date</td>";
-echo "<td align=center>Historique</td>";
-echo "<td align=center>Transmettre</td>";
-echo "<td align=center>Fichier</td>";
-echo "</tr>";
-
-$boul = 0;
-
-
-
-while($ligne = mysql_fetch_array( $result ) ){
-if($boul == 0){
-	$couleur = 'lightblue';
-	$boul = 1;	
+function printLabel($params)
+{
+  extract($params);
+  return $record['libelle'];
 }
-else{
-	$couleur = 'white';
-	$boul = 0;	
+function printContact($params)
+{
+  extract($params);
+  return $record['nomDestinataire'];
 }
-if(isset($_GET['retard'])){
-//test pour urgence du courrier
-		$dateActuel = date("Y-m-d");
-		$jourActuel = substr($dateActuel,8,2);
-		$moisActuel = substr($dateActuel,5,2);
-		$anneeActuel= substr($dateActuel,0,4);
+function printArrivalDate($params)
+{
+  extract($params);
+  return strftime("%x", $record[$fieldName]);
+}
+function printHistory($params)
+{
+  extract($params);
+  return "<a href='rechercherHistorique.php?idCourrier={$record['idCourrier']}"
+    . "&type={$_GET['type']}'>Historique</a>";
+}
+function printTransmit($params)
+{
+  extract($params);
+  return "<a href='transmettreRecherche.php?idCourrier={$record['idCourrier']}"
+    . "&type={$_GET['type']}'>Transmettre</a>";
+}
+function printFiles($params)
+{
+  extract($params);
+  if (!empty($record['url']))
+    {
+      return "<a href='file_view.php/" . basename($record['url'])
+	. "?object=courrier&object_id={$record['idCourrier']}'>"
+	. "<img src='images/download.gif' style='border: 0;'></a>";
+    }
+}
 
-		$tmpDateArrivee = $ligne['dateArrivee'];
-		$jourArrivee =substr($tmpDateArrivee,8,2);
-		$moisArrivee =substr($tmpDateArrivee,5,2);
-		$anneeArrivee =substr($tmpDateArrivee,0,4);
-		
+$sdg = new SQLDataGrid($requete,
+		       array('No' => array('sqlcol' => 'idCourrier',
+					   'callback' => 'printId'),
+			     'Libellé' => array('sqlcol' => 'libelle',
+					     'callback' => 'printLabel'),
+			     (($_GET['type'] == 1) ? 'Émetteur' : 'Destinataire')
+                                       => array('sqlcol' => 'nomDestinataire',
+						 'callback' => 'printContact'),
+			     'Date Mairie' => array('sqlcol' => 'dateArrivee',
+						    'callback' => 'printArrivalDate'),
+			     'Historique' => array('callback' => 'printHistory'),
+			     'Transmettre' => array('callback' => 'printTransmit'),
+			     'Fichiers' => array('callback' => 'printFiles'),
+			     ));
 
-		$nbJours = $ligne['nbJours'];
-		
-		$timestampActuel = mktime(0,0,0,$moisActuel,$jourActuel,$anneeActuel);
-		$timestampArrivee= mktime(0,0,0,$moisArrivee,$jourArrivee,$anneeArrivee);
-		$urgence = ($timestampActuel - $timestampArrivee ) / 86400;
+$sdg->setPagerSize($_SESSION['pagersize']);
+$sdg->setDefaultSort(array('idCourrier' => 'DESC'));
+$sdg->setClass('resultats');
+#if (!empty($_GET['idFactureRecherche']))
+#  $sdg->setDefaultPageWhere(array('idFacture' => $_GET['idFactureRecherche']));
+#if (!empty($_GET['id']))
+#  $sdg->setDefaultPageWhere(array('idFacture' => $_GET['id']));
+$sdg->display();
 
-		$nbJoursRestant = $nbJours - $urgence;
 
-		if($urgence <= $nbJours){
-			echo "<tr>";	
-			$tmp= substr($ligne['dateArrivee'], 8,2);
-			$tmp.='-';
-			$tmp.=substr($ligne['dateArrivee'], 5,2);
-			$tmp.='-';
-			$tmp.=substr($ligne['dateArrivee'], 0,4);
-
-			$destinataire = $ligne['nomDestinataire']." ".$ligne['prenomDestinataire'];
-
-			echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
-			echo "<td bgcolor = ".$couleur.">".$ligne['libelle']."</td>";
-			echo "<td bgcolor = ".$couleur.">$destinataire</td>";
-			echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
-			echo "<td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>";
-			echo "<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td>";
-echo "<td style='text-align:center' bgcolor='$couleur'>";
-if ($ligne['url'] != "")
-  echo "<a href='file_view.php/".basename($ligne['url'])."?object=courrier&object_id={$ligne['idCourrier']}'><img src='images/download.gif' style='border: 0'></a>";
-echo "</td>";
-echo "</tr>";
-		}//fin if urgence
-}//fin if retard
-
-else{
-
-	echo "<tr>";	
-	$tmp= substr($ligne['dateArrivee'], 8,2);
-	$tmp.='-';
-	$tmp.=substr($ligne['dateArrivee'], 5,2);
-	$tmp.='-';
-	$tmp.=substr($ligne['dateArrivee'], 0,4);
-
-	$destinataire = $ligne['nomDestinataire']." ".$ligne['prenomDestinataire'];
-
-	echo "<td bgcolor = ".$couleur.">".$ligne['idCourrier']."</td>";
-	echo "<td bgcolor = ".$couleur.">".$ligne['libelle']."</td>";
-	echo "<td bgcolor = ".$couleur.">$destinataire</td>";
-	echo "<td bgcolor = ".$couleur.">".$tmp."</td>";
-	echo "<td bgcolor=".$couleur."><a href=rechercherHistorique.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">historique</a></td>";
-	echo "<td bgcolor = ".$couleur."><a href=transmettreRecherche.php?idCourrier=".$ligne['idCourrier']."&type=".$_GET['type'].">transmettre</a></td>";
-echo "<td style='text-align:center' bgcolor='$couleur'>";
-if ($ligne['url'] != "")
-  echo "<a href='file_view.php/".basename($ligne['url'])."?object=courrier&object_id={$ligne['idCourrier']}'><img src='images/download.gif' style='border: 0'></a>";
-echo "</td>";
-echo "</tr>";
-	
-	}//fin else
-}//fin while
-
-echo "</table>";
-
-echo "<br><a href = rechercher.php?type=".$_GET['type'].">nouvelle recherche</a>";
-echo "<br><a href = index.php>index</a>";
+echo "<p><a href='rechercher.php?type={$_GET['type']}'>Nouvelle recherche</a></p>";
 
 echo "</center>";
 
