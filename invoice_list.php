@@ -35,11 +35,11 @@ echo "<div style='text-align: center'><a href='index.php'>Index</a></div>";
 exit();
 }
 ?>
-<form method="post" action="rechercheRapideFacture.php#result">
+<form method="get" action="#result">
 <table align=center style="border: 1px dotted black;"><tr><td>
 <label>Aller à la facture numéro:</label>
-<input type="text" name="numero" value="1" size="2"></input>
-<input type="submit" name="ok" value="OK"></input>
+<input type="text" name="idFactureRecherche" value="1" size="2"></input>
+<input type="submit" value="OK"></input>
 <br /><center><span style="font-size: x-small"><a href="rechercherFacture.php">Recherche avancée</a></span></center>
 </td></tr></table></form>
 

@@ -11,7 +11,7 @@ We track 3 different kinds of objects:
 Each object belongs to an initial service.
 
 Objects can be active or archived. When archived, they are not shown
-in the main page but still can be browsed through the
+in the main page but still can be browsed (not modified) through the
 archives. Objects cannot be un-archived. The goal of the archive is to
 check the status of a given object months later, or show statistics on
 the average internal processing time.
@@ -23,6 +23,10 @@ to care about it anymore.
 Mail messages are visible by anybody.  It may also be retransmitted by
 anybody.  However they can only be modified by the service where it
 currently resides.
+
+Incoming mail messages are usually created only by the receiptionist,
+who does the first level of transmissions.  Outgoing mail messages are
+usually created by everybody.
 
 Invoices can also be transmitted to a different service, but "in
 copy". Currently this is implemented differently than with mails:
