@@ -371,9 +371,14 @@ class SQLDataGrid {
 	$this->limit_sql = "LIMIT " . ($this->pager_size * ($this->cur_page-1)) . ",$this->pager_size";
 	if (!isset($this->total_rows))
 	  {
-	    // TODO: doesn't work if there's a GROUP BY
-	    preg_match('/select .* ( from .*)/is', $this->query, $matches);
-	    $query2 = "SELECT COUNT(*) AS total_rows {$matches[1]}";
+	    if (preg_match('/distinct|group by/is', $this->query)) {
+	      // If already using aggregation, make a subquery
+	      $query2 = "SELECT COUNT(*) AS total_rows FROM ({$this->query}) subquery";
+	    } else {
+	      // More efficient: just a COUNT without the original fields
+	      preg_match('/select .* (from .*)/is', $this->query, $matches);
+	      $query2 = "SELECT COUNT(*) AS total_rows {$matches[1]}";
+	    }
 	    $res = db_execute($query2);
 	    $row = mysql_fetch_array($res);
 	    $this->total_rows = $row['total_rows'];
