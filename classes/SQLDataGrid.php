@@ -199,26 +199,20 @@ class SQLDataGrid {
     $short_page_range = array();
     $orig_last = ceil($this->total_rows * 1.0 / $this->pager_size);
 
-    $middle_start = max(1, $this->cur_page - $ADJACENT);
-    $middle_end = min($middle_start + $ADJACENT*2, $orig_last);
-    if ($middle_start < (1 + $FAR + 1))
-      {
-	$middle_start = 1;
-      }
-    if ($middle_end > ($orig_last - $FAR - 1))
-      {
-	$middle_end = $orig_last;
-      }
+    $middle = $this->cur_page;
+    if ($middle - $ADJACENT - $FAR - 1 < 1)
+      $middle = 1 + $ADJACENT;
+    if ($middle + $ADJACENT + $FAR + 1 > $orig_last)
+      $middle = $orig_last - $ADJACENT;
+
+    $middle_start = $middle - $ADJACENT;
+    $middle_end = $middle + $ADJACENT;
     $short_page_range = range($middle_start, $middle_end);
     
     if ($middle_start > 1+$FAR)
-      {
-	$short_page_range = array_merge(range(1, $FAR), array('...'), $short_page_range);
-      }
+      $short_page_range = array_merge(range(1, $FAR), array('...'), $short_page_range);
     if ($middle_end < $orig_last-$FAR)
-      {
-	$short_page_range = array_merge($short_page_range, array('...'), range($orig_last-$FAR+1, $orig_last));
-      }
+      $short_page_range = array_merge($short_page_range, array('...'), range($orig_last-$FAR+1, $orig_last));
     return $short_page_range;
   }
 
@@ -242,11 +236,15 @@ class SQLDataGrid {
       {
 	print "&lt;&lt;&nbsp;&nbsp;&nbsp;";
       }
+    $first = true;
     foreach ($this->short_range() as $page_link)
       {
 	$i += $this->pager_size;
-	if ($page_link != 1)
+	if ($first)
+	  $first = false;
+	else
 	  print "|";
+
 	print "&nbsp;&nbsp;&nbsp;";
 	if ($page_link == $this->cur_page or $page_link == '...')
 	  {
