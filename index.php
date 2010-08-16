@@ -57,8 +57,8 @@ Rechercher:
   <a href="rechercherFacture.php">Facture</a>
 -
 Archive:
-  <a href="archive.php?type=1">Entrant</a>
-  <a href="archive.php?type=2">Départ</a>
+  <a href="rechercher.php?archive=1&type=1">Entrant</a>
+  <a href="rechercher.php?archive=1&type=2">Départ</a>
   <a href="archiveFacture.php">Facture</a>
 
 <br />

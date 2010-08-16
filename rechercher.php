@@ -38,6 +38,10 @@ if (!isset($_GET['rechercher'])) {
 ?>
 <center><b>RECHERCHE COURRIER
 <?php
+if($_GET['archive'] == 1)
+  echo " ARCHIVÉ";
+?>
+<?php
 if($_GET['type'] == 1) {
 	echo " ENTRANT";
 	$emetteur = "Émetteur";
@@ -79,7 +83,7 @@ echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
     <td><?php echo $emetteur; ?></td>
     <td><?php contact_display(); ?></td>
   </tr>
-
+<?php if (empty($_GET['archive'])) { ?>
   <tr>
     <td><label>Déjà transmis</br> par le service</label></td>
     <td><input type="checkbox" name="gTransmis" /></td>
@@ -89,6 +93,7 @@ echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
     <td><label>Courrier retard</label></td>
     <td><input type="checkbox" name="retard" /></td>
   </tr>
+<?php } ?>
 </table>
 
 <input type="submit" name="rechercher" value="Rechercher" />
@@ -118,7 +123,7 @@ echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
 	     UNIX_TIMESTAMP(courrier.dateArrivee) as dateArrivee,
 	     courrier.url as url";
   $from = "courrier,destinataire,service";
-  $where = "courrier.validite = 0 and courrier.type=".intval($_GET['type'])
+  $where = "courrier.validite = ".intval($_GET['archive'])." and courrier.type=".intval($_GET['type'])
     . " AND courrier.idDestinataire = destinataire.id"
     . " AND service.id = courrier.serviceCourant";
 
@@ -197,7 +202,7 @@ echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
   function printContact($params)
   {
     extract($params);
-    return $record['nomDestinataire'];
+    return $record['nomDestinataire'] . " " . $record['prenomDestinataire'];
   }
   function printArrivalDate($params)
   {
@@ -227,20 +232,21 @@ echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
       }
   }
 
-  $sdg = new SQLDataGrid($requete,
-			 array('No' => array('sqlcol' => 'idCourrier',
-					     'callback' => 'printId'),
-			       'Libellé' => array('sqlcol' => 'libelle',
-						  'callback' => 'printLabel'),
-			       (($_GET['type'] == 1) ? 'Émetteur' : 'Destinataire')
-			       => array('sqlcol' => 'nomDestinataire',
-					'callback' => 'printContact'),
-			       'Date Mairie' => array('sqlcol' => 'dateArrivee',
-						      'callback' => 'printArrivalDate'),
-			       'Historique' => array('callback' => 'printHistory'),
-			       'Transmettre' => array('callback' => 'printTransmit'),
-			       'Fichiers' => array('callback' => 'printFiles'),
-			       ));
+  $config = array();
+  $config['No'] = array('sqlcol' => 'idCourrier',
+			'callback' => 'printId');
+  $config['Libellé'] = array('sqlcol' => 'libelle',
+			     'callback' => 'printLabel');
+  $config[($_GET['type'] == 1) ? 'Émetteur' : 'Destinataire']
+    = array('sqlcol' => 'nomDestinataire',
+	    'callback' => 'printContact');
+  $config['Date Mairie'] = array('sqlcol' => 'dateArrivee',
+				 'callback' => 'printArrivalDate');
+  $config['Historique'] = array('callback' => 'printHistory');
+  if ($_GET['archive'] == 0)
+    $config['Transmettre'] = array('callback' => 'printTransmit');
+  $config['Fichiers'] = array('callback' => 'printFiles');
+  $sdg = new SQLDataGrid($requete, $config);
   
   $sdg->setPagerSize($_SESSION['pagersize']);
   $sdg->setDefaultSort(array('idCourrier' => 'DESC'));

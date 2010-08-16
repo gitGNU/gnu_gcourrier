@@ -53,7 +53,6 @@ $requete = "select service.libelle as libService,
 	$boul = 0;
 	echo "<table align=center>";
 	echo "<tr>";
-	echo "<tr>";
 	echo "<td align=center>service</td>";
 	echo "<td align=center>date de modification</td>";
 	echo "<td></td>";
@@ -100,8 +99,10 @@ echo "</table><br>";
 
 
 ?>
+
 <br/>
 <center><a href="javascript:history.go(-1)"> <b>retourner au resultat</b></a>
+
 <br><br>
 </div>
 </body>
