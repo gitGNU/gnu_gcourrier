@@ -141,6 +141,11 @@ function printPriority($params)
   else
     return "<img src=images/ok.png title='reste $nbJoursRestant jours' />";
 }
+function printReply($params)
+{
+  extract($params);
+  return "<a href='mail_reply.php?object_id={$record['idCourrier']}'>Répondre</a>";
+}
 function printFiles($params)
 {
   extract($params);
@@ -173,6 +178,8 @@ if ($_SESSION['login'] != 'admin')
       $config['Accuse'] = array('callback' => 'printReceipt');
   }
 $config['Urgence'] = array('callback' => 'printPriority');
+if ($_GET['type'] == 1)
+  $config['Réponses'] = array ('callback' => 'printReply');
 $config['Fichiers'] = array('callback' => 'printFiles');
 $sdg = new SQLDataGrid($query, $config);
   

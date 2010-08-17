@@ -23,6 +23,7 @@ author VELU Jonathan, Sylvain BEUCLER
 */
 
 require_once('init.php');
+require_once('functions/mail.php');
 require_once('functions/priority.php');
 require_once('functions/contact.php');
 require_once('functions/status.php');
@@ -57,6 +58,15 @@ if (isset($_POST["enregistrer"]) or isset($_POST["enregistrer_puis_copie"])) {
   $requeteTransmis = "INSERT INTO estTransmis (idService, idCourrier,dateTransmission) VALUES ('".$service."','".$idCourrier."','".date("Y-m-d")."');";
   $resultatTransmis = mysql_query($requeteTransmis) or die ("erreur requete transmis ".mysql_error());
 
+
+  // Reply
+  if (!empty($_POST['reply_to']))
+    {
+      $_POST['reply_to'] = intval($_POST['reply_to']);
+      if (mail_exists('id=?', array($_POST['reply_to'])))
+	mail_reply_new($_POST['reply_to'],  $idCourrier);
+    }
+  
 
   // Pièce jointe
   if ($_FILES['fichier']['error'] == UPLOAD_ERR_OK) {
@@ -142,6 +152,7 @@ require_once('templates/header.php');
 	<td><input type="file" name="fichier"></td>
 	</tr>
 	</table><br>
+	<input type="hidden" name="reply_to" value="<?php echo $_GET['reply_to']; ?>" />
 	<center>
 	  <!--
 	  <input type="submit" name="enregistrer_puis_copie"
