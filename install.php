@@ -48,7 +48,9 @@ $requete = "CREATE TABLE `estTransmisCopie` (
   `idService` int(11) NOT NULL default '0',
   `dateTransmission` date NOT NULL default '0000-00-00',
   `dateRetour` date NOT NULL default '0000-00-00',
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+  INDEX `idx_idFacture` (`idFacture`),
+  INDEX `idx_idService` (`idService`)
 );";
 $result = mysql_query( $requete ) or die ( "erreur10".mysql_error() );
 
@@ -67,7 +69,7 @@ $result = mysql_query( $requete ) or die ( "erreur11".mysql_error() );
 
 $requete = " CREATE TABLE `courrier` (
   `id` int(11) NOT NULL auto_increment,
-  `libelle` varchar(32) NOT NULL default '',
+  `libelle` varchar(255) NOT NULL default '',
   `dateArrivee` date NOT NULL default '0000-00-00',
   `observation` text NOT NULL,
   `validite` tinyint(4) NOT NULL default '0',
@@ -78,7 +80,11 @@ $requete = " CREATE TABLE `courrier` (
   `serviceCourant` int(11) NOT NULL default '0',
   `type` int(11) NOT NULL default '0',
   `url` varchar(255) NOT NULL default '', 
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+  INDEX `idx_validite` (`validite`),
+  INDEX `idx_type` (`type`),
+  INDEX `idx_serviceCourant` (`serviceCourant`),
+  INDEX `idx_idDestinataire` (`idDestinataire`)
 );";
 $result = mysql_query( $requete ) or die ("erreur12". mysql_error() );
 
@@ -97,7 +103,10 @@ $requete = " CREATE TABLE `facture` (
   `histo` varchar( 255 ) DEFAULT 'consulter' NOT NULL,
   `refuse` int(11) NOT NULL default '0',
   `dateSaisie` timestamp default CURRENT_TIMESTAMP,
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+  INDEX `idx_validite` (`validite`),
+  INDEX `idx_idServiceCreation` (`idServiceCreation`),
+  INDEX `idx_idFournisseur` (`idFournisseur`)
 );";
 $result = mysql_query( $requete ) or die ("erreur13". mysql_error() );
 
@@ -108,7 +117,9 @@ $requete = " CREATE TABLE `estTransmis` (
   `idService` int(11) NOT NULL default '0',
   `dateTransmission` date NOT NULL default '0000-00-00',
   `danger` int(11) NOT NULL,
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+  INDEX `idx_idCourrier` (`idCourrier`),
+  INDEX `idx_idService` (`idService`)
 );";
 $result = mysql_query( $requete ) or die ("erreur14". mysql_error() );
 
@@ -156,6 +167,8 @@ CREATE TABLE `priorite` (
   `id` int(11) NOT NULL auto_increment,
   `designation` varchar(50) NOT NULL default '',
   `nbJours` int(11) NOT NULL default '0',
+  `defautCourrier` BOOLEAN NOT NULL,
+  `defautFacture` BOOLEAN NOT NULL,
   PRIMARY KEY  (`id`)
 );";
 

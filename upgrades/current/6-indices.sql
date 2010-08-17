@@ -1,16 +1,16 @@
 ALTER TABLE courrier
-  ADD INDEX (`validite`),
-  ADD INDEX (`type`),
-  ADD INDEX (`serviceCourant`),
-  ADD INDEX (`idDestinataire`);
+  ADD INDEX `idx_validite`       (`validite`),
+  ADD INDEX `idx_type`           (`type`),
+  ADD INDEX `idx_serviceCourant` (`serviceCourant`),
+  ADD INDEX `idx_idDestinataire` (`idDestinataire`);
 ALTER TABLE estTransmis
-  ADD INDEX (`idCourrier`),
-  ADD INDEX (`idService`);
+  ADD INDEX `idx_idCourrier` (`idCourrier`),
+  ADD INDEX `idx_idService`  (`idService`);
 
 ALTER TABLE facture
-  ADD INDEX (`validite`),
-  ADD INDEX (`idServiceCreation`),
-  ADD INDEX (`idFournisseur`);
+  ADD INDEX `idx_validite`          (`validite`),
+  ADD INDEX `idx_idServiceCreation` (`idServiceCreation`),
+  ADD INDEX `idx_idFournisseur`     (`idFournisseur`);
 ALTER TABLE estTransmisCopie
-  ADD INDEX (`idFacture`),
-  ADD INDEX (`idService`);
+  ADD INDEX `idx_idFacture` (`idFacture`),
+  ADD INDEX `idx_idService` (`idService`);

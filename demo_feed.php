@@ -152,7 +152,7 @@ for ($i = 0; $i < $nb_factures; $i++) {
 observation, validite, idFournisseur,
 idServiceCreation, idPriorite, histo, refuse)
 VALUES
-('$montant', '$ref', '$date_mairie', '$date_facture',
+($montant, '$ref', '$date_mairie', '$date_facture',
 '', 0, $idFournisseur,
 $idServiceCreation, $priority, '$histo', 0);\n";
   echo "INSERT INTO estTransmisCopie(idFacture, idService,dateTransmission )
