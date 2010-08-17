@@ -108,7 +108,7 @@ if (isset($status)) {
 */
 ?>
 		<tr>
-		<td>Emetteur</td>
+		<td>Émetteur</td>
 		<td><select name = destinataire>
 		<?php
 		$requete = "select * from destinataire order by nom ; ";
@@ -117,10 +117,10 @@ if (isset($status)) {
 		    echo "<option value = '".$ligne['id']."'>".$ligne['nom']." ".$ligne['prenom']."</option>";
 		}
 		?>
-	</select><a href=creerDestinataire.php>creer</a></td></tr>
+	</select> <a href="creerDestinataire.php">[créer]</a></td></tr>
 		
 		<tr>
-		<td>Service Destinataire</td>
+		<td>Service destinataire</td>
 		<td><select name = serviceDest>
 		<?php
 			$requete = "select * from service where libelle <>'admin' order by libelle;";
@@ -132,9 +132,9 @@ if (isset($status)) {
 		</td>
 		</tr>
 
-		<tr><td>Libelle</td>
+		<tr><td>Libellé</td>
 		<td><input type=text name = libelle></input></td></tr>
-		<tr><td>Date Arrivee</td>
+		<tr><td>Date arrivée</td>
 		<td>
 			<?php
 			$dateToday = date("d-m-Y"); 
@@ -153,7 +153,7 @@ priority_display($id);
 	</tr>
 	</table>
 		<center>
-		<input type = submit name = enregistrer value = enregistrer></input>
+		<input type="submit" name="enregistrer" value="Enregistrer"></input>
 		</center>
 		</form>
 <?php
