@@ -218,8 +218,9 @@ echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
   function printTransmit($params)
   {
     extract($params);
-    return "<a href='mail_transmit.php?idCourrier={$record['idCourrier']}&next={$_SERVER['REQUEST_URI']}'>"
-      . "Transmettre</a>";
+    return "<a href='mail_transmit.php?idCourrier={$record['idCourrier']}&next="
+      . urlencode($_SERVER['REQUEST_URI'])
+      . "'>Transmettre</a>";
   }
   function printFiles($params)
   {
