@@ -1,7 +1,7 @@
 <?php
 /*
 For standard text presentation
-Copyright (C) 2005,2006 Cliss XXI
+Copyright (C) 2005, 2006, 2010  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -22,4 +22,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 function text_notice($text) {
   echo "<div class='status'>$text</div>";
+}
+
+function text_truncatewords($text, $number) {
+  $words = explode(' ', $text);
+  if (count($words) > $number)
+    $text = join(' ', array_slice($words, 0, $number)) . "...";
+  return $text;
 }

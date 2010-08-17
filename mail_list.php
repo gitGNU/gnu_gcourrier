@@ -212,14 +212,14 @@ echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
   function printHistory($params)
   {
     extract($params);
-    return "<a href='rechercherHistorique.php?idCourrier={$record['idCourrier']}"
+    return "<a href='mail_history.php?idCourrier={$record['idCourrier']}"
       . "&type={$_GET['type']}'>Historique</a>";
   }
   function printTransmit($params)
   {
     extract($params);
-    return "<a href='transmettreRecherche.php?idCourrier={$record['idCourrier']}"
-      . "&type={$_GET['type']}'>Transmettre</a>";
+    return "<a href='mail_transmit.php?idCourrier={$record['idCourrier']}&next={$_SERVER['REQUEST_URI']}'>"
+      . "Transmettre</a>";
   }
   function printFiles($params)
   {

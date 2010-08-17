@@ -143,7 +143,7 @@ Nous vous prions d'agréer, Madame, Monsieur, l'expression de nos salutations di
 	<input type="submit" name="creer" value="Créer" />
 	</center><br>
 <?php
-echo"<b><a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$nbAffiche."&type=".$_GET['type'].">Retour au courrier</a></b>";
+echo"<b><a href = mail_list_my.php?id=".$idCourrier."&type=".$_GET['type'].">Retour au courrier</a></b>";
 ?>
 
 	</form>

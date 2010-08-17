@@ -71,6 +71,6 @@ $idCourrier = $_POST['idCourrier'];
 $requete = "update courrier set idDestinataire='".$fournisseur."' where id=".$idCourrier.";";
 $result = mysql_query($requete) or die(mysql_error());
 $type=$_POST['type'];
-header("LOCATION:voirCourrier.php?type=".$type."");
+header("LOCATION:mail_list_my.php?type=".$type."");
 }
 ?>

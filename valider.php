@@ -47,6 +47,6 @@ $date = date("Y-m-d");
 $requete = "update courrier set validite = 1, dateArchivage='".$date."' where id = ".$idCourrier." ;";
 $result = mysql_query( $requete ) or die (mysql_error( ));
 
-header("Location:voirCourrier.php?type=".$type."");
+header("Location:mail_list_my.php?type=".$type."");
 }
 //echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";

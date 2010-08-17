@@ -69,6 +69,6 @@ $type=$_POST['type'];
 $requete = "update courrier set libelle='".$refFacture."' where id=".$idCourrier.";";
 $result = mysql_query($requete) or die("2".mysql_error());
 
-header("LOCATION:voirCourrier.php?type=".$type."");
+header("LOCATION:mail_list_my.php?type=".$type."");
 }
 ?>

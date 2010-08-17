@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005,2006 CLISS XXI
+Copyright (C) 2005, 2006, 2008, 2010  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -25,70 +25,12 @@ author VELU Jonathan
 require_once('init.php');
 require_once('functions/db.php');
 
-if (isset($_GET['affiche']))
-     $affiche = $_GET['affiche'];
-
-if (!isset( $_POST["enregistrer"])) {
-?>
-<html>
-<head><title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet">
-</head>
-<body>
-<div id=pageGd><br>
-	<center><img src =images/banniere2.jpg></center><br><br><br>
-
-	<table align = center>
-
-	<form name = transmettreForm method = POST action = transmettre.php>
-	<tr><td>service</td><td>
-	<select name = service>
-		<?php
-		$requete = "select * from service order by libelle ; ";
-		$result = mysql_query($requete) or die( mysql_error() );
-		while( $ligne = mysql_fetch_array( $result ) ){
-		  if($ligne['libelle'] != "ADMIN")
-		  echo "<option value = '".$ligne['id']."'>".$ligne['libelle']." ".$ligne['designation']."</option>";
-		}
-		?>
-	</select></td></tr>
-	<?php
-	$idCourrier = $_GET["idCourrier"];
-	echo"<input type = hidden name = idCourrier value=".$idCourrier."></input>";
-	?>
-	<tr><td>Observation</td>
-	<td><textarea name=observation cols=30 rows=4><?php
-	$result = db_execute("SELECT observation FROM courrier WHERE id = ?", array($idCourrier));
-	$ligne = mysql_fetch_array($result);
-	echo $ligne['observation'];
-	?></textarea>
-        </td></tr>
-	</table>
-	<center>
-<?php
-	echo "<input type = hidden name=nbAffiche value=".$affiche."></input>";
-	echo "<input type = hidden name=type value=".$_GET['type']."></input>";
-?>
-	<input type = submit name = enregistrer value = transmettre></input></center>
-</form>
-
-<center><br>
-<?php
-echo"<a href = voirCourrier.php?id=".$idCourrier."&nbAffiche=".$affiche."&type=".$_GET['type'].">voir mon courrier</a><br><br>";
-?>
-</center>
-</div>
-</body>
-</html>
-<?php
-} else {
-  //
-  // Get information
-  //
-  $new_service = $_POST['service'];
-  $idCourrier = $_POST['idCourrier'];
-  $result = db_execute('
-SELECT service.libelle AS label
+//
+// Get information
+//
+$idCourrier = intval($_REQUEST['idCourrier']);
+$result = db_execute('
+SELECT service.id AS old_service_id, service.libelle AS old_service_label
 FROM courrier
   JOIN estTransmis T1 ON courrier.id = T1.idCourrier
   JOIN estTransmis T2 ON T1.idCourrier = T2.idCourrier
@@ -96,17 +38,71 @@ FROM courrier
 WHERE courrier.id = ?
 GROUP BY T1.id HAVING T1.id >= MAX(T2.id)',
 		     array($idCourrier));
-  $row = mysql_fetch_array($result);
-  $old_service_label = $row['label'];
+$row = mysql_fetch_array($result);
+$old_service_id = $row['old_service_id'];
+$old_service_label = $row['old_service_label'];
+
+if ($old_service_id == $_POST['service'])
+  {
+    exit("Choisissez un service différent.");
+  }
+
+if (!isset($_POST["enregistrer"])) {
+  include ('templates/header.php');
+?>
+<form method="post" action="?">
+<input type="hidden" name="next" value="<?php echo $_GET['next']; ?>" />
+<table align="center">
+  <tr>
+    <td>Service</td>
+    <td><select name="service">
+    <?php
+    $requete = "SELECT * FROM service ORDER BY libelle;";
+    $result = mysql_query($requete) or die(mysql_error());
+    while ($ligne = mysql_fetch_array($result)) {
+      if ($ligne['libelle'] != "ADMIN")
+	{
+	  $selected = "";
+	  if ($ligne['id'] == $old_service_id)
+	    $selected = "selected='selected'";
+	  echo "<option value='{$ligne['id']}' $selected>{$ligne['libelle']} {$ligne['designation']}</option>";
+	}
+    }
+    ?></select></td></tr>
+    <?php
+    $idCourrier = $_GET["idCourrier"];
+    echo "<input type='hidden' name='idCourrier' value='{$idCourrier}' />";
+    ?>
+  </tr>
+  <tr>
+    <td>Observation</td>
+    <td><textarea name="observation" cols="30" rows="4"><?php
+      $result = db_execute("SELECT observation FROM courrier WHERE id = ?", array($idCourrier));
+      $ligne = mysql_fetch_array($result);
+      echo $ligne['observation'];
+    ?></textarea>
+    </td>
+  </tr>
+</table>
+<input type="submit" name="enregistrer" value="Transmettre" />
+</form>
+<?php
+  echo "<p><a href='{$_REQUEST['next']}'>Retour</a></p>";
+  include ('templates/footer.php');
+
+} else {
 
   //
   // DB update
   //
 
+  $new_service = $_POST['service'];
+  $danger = ($old_service_id != $_SESSION['idService']);
   $result = db_autoexecute('estTransmis',
     array('dateTransmission' => date("Y-m-d"),
 	  'idCourrier' => $idCourrier,
-	  'idService' => $new_service),
+	  'idService' => $new_service,
+	  'danger' => $danger),
     DB_AUTOQUERY_INSERT);
 
   $observation = $_POST['observation'];
@@ -155,5 +151,6 @@ Observation: %s"),
 		   $row['observation']),
 	   "Content-type: text/plain; charset=UTF-8");
     }
-  header("Location: voirCourrier.php?id=$idCourrier&nbAffiche={$_POST['nbAffiche']}&type={$_POST['type']}");
+  header("Location: {$_POST['next']}");
+  exit();
 }

@@ -1,7 +1,7 @@
 <?php
 /*
 GCourrier
-Copyright (C) 2005, 2006, 2007, 2008, 2009  CLISS XXI
+Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -36,8 +36,8 @@ if ($_SESSION['login'] == 'admin')
     </td>
 
     <td>
-      <img src="images/enveloppe.png" /> <a href="voirCourrier.php?type=1">Voir entrant</a><br />
-      <img src="images/enveloppeD.png" /> <a href="voirCourrier.php?type=2">Voir départ</a><br />
+      <img src="images/enveloppe.png" /> <a href="mail_list_my.php?type=1">Voir entrant</a><br />
+      <img src="images/enveloppeD.png" /> <a href="mail_list_my.php?type=2">Voir départ</a><br />
       <img src="images/euro.png" /> <a href="invoice_list.php">Voir facture</a><br />
     </td>
 </table>
@@ -76,8 +76,8 @@ Archive:
     <td>
       <strong>Mon service</strong><br />
       <br />
-      <img src="images/enveloppe.png" /> <a href="voirCourrier.php?type=1">Voir entrant</a><br />
-      <img src="images/enveloppeD.png" /> <a href="voirCourrier.php?type=2">Voir départ</a><br />
+      <img src="images/enveloppe.png" /> <a href="mail_list_my.php?type=1">Voir entrant</a><br />
+      <img src="images/enveloppeD.png" /> <a href="mail_list_my.php?type=2">Voir départ</a><br />
       <img src="images/euro.png" /> <a href="invoice_list.php">Voir facture</a><br />
     </td>
   </tr>

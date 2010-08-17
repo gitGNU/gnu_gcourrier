@@ -68,6 +68,6 @@ $type=$_POST['type'];
 $requete = "update courrier set observation='".$obs."' where id=".$idCourrier.";";
 $result = mysql_query($requete) or die(mysql_error());
 
-header("LOCATION:voirCourrier.php?type=".$type."");
+header("LOCATION:mail_list_my.php?type=".$type."");
 }
 ?>

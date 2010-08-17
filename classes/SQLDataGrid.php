@@ -274,6 +274,11 @@ class SQLDataGrid {
   function display_data()
   {
     $res = db_execute("$this->query $this->order_sql $this->limit_sql");
+    if (mysql_num_rows($res) == 0)
+      {
+	print "<p>Aucun élément.</p>";
+	return;
+      }
 
     if (isset($this->class))
       print "<table class='$this->class'>";
@@ -384,7 +389,7 @@ class SQLDataGrid {
 	    $this->total_rows = $row['total_rows'];
 	  }
       }
-    
+
     $this->display_pager();
     $this->display_data();
     $this->display_pager();
