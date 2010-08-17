@@ -95,6 +95,6 @@ $observation = $_POST['observation'];
 $requete = "update courrier set observation ='".$observation."',serviceCourant=".$service." where id =".$idCourrier.";";
 $result = mysql_query($requete) or die( mysql_error() );
 
-header("Location: rechercher.php?type=".$_POST['type']." ");
+header("Location: mail_list.php?type=".$_POST['type']." ");
 }
 ?>

@@ -52,13 +52,13 @@ else
 {
 ?>
 Rechercher:
-  <a href="rechercher.php?type=1">Entrant</a>
-  <a href="rechercher.php?type=2">Départ</a>
-  <a href="rechercherFacture.php">Facture</a>
+  <a href="mail_list.php?type=1">Entrant</a>
+  <a href="mail_list.php?type=2">Départ</a>
+  <a href="mail_listFacture.php">Facture</a>
 -
 Archive:
-  <a href="rechercher.php?archive=1&type=1">Entrant</a>
-  <a href="rechercher.php?archive=1&type=2">Départ</a>
+  <a href="mail_list.php?archive=1&type=1">Entrant</a>
+  <a href="mail_list.php?archive=1&type=2">Départ</a>
   <a href="archiveFacture.php">Facture</a>
 
 <br />

@@ -54,7 +54,7 @@ if($_GET['type'] == 1) {
 <br><br>
 
 <?php
-echo "<form action='rechercher.php'>";
+echo "<form action=''>";
 echo "<input type='hidden' name='type' value='{$_GET['type']}' />";
 echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
 ?>
@@ -255,7 +255,7 @@ echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
     $sdg->setDefaultPageWhere(array('idCourrier' => $_GET['idCourrierRecherche']));
   $sdg->display();
 
-  echo "<p><a href='rechercher.php?type={$_GET['type']}'>Nouvelle recherche</a></p>";
+  echo "<p><a href='?type={$_GET['type']}'>Nouvelle recherche</a></p>";
 
 }//fin du premier else
 

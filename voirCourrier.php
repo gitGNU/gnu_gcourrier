@@ -87,17 +87,17 @@ if (!isset($_GET['nbAffiche'])) {
 }
 
 ?>
-<form method = POST action=voirCourrierAffiche.php>
-<table align=center style="border:1px dotted black;"><tr><td>
+<form method="get" action="">
+<table align="center" style="border:1px dotted black;"><tr><td>
 <label>Nombre de courrier à afficher:</label>
 
 <?php 
-echo"<input type = hidden name=type value=".$_GET['type']." size=2></input>";
-echo"<input type = text name=affiche value=".$nbAffiche." size=2></input>";
-echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
+echo "<input type='hidden' name='type' value='{$_GET['type']}' size=2></input>";
+echo "<input type='text' name='nbAffiche' value={$nbAffiche} size=2></input>";
+echo "<input type='hidden' name='id' value={$idTmp}></input>";
 ?>
 
-<input type=submit value="OK"></input>
+<input type="submit" value="OK"></input>
 </td></tr></table>
 </form>
 
@@ -107,7 +107,7 @@ echo"<input type = hidden name=idTmp value=".$idTmp."></input>";
 <label>Rechercher le courrier numéro:</label>
 <input type="text" name="idCourrierRecherche" value=1 size=2></input>
 <input type="submit" value="OK"></input>
-<br><a href="rechercher.php?type=1"><font size=1px><center>Recherche Avancée</center></font></a>
+<br><a href="mail_list.php?type=1"><font size=1px><center>Recherche Avancée</center></font></a>
 </tr></td></table></form>
 
 
@@ -236,7 +236,7 @@ while( $ligne = mysql_fetch_array($resultatEntrant) ){
 	echo "<td bgcolor=".$couleur."><a href=modifObservationCourrier.php?idCourrier=".$idCourrier."&type=".$_GET['type']." style=\"text-decoration :none;font-weight:normal\">".$observation."</td>";	
 	
 	
-	echo"<td bgcolor=".$couleur."><a href=chemin.php?idCourrier=".$idCourrier."&affiche=".$nbAffiche."&type=".$_GET['type'].">historique</a></td>";
+	echo"<td bgcolor=".$couleur."><a href=mail_history.php?idCourrier=".$idCourrier."&affiche=".$nbAffiche."&type=".$_GET['type'].">historique</a></td>";
 
 	if(strcmp($_SESSION['login'] , 'admin') != 0){
 		echo"<td bgcolor=".$couleur."><a href=transmettre.php?idCourrier=".$idCourrier."&affiche=".$nbAffiche."&type=".$_GET['type'].">transmettre</a></td>";
