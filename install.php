@@ -123,6 +123,13 @@ $requete = " CREATE TABLE `estTransmis` (
 );";
 $result = mysql_query( $requete ) or die ("erreur14". mysql_error() );
 
+$requete = "CREATE TABLE mail_reply (
+  `mail_old_id` INT,
+  `mail_new_id` INT,
+  FOREIGN KEY (`mail_old_id`) REFERENCES courrier (`id`),
+  FOREIGN KEY (`mail_new_id`) REFERENCES courrier (`id`)
+);";
+$result = mysql_query($requete) or die ("Cannot create table: ". mysql_error() );
 
 $requete = "
 CREATE TABLE `destinataire` (
