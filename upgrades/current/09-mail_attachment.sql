@@ -5,3 +5,4 @@ CREATE TABLE mail_attachment (
   filename VARCHAR(255),
   FOREIGN KEY (`mail_id`) REFERENCES `courrier` (`id`)
 );
+ALTER TABLE courrier DROP url;

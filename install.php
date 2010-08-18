@@ -79,7 +79,6 @@ $requete = " CREATE TABLE `courrier` (
   `idPriorite` int(11) NOT NULL default '0',
   `serviceCourant` int(11) NOT NULL default '0',
   `type` int(11) NOT NULL default '0',
-  `url` varchar(255) NOT NULL default '', 
   PRIMARY KEY  (`id`),
   INDEX `idx_validite` (`validite`),
   INDEX `idx_type` (`type`),

@@ -46,7 +46,7 @@ if (isset($_POST["enregistrer"]) or isset($_POST["enregistrer_puis_copie"])) {
   $date.='-';
   $date.=substr($tmpDate, 0,2);
 	
-  $requeteCourrier = "INSERT INTO courrier (libelle,dateArrivee,observation,idPriorite,idServiceCreation,idDestinataire,serviceCourant,type,url) VALUES('".$libelle."','".$date."','".$observation."','".$priorite."','".$_SESSION['idService']."','".$destinataire."','".$service."',2,'".$url."');";
+  $requeteCourrier = "INSERT INTO courrier (libelle,dateArrivee,observation,idPriorite,idServiceCreation,idDestinataire,serviceCourant,type) VALUES('".$libelle."','".$date."','".$observation."','".$priorite."','".$_SESSION['idService']."','".$destinataire."','".$service."',2);";
   $resultatCourrier = mysql_query( $requeteCourrier ) or die ("erreur requete courrier :".mysql_error( ) );
 
 

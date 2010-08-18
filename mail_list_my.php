@@ -58,8 +58,7 @@ $query = "SELECT courrier.id AS idCourrier,
                  courrier.observation AS observation,
                  destinataire.nom AS nomDestinataire,
                  destinataire.prenom AS prenomDestinataire,
-                 courrier.libelle AS libelle,
-                 courrier.url AS url
+                 courrier.libelle AS libelle
           FROM courrier LEFT JOIN priorite ON courrier.idPriorite = priorite.id
                LEFT JOIN destinataire ON courrier.idDestinataire = destinataire.id
           WHERE courrier.validite = 0
