@@ -29,10 +29,8 @@ include('templates/header.php');
 $replies = mail_get_replies($_GET['object_id']);
 if (count($replies) > 0)
   {
-    echo "<ul>";
-    foreach ($replies as $rid)
-      echo "<li>$rid</li>";
-    echo "</ul>";
+    echo "<h2>Réponses à ce courrier (courriers départ)</h2>";
+    mail_display_simple($replies);
   }
 else
   {
@@ -40,6 +38,7 @@ else
   }
 
 
+echo "<h2>Actions</h2>";
 echo "<p>";
 echo "<a href='courrierDepart.php?reply_to={$_GET['object_id']}'>Créer un courrier départ en réponse à ce courrier</a>";
 echo "</p>";

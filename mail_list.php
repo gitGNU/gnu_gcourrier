@@ -31,14 +31,14 @@ include('templates/header.php');
 if (!isset($_GET['type']))
   $_GET['type'] = 1;
 
-if (!isset($_GET['archive']))
-  $_GET['archive'] = 0;
+if (!isset($_GET['archived']))
+  $_GET['archived'] = 0;
 
 if (!isset($_GET['rechercher'])) {
 ?>
 <center><b>RECHERCHE COURRIER
 <?php
-if($_GET['archive'] == 1)
+if($_GET['archived'] == 1)
   echo " ARCHIVÉ";
 ?>
 <?php
@@ -56,7 +56,7 @@ if($_GET['type'] == 1) {
 <?php
 echo "<form action=''>";
 echo "<input type='hidden' name='type' value='{$_GET['type']}' />";
-echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
+echo "<input type='hidden' name='archived' value='{$_GET['archived']}' />";
 ?>
 <table>
   <tr>
@@ -83,7 +83,7 @@ echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
     <td><?php echo $emetteur; ?></td>
     <td><?php contact_display(); ?></td>
   </tr>
-<?php if (empty($_GET['archive'])) { ?>
+<?php if (empty($_GET['archived'])) { ?>
   <tr>
     <td><label>Déjà transmis</br> par le service</label></td>
     <td><input type="checkbox" name="gTransmis" /></td>
@@ -123,7 +123,7 @@ echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
 	     UNIX_TIMESTAMP(courrier.dateArrivee) as dateArrivee,
 	     courrier.url as url";
   $from = "courrier,destinataire,service";
-  $where = "courrier.validite = ".intval($_GET['archive'])." and courrier.type=".intval($_GET['type'])
+  $where = "courrier.validite = ".intval($_GET['archived'])." and courrier.type=".intval($_GET['type'])
     . " AND courrier.idDestinataire = destinataire.id"
     . " AND service.id = courrier.serviceCourant";
 
@@ -244,7 +244,7 @@ echo "<input type='hidden' name='archive' value='{$_GET['archive']}' />";
   $config['Date Mairie'] = array('sqlcol' => 'dateArrivee',
 				 'callback' => 'printArrivalDate');
   $config['Historique'] = array('callback' => 'printHistory');
-  if ($_GET['archive'] == 0)
+  if ($_GET['archived'] == 0)
     $config['Transmettre'] = array('callback' => 'printTransmit');
   $config['Fichiers'] = array('callback' => 'printFiles');
   $sdg = new SQLDataGrid($requete, $config);

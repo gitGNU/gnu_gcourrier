@@ -57,8 +57,8 @@ Rechercher:
   <a href="mail_listFacture.php">Facture</a>
 -
 Archive:
-  <a href="mail_list.php?archive=1&type=1">Entrant</a>
-  <a href="mail_list.php?archive=1&type=2">Départ</a>
+  <a href="mail_list.php?archived=1&type=1">Entrant</a>
+  <a href="mail_list.php?archived=1&type=2">Départ</a>
   <a href="archiveFacture.php">Facture</a>
 
 <br />

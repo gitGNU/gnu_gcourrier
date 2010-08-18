@@ -20,7 +20,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 */
 
-include(dirname(__FILE__) . '/../functions/db.php');
+require_once(dirname(__FILE__) . '/../functions/db.php');
+require_once(dirname(__FILE__) . '/../functions/text.php');
 
 /* This data grid can also go to the page that contains a given
    value. */
@@ -394,4 +395,15 @@ class SQLDataGrid {
     $this->display_data();
     $this->display_pager();
   }
+}
+
+function printText($params)
+{
+  extract($params);
+  return text_truncatewords($record[$fieldName], 10);
+}
+function printDate($params)
+{
+  extract($params);
+  return strftime("%x", $record[$fieldName]);
 }

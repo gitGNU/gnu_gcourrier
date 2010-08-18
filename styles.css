@@ -22,6 +22,10 @@ author VELU Jonathan
 */
 
 
+h2 {
+  font-size: 1em;
+}
+
 /*** Forms ***/
 
 input, textarea, select {
