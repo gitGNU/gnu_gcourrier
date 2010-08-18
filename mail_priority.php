@@ -51,6 +51,20 @@ if ($archived) {
   echo "</form>";
 }
 
+$history = mail_get_priority_history($_GET['object_id']);
+echo "<p>Historique</p>";
+echo "<table>";
+echo "<tr><th>Date</th><th>Valeur</th></tr>";
+foreach ($history as $timestamp => $id) {
+  $priority = priority_getbyid($id);
+  print "<tr><td>";
+  print strftime('%x', $timestamp);
+  print "</td><td>";
+  print "{$priority['designation']} ({$priority['nbJours']} j.)";
+  print "</td>";
+}
+echo "</table>";
+
 echo "<p><a href='{$_REQUEST['next']}'>Retour</a></p>";
 
 include('templates/footer.php');

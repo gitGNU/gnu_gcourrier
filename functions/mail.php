@@ -62,6 +62,14 @@ function mail_is_archived($id)
   return $row['archived'] == 1;
 }
 
+function mail_get_arrival_date($id)
+{
+  $res = db_execute("SELECT UNIX_TIMESTAMP(dateArrivee) AS arrival_date FROM courrier WHERE id=?",
+		    array(intval($id)));
+  $row = mysql_fetch_array($res);
+  return $row['arrival_date'];
+}
+
 function mail_get_priority($id)
 {
   $res = db_execute("SELECT idPriorite AS priority_id FROM courrier WHERE id=?",
@@ -70,10 +78,39 @@ function mail_get_priority($id)
   return $row['priority_id'];
 }
 
+// Only old value is stored in history to avoid duplication of
+// information - this function return the values in a human-readable
+// way
+function mail_get_priority_history($id)
+{
+  $id = intval($id);
+  $res = db_execute("SELECT UNIX_TIMESTAMP(event_timestamp) AS timestamp, old_value"
+		    . " FROM mail_priority_history WHERE mail_id=?"
+		    . " ORDER BY event_timestamp DESC",
+		    array(intval($id)));
+
+  $last = mail_get_priority($id);
+  $ret = array();
+  while ($row = mysql_fetch_array($res)) {
+    $ret[$row['timestamp']] = $last;
+    $last = $row['old_value'];
+  }
+
+  $first_date = mail_get_arrival_date($id);
+  $ret[$first_date] = $last;
+  return $ret;
+}
+
 function mail_set_priority($id, $priority_id)
 {
   if (!priority_exists($priority_id))
     exit("Cette priorité n'existe pas.");
+
+  db_autoexecute('mail_priority_history',
+    array('mail_id' => intval($id),
+          'old_value' => mail_get_priority($id)),
+    DB_AUTOQUERY_INSERT);
+
   $res = db_execute("UPDATE courrier SET idPriorite=? WHERE id=?",
 		    array(intval($priority_id), intval($id)));
   return $res;
