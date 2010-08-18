@@ -26,6 +26,7 @@ require_once('functions/mail.php');
 
 if (!empty($_POST['attachment_id'])) {
   mail_attachment_delete($_POST['attachment_id']);
+  status_push("Pièce jointe supprimée");
   header('Location: ' . $_POST['next']);
   exit();
 }

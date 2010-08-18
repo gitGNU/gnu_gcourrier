@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 require_once(dirname(__FILE__) . '/db.php');
 require_once(dirname(__FILE__) . '/../classes/SQLDataGrid.php');
 require_once('functions/status.php');
+require_once('functions/priority.php');
 
 function mail_get_replies($id) {
   $ret = array();
@@ -50,7 +51,7 @@ function mail_exists($where, $where_params)
 {
   $res = db_execute("SELECT id FROM courrier WHERE $where", $where_params);
   $row = mysql_fetch_array($res);
-  return mysql_num_rows($count) > 0;
+  return mysql_num_rows($res) > 0;
 }
 
 function mail_is_archived($id)
@@ -58,8 +59,24 @@ function mail_is_archived($id)
   $res = db_execute("SELECT validite AS archived FROM courrier WHERE id=?",
 		    array(intval($id)));
   $row = mysql_fetch_array($res);
-  $count = $row['archived'];
   return $row['archived'] == 1;
+}
+
+function mail_get_priority($id)
+{
+  $res = db_execute("SELECT idPriorite AS priority_id FROM courrier WHERE id=?",
+		    array(intval($id)));
+  $row = mysql_fetch_array($res);
+  return $row['priority_id'];
+}
+
+function mail_set_priority($id, $priority_id)
+{
+  if (!priority_exists($priority_id))
+    exit("Cette priorité n'existe pas.");
+  $res = db_execute("UPDATE courrier SET idPriorite=? WHERE id=?",
+		    array(intval($priority_id), intval($id)));
+  return $res;
 }
 
 function mail_reply_new($mail_old_id, $mail_new_id)

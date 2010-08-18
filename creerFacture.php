@@ -155,7 +155,7 @@ echo "<input type='text' name='dateFactureOrigine' value='{$date}' />";
 
 <tr><td>Montant</td>
 <td><input type = text name = montant></input></td></tr>
-
+<tr><td>Priorité</td><td>
 <?php
   if ($copy) {
     priority_display($idPriorite);
@@ -164,7 +164,7 @@ echo "<input type='text' name='dateFactureOrigine' value='{$date}' />";
     priority_display($id);
   }
 ?>
-
+</td></tr>
 <tr>
 <td>Observation</td>
 <td><textarea name=observation cols=30 rows=4></textarea></td></tr>

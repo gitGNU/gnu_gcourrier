@@ -137,10 +137,14 @@ function printPriority($params)
   $nbJours = $record['nbJours'];
   $nbJoursRestant = intval($nbJours - $delta_days);
 
+  echo "<a href='mail_priority.php?object_id={$record['idCourrier']}&next="
+    . urlencode($_SERVER['REQUEST_URI'])
+    . "'>";
   if ($nbJoursRestant <= 0)
-    return "<img src=images/annuler.png title='reste $nbJoursRestant jours' />";
+    return "<img src=images/annuler.png title='dépassé depuis ".-$nbJoursRestant." jours' />";
   else
     return "<img src=images/ok.png title='reste $nbJoursRestant jours' />";
+  echo "</a>";
 }
 function printReply($params)
 {

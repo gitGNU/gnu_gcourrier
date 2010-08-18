@@ -23,38 +23,29 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 require_once(dirname(__FILE__) . '/db.php');
 
 function priority_display($default_index=NULL) {
-?>
-      <tr>
-        <td>Priorité</td>
-	<td>
-          <?php
-          $requete = "SELECT id, designation, nbJours FROM priorite";
-          $result = mysql_query($requete) or die(mysql_error());
-
-          if (mysql_num_rows($result) > 1) {
-	    echo "<select name='priorite'>";
-
-	    while($ligne = mysql_fetch_array($result)){
-	      $selected = '';
-	      if (isset($default_index) and $ligne['id'] == $default_index)
-		$selected = 'selected="selected"';
-	      echo "<option value='{$ligne['id']}' $selected>
+  $requete = "SELECT id, designation, nbJours FROM priorite";
+  $result = mysql_query($requete) or die(mysql_error());
+  
+  if (mysql_num_rows($result) > 1) {
+    echo "<select name='priority'>";
+    
+    while($ligne = mysql_fetch_array($result)){
+      $selected = '';
+      if (isset($default_index) and $ligne['id'] == $default_index)
+	$selected = 'selected="selected"';
+      echo "<option value='{$ligne['id']}' $selected>
                     {$ligne['designation']} ({$ligne['nbJours']} j.)
                   </option>";
-	    }
-
-	    echo "</select>";
-          } else if (mysql_num_rows($result) == 0) {
-	    echo "Veuillez contacter l'admin pour ajouter une priorité";
-	  } else { /* Only one result */
-	    $ligne = mysql_fetch_array($result);
-	    echo "<input type='hidden' name='priorite' value='{$ligne['id']}' />";
-	    echo "{$ligne['designation']} ({$ligne['nbJours']} j.)";
-	  }
-          ?>
-        </td>
-      </tr>
-<?php
+    }
+    
+    echo "</select>";
+  } else if (mysql_num_rows($result) == 0) {
+    echo "Veuillez contacter l'admin pour ajouter une priorité";
+  } else { /* Only one result */
+    $ligne = mysql_fetch_array($result);
+    echo "<input type='hidden' name='priorite' value='{$ligne['id']}' />";
+    echo "{$ligne['designation']} ({$ligne['nbJours']} j.)";
+  }
 }
 
 function priority_new($designation, $nbJours, $defautCourrier, $defautFacture) {
@@ -87,6 +78,12 @@ function priority_getbyid($id) {
   $line = mysql_fetch_assoc($result);
   
   return $line;
+}
+
+function priority_exists($id) {
+  $res = db_execute("SELECT id FROM priorite WHERE id = ?",
+		    array(intval($id)));
+  return mysql_num_rows($res) > 0;
 }
 
 function priority_getdefaultmail()

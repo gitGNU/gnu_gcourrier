@@ -116,11 +116,12 @@ include('templates/header.php');
 		?></td></tr>
 		<tr><td>Observation</td>
 		<td><textarea name=observation cols=30 rows=4></textarea></td></tr>
-<?php
-$id = priority_getdefaultmail();
-priority_display($id);
-?>
-
+	        <tr><td>Priorité</td><td>
+                  <?php
+                    $id = priority_getdefaultmail();
+                    priority_display($id);
+                  ?>
+                </td></tr>
 	<tr>
 	<td><label>Attacher un fichier</label></td>
 	<td><input type="file" name="mail_file"></td>

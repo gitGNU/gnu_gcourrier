@@ -126,9 +126,12 @@ require_once('templates/header.php');
 		?></td></tr>
 		<tr><td>Observation</td>
 		<td><textarea name=observation cols=30 rows=4></textarea></td></tr>
-<?php
-		priority_display();
-?>
+	        <tr><td>Priorité</td><td>
+                  <?php
+                    $id = priority_getdefaultmail();
+                    priority_display($id);
+                  ?>
+                </td></tr>
 	<tr>
 	<td><label>Joindre un fichier</label></td>
 	<td><input type="file" name="mail_file"></td>
