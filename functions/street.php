@@ -1,6 +1,6 @@
 <?php
 /*
-GCourrier
+Street names
 Copyright (C) 2010  Cliss XXI
 
 This file is part of GCourrier.
@@ -20,14 +20,34 @@ along with GCourrier; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-require_once('init.php');
-require_once('functions/db.php');
-require_once('functions/mail.php');
-require_once('functions/status.php');
+require_once(dirname(__FILE__) . '/db.php');
 
-if (!empty($_POST['attachment_id'])) {
-  mail_attachment_delete($_POST['attachment_id']);
-  status_push("Pièce jointe supprimée");
-  header('Location: ' . $_POST['next']);
-  exit();
+function street_new($label) {
+  db_autoexecute('street',
+		 array('label' => $label),
+		 DB_AUTOQUERY_INSERT);
+  return mysql_insert_id();
+}
+
+function street_modify($id, $label) {
+  db_autoexecute('street',
+		 array('label' => $label),
+		 DB_AUTOQUERY_UPDATE,
+		 'id = ?', array($id));
+}
+
+function street_getbyid($id) {
+  $id = intval($id);
+  $req = "SELECT id, label FROM street WHERE id = $id";
+  $result = mysql_query($req) or die(mysql_error());
+  $line = mysql_fetch_assoc($result);
+  
+  return $line;
+}
+
+function street_delete($id) {
+  $id = intval($id);
+  $res = db_execute("DELETE FROM street WHERE id = ?",
+		    array($id));
+  return $res;
 }

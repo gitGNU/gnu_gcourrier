@@ -1,7 +1,7 @@
 <?php
 /*
 Priority input form
-Copyright (C) 2007, 2009  Cliss XXI
+Copyright (C) 2007, 2009, 2010  Cliss XXI
 
 This file is part of GCourrier.
 

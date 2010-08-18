@@ -149,6 +149,12 @@ $requete = "CREATE TABLE `mail_priority_history` (
 );";
 $result = mysql_query($requete) or die ("Cannot create table: ". mysql_error() );
 
+$requete = "CREATE TABLE street (
+  id INT PRIMARY KEY auto_increment,
+  label VARCHAR(255)
+);";
+$result = mysql_query($requete) or die ("Cannot create table: ". mysql_error() );
+
 $requete = "
 CREATE TABLE `destinataire` (
   `id` int(11) NOT NULL auto_increment,

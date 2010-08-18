@@ -67,11 +67,12 @@ Archive:
 <table id="menu_index">
   <tr>
     <td>
-      <a href=creerCourrier.php>Créer courrier</a><br />
-      <a href=creerFacture.php>Créer facture</a><br />
-      <a href=courrierDepart.php>Créer départ</a><br />
-      <a href=creerDestinataire.php>Créer un individu</a><br />
-      <a href=modifierIndividu.php>Modifier un individu</a>
+      <a href="creerCourrier.php">Créer courrier</a><br />
+      <a href="creerFacture.php">Créer facture</a><br />
+      <a href="courrierDepart.php">Créer départ</a><br />
+      <a href="creerDestinataire.php">Créer un individu</a><br />
+      <a href="modifierIndividu.php">Modifier un individu</a><br />
+      <a href="streets.php">Gérer les noms des rues</a><br />
     </td>
     <td>
       <strong>Mon service</strong><br />

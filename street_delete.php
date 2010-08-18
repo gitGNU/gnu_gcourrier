@@ -22,12 +22,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 require_once('init.php');
 require_once('functions/db.php');
-require_once('functions/mail.php');
+require_once('functions/street.php');
 require_once('functions/status.php');
 
-if (!empty($_POST['attachment_id'])) {
-  mail_attachment_delete($_POST['attachment_id']);
-  status_push("Pièce jointe supprimée");
-  header('Location: ' . $_POST['next']);
+if (!empty($_POST['id'])) {
+  street_delete($_POST['id']);
+  status_push("Rue supprimée");
+  header('Location: streets.php');
   exit();
 }
