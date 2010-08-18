@@ -28,21 +28,23 @@ require_once('functions/status.php');
 if(!isset($_POST["enregistrer"])){
   include('templates/header.php');
 ?>
-	<table align="center">
+	<table>
 	<form name="creerDestForm" method="POST" action="creerDestinataire.php">
 		<tr><td>Nom</td>
-		<td><input type="text" name="nom"></input></td></tr>
+		<td style="text-align: left;"><input type="text" name="nom" /></td></tr>
 		<tr><td>Prénom</td>
-		<td><input type="text" name="prenom"></input></td></tr>
-		<tr><td>Adresse</td>
-		<td><input type="text" name="adresse"></input></td></tr>
+		<td style="text-align: left;"><input type="text" name="prenom" /></td></tr>
+		<tr>
+	          <td>Adresse</td>
+		  <td style="text-align: left;">
+	          <input type="text" name="adresse" /> <img src="images/mag.png" /></td></tr>
 		<tr><td>Code postal</td>
-		<td><input type="text" name="codePostal"></input></td></tr>
+		<td style="text-align: left;"><input type="text" name="codePostal" /></td></tr>
 		<tr><td>Ville</td>
-		<td><input type="text" name="ville"></input></td></tr>
+		<td style="text-align: left;"><input type="text" name="ville" /></td></tr>
 
 	</table>
-		<center><input type="submit" name="enregistrer" value="Enregistrer"></input></center>
+		<center><input type="submit" name="enregistrer" value="Enregistrer" /></center>
 	</form>
 <?php
   include('templates/footer.php');
