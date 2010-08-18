@@ -31,7 +31,7 @@ if (isset($_POST["enregistrer"])) {
   $libelle = $_POST['libelle'];
   $observation = $_POST['observation'];
   $service = $_POST['serviceDest'];
-  $priorite = $_POST['priorite'];
+  $priorite = $_POST['priority'];
   
   $tmpDate = $_POST['dateArrivee'];
   $date= substr($tmpDate, 6,4);

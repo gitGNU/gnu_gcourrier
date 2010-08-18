@@ -35,7 +35,7 @@ if (isset($_POST["enregistrer"]) or isset($_POST["enregistrer_puis_copie"])) {
   $libelle = $_POST['libelle'];
   $observation = $_POST['observation'];
   $service = $_POST['serviceDest'];
-  $priorite = $_POST['priorite'];
+  $priorite = $_POST['priority'];
   $destinataire = $_POST['contact_id'];
   if (empty($destinataire)) exit("Le contact est vide!");
 
