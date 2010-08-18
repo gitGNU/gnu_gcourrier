@@ -121,20 +121,19 @@ echo"		<td><input type=text name = telephone value=\"".$telephoneAccuse."\"></in
 		<tr><td>corps</td>
 		<?php
 		echo"<td><textarea name=corps cols=100 rows=20 wrap=virtual>
-Madame,Monsieur,~
+Madame, Monsieur,
 
-Nous avons bien reçu votre courrier qui est actuellement en cours de traitement.~
+Nous avons bien reçu votre courrier qui est actuellement en cours de traitement.
 
-Nous vous prions d'agréer, Madame, Monsieur, l'expression de nos salutations distinguées.~~
+Nous vous prions d'agréer, Madame, Monsieur, l'expression de nos salutations distinguées.
 
-|".$expediteurAccuse.".
-		</textarea></td>";
+|".$expediteurAccuse.".</textarea></td>";
 		?>
 		</tr>
 	</table><br><br><br><br><br><br><br><br><br><br>
 	
 	
-	<i>~ retour chariot</i><br>
+	<!--<i>~ retour chariot</i><br>-->
 	<i>| alignement à droite</i><br>
 	<i># tabulation</i><br><br>
 	

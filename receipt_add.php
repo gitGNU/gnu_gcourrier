@@ -25,7 +25,6 @@ require('phppdflib/phppdflib.class.php');
 require('functions/mail.php');
 require('init.php');
 
-
 //recuperation des donnees
 if (get_magic_quotes_gpc()) {
   $expediteur = stripcslashes($_POST['expediteur']);
@@ -122,45 +121,45 @@ $pdf->draw_text(10, 550, utf8_decode($objet), $firstpage, $param);
 
 
 
-$x=10;
-$y=490;
-$debut=0;
+$MARGE_GAUCHE=30;
+$x = $MARGE_GAUCHE;
+$y = 490;
+$debut = 0;
 $fin = 0;
 
-for ($i=0; $i < strlen($corps); $i++) {
-  if ($corps[$i] == '~') {
+for ($i = 0; $i < strlen($corps); $i++) {
+  if ($corps[$i] == "\r") {
+    $corps[$i] = '';
+    $i--;
+  } elseif ($corps[$i] == '~' or $corps[$i] == "\n") {
     $param["height"] = 14;
     $param["fillcolor"] = $pdf->get_color('black');
     $param["font"] = "Helvetica";
     $param["rotation"] = 0;
-    $pdf->draw_text($x, $y, utf8_decode(substr($corps,$debut,$fin-$debut)), $firstpage, $param);
-    $y-=40;
-    $x=10;
+    $pdf->draw_text($x, $y, utf8_decode(substr($corps,$debut,$fin-$debut-1)), $firstpage, $param);
+    print substr($corps,$debut,$fin-$debut-1) . "<br />";
+    $y-=20;
+    $x = $MARGE_GAUCHE;
     $fin++;
     $debut = $fin;
-  }
-
- else if ($corps[$i] == '|') {
+  } elseif ($corps[$i] == '|') {
     $x+=390;
-    $corps[$i] = '';  
-    $fin++;
-  }
-
- else if ($corps[$i] == '#') {
+    $corps[$i] = '';
+    $i--;
+  } elseif ($corps[$i] == '#') {
     $x+=10;
-    $corps[$i] = '';  
+    $corps[$i] = '';
+    $i--;
+  } else {
     $fin++;
   }
-
-  else
-    $fin++;
 }
 
 $param["height"] = 14;
 $param["fillcolor"] = $pdf->get_color('black');
 $param["font"] = "Helvetica";
 $param["rotation"] = 0;
-$pdf->draw_text($x, $y, utf8_decode(substr($corp,$debut,$fin-$debut-1)), $firstpage, $param);
+$pdf->draw_text($x, $y, utf8_decode(substr($corps,$debut,$fin-$debut)), $firstpage, $param);
 
 /*
 header("Content-Disposition: filename=accuseReception.pdf");
