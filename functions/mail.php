@@ -151,6 +151,8 @@ function mail_attachment_delete($attachment_id) {
 
 function mail_attachment_new($id, $tmp_file, $filename)
 {
+  $new_id = 0;
+
   $old_umask = umask(0);
 	
   $content_dir = mail_get_upload_dir($id); // dossier où sera déplacé le mail_file
@@ -176,6 +178,7 @@ function mail_attachment_new($id, $tmp_file, $filename)
 		     array('mail_id' => intval($id),
 			   'filename' => $filename,
 			   ), DB_AUTOQUERY_INSERT);
+      $new_id = mysql_insert_id();
       status_push('Fichier joint au courrier');
     } else {
       status_push('Pièce jointe écrasée');
@@ -183,6 +186,8 @@ function mail_attachment_new($id, $tmp_file, $filename)
   }
   
   umask($old_umask);
+
+  return $new_id;
 }
 
 function mail_handle_attachment($id) {

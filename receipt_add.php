@@ -22,23 +22,38 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 author VELU Jonathan
 */
 require('phppdflib/phppdflib.class.php');
+require('functions/mail.php');
 require('init.php');
 
 
 //recuperation des donnees
-$expediteur = stripcslashes($_POST['expediteur']);
-$adresse = stripcslashes($_POST['adresse']);
-$codePostal = stripcslashes($_POST['codePostal']." ".$_POST['ville']);
-$telephone = stripcslashes($_POST['telephone']);
-
-$destinataire = stripcslashes($_POST['destinataire']);
-$adresseDest =stripcslashes( $_POST['adresseDest']);
-$codePostalDest= stripcslashes($_POST['codePostalDest']." ".$_POST['villeDest']);
-
-$date = stripcslashes($_POST['date']);
-$objet = stripcslashes($_POST['objet']);
-$corps = stripcslashes($_POST['corps']);
-
+if (get_magic_quotes_gpc()) {
+  $expediteur = stripcslashes($_POST['expediteur']);
+  $adresse = stripcslashes($_POST['adresse']);
+  $codePostal = stripcslashes($_POST['codePostal']." ".$_POST['ville']);
+  $telephone = stripcslashes($_POST['telephone']);
+  
+  $destinataire = stripcslashes($_POST['destinataire']);
+  $adresseDest =stripcslashes( $_POST['adresseDest']);
+  $codePostalDest= stripcslashes($_POST['codePostalDest']." ".$_POST['villeDest']);
+  
+  $date = stripcslashes($_POST['date']);
+  $objet = stripcslashes($_POST['objet']);
+  $corps = stripcslashes($_POST['corps']);
+} else {
+  $expediteur = $_POST['expediteur'];
+  $adresse = $_POST['adresse'];
+  $codePostal = $_POST['codePostal']." ".$_POST['ville'];
+  $telephone = $_POST['telephone'];
+  
+  $destinataire = $_POST['destinataire'];
+  $adresseDest = $_POST['adresseDest'];
+  $codePostalDest= $_POST['codePostalDest']." ".$_POST['villeDest'];
+  
+  $date = $_POST['date'];
+  $objet = $_POST['objet'];
+  $corps = $_POST['corps'];
+}
 
 $pdf = new pdffile;
 $pdf->set_default('margin', 0);
@@ -155,28 +170,27 @@ header('Content-Length: ' . strlen($temp));
 echo $temp;
 */
 
-$filename = "accuse/".$objet.".pdf";
-$inF = fopen($filename, "wn");
+$mail_id = intval($_POST['mail_id']);
+if ($mail_id == 0)
+  exit("Identifiant de courrier invalide");
+$filename = "accuse-courrier_{$mail_id}-" . strftime("%x-%X"). ".pdf";
+$path = "accuse/$filename";
+$inF = fopen($path, "wn");
 fputs($inF, $pdf->generate(0));
 fclose($inF);
 
-// Give permissions to other users, including Apache. This is
-// necessary in a suPHP setup.
-chmod($filename, 0644);
+$attachment_id = mail_attachment_new($mail_id, $path, $filename);
 
-/*
-header("Content-Disposition: filename=accuseReception.pdf");
-header("Content-Type: application/pdf");
-header('Content-Length:'. filesize("accuse/".$objet.".pdf").' ');
-
-$outF = fopen("accuse/".$objet.".pdf", "r");
-while (!feof($outF )) {
-  fread($outF , 8192);
-}
-fclose($outF );
-*/
 include('templates/header.php');
-echo "Accusé de réception enregistré sur le serveur.";
-echo "<br><br><a href='accuse/".$objet.".pdf'>Télécharger l'accusé de réception</a>";
+echo "<p>"
+. "<a href='file_view.php/"
+. $filename
+. "?object=mail&attachment_id={$attachment_id}]'>"
+. "Télécharger l'accusé de réception"
+. "</a>"
+. "</p>";
+
+echo "<p><a href='mail_attachment.php?object_id={$mail_id}'>Voir les pièces jointes du courrier</a></p>";
+
 include('templates/footer.php');
 ?>

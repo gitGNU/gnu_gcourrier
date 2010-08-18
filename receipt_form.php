@@ -23,8 +23,7 @@ author VELU Jonathan
 */
 require_once('init.php');
 include('templates/header.php');
-$idCourrier = $_GET['idCourrier'];
-$nbAffiche = $_GET['nbAffiche'];
+$idCourrier = intval($_GET['idCourrier']);
 ?>
 
 <?php
@@ -140,6 +139,7 @@ Nous vous prions d'agréer, Madame, Monsieur, l'expression de nos salutations di
 	<i># tabulation</i><br><br>
 	
 	<center>
+	<input type="hidden" name="mail_id" value="<?php echo $idCourrier; ?>" />
 	<input type="submit" name="creer" value="Créer" />
 	</center><br>
 <?php
