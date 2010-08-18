@@ -1,6 +1,6 @@
 <?php
 /*
-Roads name management
+Streets name management
 Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010  Cliss XXI
 
 This file is part of GCourrier.

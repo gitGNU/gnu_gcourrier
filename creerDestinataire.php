@@ -37,7 +37,9 @@ if(!isset($_POST["enregistrer"])){
 		<tr>
 	          <td>Adresse</td>
 		  <td style="text-align: left;">
-	          <input type="text" name="adresse" /> <img src="images/mag.png" /></td></tr>
+	          <input type="text" id='address' name="adresse" />
+	          <a onClick="javascript:window.open('street_select.php','zoom','left=400,top=200,width=300,height=500,location=no,directories=no,status=no,menubar=no');">
+	            <img src="images/mag.png" /></a></td></tr>
 		<tr><td>Code postal</td>
 		<td style="text-align: left;"><input type="text" name="codePostal" /></td></tr>
 		<tr><td>Ville</td>

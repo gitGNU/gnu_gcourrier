@@ -361,6 +361,7 @@ class SQLDataGrid {
 	    print '</td>';
 	  }
 	print '</tr>';
+	print "\n";
       }
     
     print '</table>';
