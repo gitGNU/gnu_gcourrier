@@ -54,7 +54,7 @@ else
 Rechercher:
   <a href="mail_list.php?type=1">Entrant</a>
   <a href="mail_list.php?type=2">Départ</a>
-  <a href="mail_listFacture.php">Facture</a>
+  <a href="rechercherFacture.php">Facture</a>
 -
 Archive:
   <a href="mail_list.php?archived=1&type=1">Entrant</a>

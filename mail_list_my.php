@@ -51,13 +51,14 @@ echo "</i></div></center><br>";
 <?php
 if ($_SESSION['login'] != 'admin')
   $where = "AND courrier.serviceCourant = {$_SESSION['idService']}";
+
 $query = "SELECT courrier.id AS idCourrier,
                  priorite.nbJours AS nbJours,
                  UNIX_TIMESTAMP(courrier.dateArrivee) AS dateArrivee,
                  courrier.observation AS observation,
                  destinataire.nom AS nomDestinataire,
                  destinataire.prenom AS prenomDestinataire,
-                 courrier.libelle AS libelleCourrier,
+                 courrier.libelle AS libelle,
                  courrier.url AS url
           FROM courrier,priorite,destinataire
           WHERE courrier.validite = 0
@@ -77,7 +78,7 @@ function printLabel($params)
   if ($record[$fieldName] == "")
     $record[$fieldName] = '[modifier]';
   return "<a href='modifLibelleCourrier.php?idCourrier={$record['idCourrier']}&type={$_GET['type']}'"
-    . " style='text-decoration: none; font-weight: normal;'>{$record['libelle']}</a>";
+    . " style='text-decoration: none; font-weight: normal;'>{$record[$fieldName]}</a>";
 }
 function printContact($params)
 {
@@ -146,6 +147,11 @@ function printReply($params)
   extract($params);
   return "<a href='mail_reply.php?object_id={$record['idCourrier']}'>Répondre</a>";
 }
+function printInReplyTo($params)
+{
+  extract($params);
+  return "<a href='mail_in_reply_to.php?object_id={$record['idCourrier']}'>Voir</a>";
+}
 function printFiles($params)
 {
   extract($params);
@@ -167,8 +173,8 @@ $config[($_GET['type'] == 1) ? 'Émetteur' : 'Destinataire']
 	'callback' => 'printContact');
 $config['Date Mairie'] = array('sqlcol' => 'dateArrivee',
 			       'callback' => 'printArrivalDate');
-$config['Libellé'] = array('sqlcol' => 'observation',
-			   'callback' => 'printComment');
+$config['Observation'] = array('sqlcol' => 'observation',
+			       'callback' => 'printComment');
 $config['Historique'] = array('callback' => 'printHistory');
 if ($_SESSION['login'] != 'admin')
   {
@@ -180,6 +186,8 @@ if ($_SESSION['login'] != 'admin')
 $config['Urgence'] = array('callback' => 'printPriority');
 if ($_GET['type'] == 1)
   $config['Réponses'] = array ('callback' => 'printReply');
+else
+  $config['En rép. à'] = array('callback' => 'printInReplyTo');
 $config['Fichiers'] = array('callback' => 'printFiles');
 $sdg = new SQLDataGrid($query, $config);
   

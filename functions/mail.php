@@ -34,12 +34,32 @@ function mail_get_replies($id) {
   return $ret;
 }
 
+function mail_get_origins($id) {
+  $ret = array();
+
+  $res = db_execute("SELECT mail_old_id FROM mail_reply WHERE mail_new_id = ?",
+		    array($id));
+  while ($row = mysql_fetch_array($res))
+    array_push($ret, intval($row['mail_old_id']));
+
+  return $ret;
+}
+
 function mail_exists($where, $where_params)
 {
   $res = db_execute("SELECT COUNT(*) AS count FROM courrier WHERE $where", $where_params);
   $row = mysql_fetch_array($res);
   $count = $row['count'];
   return $count > 0;
+}
+
+function mail_is_archived($id)
+{
+  $res = db_execute("SELECT validite AS archived FROM courrier WHERE id=?",
+		    array(intval($id)));
+  $row = mysql_fetch_array($res);
+  $count = $row['archived'];
+  return $row['archived'] == 1;
 }
 
 function mail_reply_new($mail_old_id, $mail_new_id)

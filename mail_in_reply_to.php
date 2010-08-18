@@ -26,24 +26,16 @@ require_once('functions/mail.php');
 
 include('templates/header.php');
 
-$replies = mail_get_replies($_GET['object_id']);
+$replies = mail_get_origins($_GET['object_id']);
 if (count($replies) > 0)
   {
-    echo "<h2>Réponses à ce courrier (courriers départ)</h2>";
+    echo "<h2>Ce courrier est en réponse à (courriers entrants)</h2>";
     mail_display_simple($replies);
   }
 else
   {
-    echo "<p>Aucune réponse liée à ce courrier</p>";
+    echo "<p>Ce courrier n'est pas une réponse à un courrier entrant.</p>";
   }
-
-echo "<h2>Actions</h2>";
-echo "<p>";
-echo "<a href='courrierDepart.php?reply_to={$_GET['object_id']}'>"
-. _("Créer un courrier départ en réponse à ce courrier")
-. "</a>";
-echo "</p>";
-
 
 echo "<p><a href='javascript:history.go(-1)'>Retour</a></p>";
 

@@ -222,6 +222,16 @@ echo "<input type='hidden' name='archived' value='{$_GET['archived']}' />";
       . urlencode($_SERVER['REQUEST_URI'])
       . "'>Transmettre</a>";
   }
+  function printReply($params)
+  {
+    extract($params);
+    return "<a href='mail_reply.php?object_id={$record['idCourrier']}'>Voir</a>";
+  }
+  function printInReplyTo($params)
+  {
+    extract($params);
+    return "<a href='mail_in_reply_to.php?object_id={$record['idCourrier']}'>Voir</a>";
+  }
   function printFiles($params)
   {
     extract($params);
@@ -246,6 +256,10 @@ echo "<input type='hidden' name='archived' value='{$_GET['archived']}' />";
   $config['Historique'] = array('callback' => 'printHistory');
   if ($_GET['archived'] == 0)
     $config['Transmettre'] = array('callback' => 'printTransmit');
+  if ($_GET['type'] == 1)
+    $config['Réponses'] = array ('callback' => 'printReply');
+  else
+    $config['En rép. à'] = array('callback' => 'printInReplyTo');
   $config['Fichiers'] = array('callback' => 'printFiles');
   $sdg = new SQLDataGrid($requete, $config);
   
