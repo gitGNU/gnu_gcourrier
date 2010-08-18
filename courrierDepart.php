@@ -52,6 +52,7 @@ if (isset($_POST["enregistrer"]) or isset($_POST["enregistrer_puis_copie"])) {
 
   //Recuperation de l'id du courrier cree
   $idCourrier = mysql_insert_id();
+  status_push("Vous venez de créer le courrier numéro: $idCourrier");
 
 
   //transmission du courrier
@@ -64,37 +65,18 @@ if (isset($_POST["enregistrer"]) or isset($_POST["enregistrer_puis_copie"])) {
     {
       $_POST['reply_to'] = intval($_POST['reply_to']);
       if (mail_exists('id=?', array($_POST['reply_to'])))
-	mail_reply_new($_POST['reply_to'],  $idCourrier);
+	{
+	  mail_reply_new($_POST['reply_to'],  $idCourrier);
+	  status_push("Courrier $idCourrier en réponse au courrier {$_POST['reply_to']}");
+	}
     }
   
-
+  //
   // Pièce jointe
-  if ($_FILES['fichier']['error'] == UPLOAD_ERR_OK) {
-    $old_umask = umask(0);
-    
-    $content_dir = "upload/courrier/$idCourrier"; // dossier où sera déplacé le fichier
-    mkdir($content_dir, 0755, true) or die("Impossible de créer $content_dir");
-    
-    // on copie le fichier dans le dossier de destination
-    $tmp_file = $_FILES['fichier']['tmp_name'];
-    $dest_file = "$content_dir/{$_FILES['fichier']['name']}";
-    if (!move_uploaded_file($tmp_file, $dest_file)) {
-      exit("Impossible de copier $tmp_file dans $dest_file");
-    } else {
-      // Give permissions to other users, including Apache. This is
-      // necessary in a suPHP setup.
-      chmod($dest_file, 0644);
-      db_autoexecute('courrier', array('url' => $dest_file), DB_AUTOQUERY_UPDATE,
-		     'id=?', array($idCourrier));
-    }
+  //
+  mail_handle_attachment($idCourrier);
 
-    umask($old_umask);
-  } elseif ($_FILES['fichier']['error'] != UPLOAD_ERR_NO_FILE) {
-    exit("Erreur lors de l'envoi du fichier {$_FILES['userfile']['name']}"
-	 . " (erreur {$_FILES['fichier']['error']})");
-  }
 
-  status_push("Vous venez de créer le courrier numéro: $idCourrier");
   // header("Location: index.php");
 
   if (isset($_POST["enregistrer_puis_copie"]))
@@ -149,7 +131,7 @@ require_once('templates/header.php');
 ?>
 	<tr>
 	<td><label>Joindre un fichier</label></td>
-	<td><input type="file" name="fichier"></td>
+	<td><input type="file" name="mail_file"></td>
 	</tr>
 	</table><br>
 	<input type="hidden" name="reply_to" value="<?php echo $_GET['reply_to']; ?>" />

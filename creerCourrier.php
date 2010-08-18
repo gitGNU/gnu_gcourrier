@@ -23,71 +23,45 @@ author VELU Jonathan, Sylvain BEUCLER
 */
 
 require_once('init.php');
+require_once('functions/mail.php');
 require_once('functions/priority.php');
 
-include('templates/header.php');
-
 if (isset($_POST["enregistrer"])) {
+  $destinataire = $_POST['destinataire'];
+  $libelle = $_POST['libelle'];
+  $observation = $_POST['observation'];
+  $service = $_POST['serviceDest'];
+  $priorite = $_POST['priorite'];
+  
+  $tmpDate = $_POST['dateArrivee'];
+  $date= substr($tmpDate, 6,4);
+  $date.='-';
+  $date.=substr($tmpDate, 3,2);
+  $date.='-';
+  $date.=substr($tmpDate, 0,2);
+  
+  $requeteCourrier = "insert into courrier(libelle,dateArrivee,observation,idPriorite,idServiceCreation,idDestinataire,serviceCourant,type,url) values('".$libelle."','".$date."','".$observation."','".$priorite."','".$_SESSION['idService']."','".$destinataire."','".$service."',1,'".$url."');";
+  $resultatCourrier = mysql_query( $requeteCourrier ) or die ("erreur requete courrier :".mysql_error( ) );
+  
+  
+  //Recuperation de l'id du courrier cree
+  $idCourrier = mysql_insert_id();  
+  status_push("Vous venez de créer le courrier numéro: $idCourrier");
 
-$destinataire = $_POST['destinataire'];
-$libelle = $_POST['libelle'];
-$observation = $_POST['observation'];
-$service = $_POST['serviceDest'];
-$priorite = $_POST['priorite'];
-
-$tmpDate = $_POST['dateArrivee'];
-$date= substr($tmpDate, 6,4);
-$date.='-';
-$date.=substr($tmpDate, 3,2);
-$date.='-';
-$date.=substr($tmpDate, 0,2);
-	
-$requeteCourrier = "insert into courrier(libelle,dateArrivee,observation,idPriorite,idServiceCreation,idDestinataire,serviceCourant,type,url) values('".$libelle."','".$date."','".$observation."','".$priorite."','".$_SESSION['idService']."','".$destinataire."','".$service."',1,'".$url."');";
-$resultatCourrier = mysql_query( $requeteCourrier ) or die ("erreur requete courrier :".mysql_error( ) );
-
-
-//Recuperation de l'id du courrier cree
-$idCourrier = mysql_insert_id();
-
-
-//transmission du courrier
-$requeteTransmis = "insert into estTransmis( idService, idCourrier,dateTransmission ) values('".$service."','".$idCourrier."','".date("Y-m-d")."');";
-$resultatTransmis = mysql_query( $requeteTransmis ) or die ("erreur requete transmis ".mysql_error( ) );
-
-
-// Pièce jointe
-if ($_FILES['fichier']['error'] == UPLOAD_ERR_OK) {
-  $old_umask = umask(0);
-
-  $content_dir = "upload/courrier/$idCourrier"; // dossier où sera déplacé le fichier
-  mkdir($content_dir, 0755, true) or die("Impossible de créer $content_dir");
-
-  // on copie le fichier dans le dossier de destination
-  $tmp_file = $_FILES['fichier']['tmp_name'];
-  $dest_file = "$content_dir/{$_FILES['fichier']['name']}";
-  if (!move_uploaded_file($tmp_file, $dest_file)) {
-    exit("Impossible de copier $tmp_file dans $dest_file");
-  } else {
-    // Give permissions to other users, including Apache. This is
-    // necessary in a suPHP setup.
-    chmod($dest_file, 0644);
-    db_autoexecute('courrier', array('url' => $dest_file), DB_AUTOQUERY_UPDATE,
-                   'id=?', array($idCourrier));
-  }
-
-  umask($old_umask);
-} elseif ($_FILES['fichier']['error'] != UPLOAD_ERR_NO_FILE) {
-  exit("Erreur lors de l'envoi du fichier {$_FILES['userfile']['name']}"
-       . " (erreur {$_FILES['fichier']['error']})");
-}
-
-$status = "Vous venez de créer le courrier numéro: <strong>$idCourrier</strong>.";
+  
+  //transmission du courrier
+  $requeteTransmis = "insert into estTransmis( idService, idCourrier,dateTransmission ) values('".$service."','".$idCourrier."','".date("Y-m-d")."');";
+  $resultatTransmis = mysql_query( $requeteTransmis ) or die ("erreur requete transmis ".mysql_error( ) );
+  
+  
+  //
+  // Pièce jointe
+  //
+  mail_handle_attachment($idCourrier);
 }
 
 
-if (isset($status)) {
-  echo "<div class='status'>$status</div>";
-}
+include('templates/header.php');
 ?>
 	<table align = center>
 		<form  enctype="multipart/form-data"  name = creerCourrier.php method= POST action = creerCourrier.php> 
@@ -149,7 +123,7 @@ priority_display($id);
 
 	<tr>
 	<td><label>Attacher un fichier</label></td>
-	<td><input type="file" name="fichier"></td>
+	<td><input type="file" name="mail_file"></td>
 	</tr>
 	</table>
 		<center>

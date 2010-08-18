@@ -1,6 +1,6 @@
 <?php
 /*
-Filter access to attachments
+GCourrier
 Copyright (C) 2010  Cliss XXI
 
 This file is part of GCourrier.
@@ -22,24 +22,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 require_once('init.php');
 require_once('functions/db.php');
-require_once('functions/mimetype.php');
 require_once('functions/mail.php');
 
-$object = $_GET['object'];
-if ($object != 'mail' and $object != 'invoice') exit("Mauvais paramètre 'object'");
-
-$object_id = intval($_GET['object_id']);
-
-if ($object == 'mail') {
-  $path = mail_attachment_get_path($_GET['attachment_id']);
-
-  $f = fopen($path, "rb") or die("Ne peut ouvrir $path");
-
-  #header('Content-type: application/octet-stream' . mime_content_type($path));
-  header('Content-type: ' . mimetype_get_by_ext($path));
-  header('Content-Disposition: inline; filename=' . basename($path));
-  header('Content-Length: ' . filesize($path));
-
-  fpassthru($f);
-  fclose($f);
+if (!empty($_POST['attachment_id'])) {
+  mail_attachment_delete($_POST['attachment_id']);
+  header('Location: ' . $_POST['next']);
+  exit();
 }

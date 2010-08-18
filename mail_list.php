@@ -235,12 +235,9 @@ echo "<input type='hidden' name='archived' value='{$_GET['archived']}' />";
   function printFiles($params)
   {
     extract($params);
-    if (!empty($record['url']))
-      {
-	return "<a href='file_view.php/" . basename($record['url'])
-	  . "?object=courrier&object_id={$record['idCourrier']}'>"
-	  . "<img src='images/download.gif' style='border: 0;'></a>";
-      }
+    return "<a href='mail_attachment.php?object_id={$record['idCourrier']}&next="
+      . urlencode($_SERVER['REQUEST_URI'])
+      . "'>Voir</a>";
   }
 
   $config = array();
