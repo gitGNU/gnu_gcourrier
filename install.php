@@ -131,6 +131,24 @@ $requete = "CREATE TABLE mail_reply (
 );";
 $result = mysql_query($requete) or die ("Cannot create table: ". mysql_error() );
 
+$requete = "CREATE TABLE mail_attachment (
+  id INT PRIMARY KEY auto_increment,
+  mail_id INT,
+  filename VARCHAR(255),
+  FOREIGN KEY (`mail_id`) REFERENCES `courrier` (`id`)
+);";
+$result = mysql_query($requete) or die ("Cannot create table: ". mysql_error() );
+
+$requete = "CREATE TABLE `mail_priority_history` (
+  id INT PRIMARY KEY auto_increment,
+  mail_id INT,
+  event_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  old_value INT,
+  FOREIGN KEY (`mail_id`) REFERENCES `courrier` (`id`),
+  FOREIGN KEY (`old_value`) REFERENCES `priorite` (`id`)
+);";
+$result = mysql_query($requete) or die ("Cannot create table: ". mysql_error() );
+
 $requete = "
 CREATE TABLE `destinataire` (
   `id` int(11) NOT NULL auto_increment,
