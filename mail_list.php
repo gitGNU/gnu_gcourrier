@@ -122,10 +122,9 @@ echo "<input type='hidden' name='archived' value='{$_GET['archived']}' />";
 	     destinataire.prenom as prenomDestinataire,
 	     UNIX_TIMESTAMP(courrier.dateArrivee) as dateArrivee,
 	     courrier.url as url";
-  $from = "courrier,destinataire,service";
-  $where = "courrier.validite = ".intval($_GET['archived'])." and courrier.type=".intval($_GET['type'])
-    . " AND courrier.idDestinataire = destinataire.id"
-    . " AND service.id = courrier.serviceCourant";
+  $from = "courrier LEFT JOIN destinataire ON courrier.idDestinataire = destinataire.id"
+    . " LEFT JOIN service ON service.id = courrier.serviceCourant";
+  $where = "courrier.validite = ".intval($_GET['archived'])." and courrier.type=".intval($_GET['type']);
 
   if (isset($_GET['gTransmis'])) {
     $from .= ",estTransmis,service ST";

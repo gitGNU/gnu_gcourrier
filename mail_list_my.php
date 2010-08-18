@@ -60,10 +60,9 @@ $query = "SELECT courrier.id AS idCourrier,
                  destinataire.prenom AS prenomDestinataire,
                  courrier.libelle AS libelle,
                  courrier.url AS url
-          FROM courrier,priorite,destinataire
+          FROM courrier LEFT JOIN priorite ON courrier.idPriorite = priorite.id
+               LEFT JOIN destinataire ON courrier.idDestinataire = destinataire.id
           WHERE courrier.validite = 0
-            AND courrier.idPriorite = priorite.id
-            AND courrier.idDestinataire = destinataire.id
             AND courrier.type = {$_GET['type']}
             $where";
 
