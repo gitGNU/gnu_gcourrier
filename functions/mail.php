@@ -149,6 +149,42 @@ function mail_attachment_delete($attachment_id) {
   return $res;
 }
 
+function mail_attachment_new($id, $tmp_file, $filename)
+{
+  $old_umask = umask(0);
+	
+  $content_dir = mail_get_upload_dir($id); // dossier où sera déplacé le mail_file
+  if (!file_exists($content_dir))
+    mkdir($content_dir, 0755, true) or die("Impossible de créer $content_dir");
+	
+  // on copie le mail_file dans le dossier de destination
+  if (strpos($filename, '/') !== false)
+    exit('Nom de fichier invalide');
+  $dest_file = "$content_dir/$filename";
+  if (!rename($tmp_file, $dest_file)) {
+    exit("Impossible de copier $tmp_file dans $dest_file");
+  } else {
+    // Give permissions to other users, including Apache. This is
+    // necessary in a suPHP setup.
+    chmod($dest_file, 0644);
+    
+    $res = db_execute('SELECT id FROM mail_attachment WHERE mail_id=? AND filename=?',
+		      array($id, $filename));
+    
+    if (mysql_num_rows($res) == 0) {
+      db_autoexecute('mail_attachment',
+		     array('mail_id' => intval($id),
+			   'filename' => $filename,
+			   ), DB_AUTOQUERY_INSERT);
+      status_push('Fichier joint au courrier');
+    } else {
+      status_push('Pièce jointe écrasée');
+    }
+  }
+  
+  umask($old_umask);
+}
+
 function mail_handle_attachment($id) {
   if (mail_is_archived($id))
     exit("L'ajout de pièces jointes est désactivé pour les courriers archivés");
@@ -156,40 +192,9 @@ function mail_handle_attachment($id) {
   // If a file was uploaded
   if (isset($_FILES['mail_file'])) {
     if ($_FILES['mail_file']['error'] == UPLOAD_ERR_OK) {
-      $old_umask = umask(0);
-	
-      $content_dir = mail_get_upload_dir($id); // dossier où sera déplacé le mail_file
-      if (!file_exists($content_dir))
-	mkdir($content_dir, 0755, true) or die("Impossible de créer $content_dir");
-	
-      // on copie le mail_file dans le dossier de destination
-      $tmp_file = $_FILES['mail_file']['tmp_name'];
-      $filename = $_FILES['mail_file']['name'];
-      if (strpos($filename, '/') !== false)
-	exit('Nom de fichier invalide');
-      $dest_file = "$content_dir/$filename";
-      if (!move_uploaded_file($tmp_file, $dest_file)) {
-	exit("Impossible de copier $tmp_file dans $dest_file");
-      } else {
-	// Give permissions to other users, including Apache. This is
-	// necessary in a suPHP setup.
-	chmod($dest_file, 0644);
-	  
-	$res = db_execute('SELECT id FROM mail_attachment WHERE mail_id=? AND filename=?',
-			  array($id, $filename));
-	  
-	if (mysql_num_rows($res) == 0) {
-	  db_autoexecute('mail_attachment',
-			 array('mail_id' => intval($id),
-			       'filename' => $filename,
-			       ), DB_AUTOQUERY_INSERT);
-	  status_push('Fichier joint au courrier');
-	} else {
-	  status_push('Pièce jointe écrasée');
-	}
-      }
-	
-      umask($old_umask);
+      mail_attachment_new($id,
+			  $_FILES['mail_file']['tmp_name'],
+			  $_FILES['mail_file']['name']);
     } elseif ($_FILES['mail_file']['error'] != UPLOAD_ERR_NO_FILE) {
       exit("Erreur lors de l'envoi du mail_file {$_FILES['userfile']['name']}"
 	   . " (erreur {$_FILES['mail_file']['error']})");
