@@ -1,0 +1,25 @@
+v2.0
+====
+
+* Enregistrement permanent des accusés de réception
+
+* Gestion des pièces jointes multiple
+
+* Liaison un courrier départ en réponse à courrier entrant
+
+* Changement historisé du délai de traitement du courrier
+
+* Gestion de noms de rues, réutilisables à la création d'un nouveau
+  contact
+
+* Homogénéisation de la présentation des des résultats de recherche
+
+* Pagination des listes de courriers et de facture
+
+* Possibilité de contacts homonymes (et avertissement à l'utilisateur)
+
+* Suppression de contacts non encore référencés
+
+* Autocomplétion lors de la saisie de contacts
+
+* Nettoyage du code
