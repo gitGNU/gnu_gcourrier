@@ -80,7 +80,8 @@ if (!$archived) {
   echo "</form>";
 }
 
-
-echo "<p><a href='{$_REQUEST['next']}'>Retour</a></p>";
+if (!empty($_REQUEST['next'])) {
+  echo "<p><a href='{$_REQUEST['next']}'>Retour</a></p>";
+}
 
 include('templates/footer.php');

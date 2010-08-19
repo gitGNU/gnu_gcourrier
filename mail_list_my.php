@@ -180,7 +180,7 @@ if ($_SESSION['login'] != 'admin')
     $config['Transmettre'] = array('callback' => 'printTransmit');
     $config['Terminer'] = array('callback' => 'printArchive');
     if ($_GET['type'] == 1)
-      $config['Accuse'] = array('callback' => 'printReceipt');
+      $config['Accusé'] = array('callback' => 'printReceipt');
   }
 $config['Urgence'] = array('callback' => 'printPriority');
 if ($_GET['type'] == 1)

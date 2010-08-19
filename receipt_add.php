@@ -137,7 +137,6 @@ for ($i = 0; $i < strlen($corps); $i++) {
     $param["font"] = "Helvetica";
     $param["rotation"] = 0;
     $pdf->draw_text($x, $y, utf8_decode(substr($corps,$debut,$fin-$debut-1)), $firstpage, $param);
-    print substr($corps,$debut,$fin-$debut-1) . "<br />";
     $y-=20;
     $x = $MARGE_GAUCHE;
     $fin++;
