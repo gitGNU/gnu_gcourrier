@@ -30,7 +30,7 @@ $idCourrier = $_GET['idCourrier'];
 $requete = "select libelle from courrier where id = ".$idCourrier.";";
 $result = mysql_query($requete) or die("1".mysql_error( ));
 while($ligne = mysql_fetch_array($result) ){
-	$refFacture = $ligne["libellle"];
+	$refFacture = $ligne["libelle"];
 }
 
 ?>
@@ -48,7 +48,7 @@ while($ligne = mysql_fetch_array($result) ){
 <?php
 echo"<center>";
 echo"<label>Libelle : </label>";
-echo"<input type=text name=refFacture value=".$refFacture."></input>";
+echo"<input type=text name=refFacture value='".htmlspecialchars($refFacture, ENT_QUOTES)."'></input>";
 echo"<br/><br/>";
 echo"<input type=hidden name=type value=".$type."></input>";
 echo"<input type=hidden name=idCourrier value=".$idCourrier."></input>";
