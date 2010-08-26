@@ -24,11 +24,15 @@ author VELU Jonathan
 
 require_once('init.php');
 require_once('functions/db.php');
+require_once('functions/mail.php');
+require_once('functions/service.php');
+
 include('templates/header.php');
 
 $log = $_SESSION['login'];
 $idCourrier = intval($_GET['idCourrier']);
-echo"<p>Historiquer du courrier numéro : $idCourrier</p>";
+echo "<p>Historiquer du courrier numéro : $idCourrier</p>";
+echo "<h2>Transmissions</h2>";
 
 $requete = "SELECT service.libelle AS libService,
 		   service.designation AS desService,
@@ -48,17 +52,15 @@ $requete = "SELECT service.libelle AS libService,
 	echo "<td></td>";
 	echo"</tr>";
 
-
 $result = db_execute($requete);
 
+$boul = true;
 while ($ligne = mysql_fetch_array($result)) {
-  if($boul == 0) {
+  if ($boul)
     $couleur = "lightblue";
-    $boul = 1;
-  } else {
+  else
     $couleur = "white";
-    $boul = 0;
-  }
+  $boul = !$boul;
   
   echo "<tr>";
   $date = strftime("%x", $ligne['dateTransmission']);
@@ -73,6 +75,31 @@ while ($ligne = mysql_fetch_array($result)) {
     echo "<td></td>";
 }
 echo "</table><br>";
+
+
+echo "<h2>Autres changements</h2>";
+
+$history = mail_get_history($idCourrier);
+echo "<table>";
+echo "<tr><th>Service</th><th>Date</th><th>Message</th></tr>";
+$boul = true;
+foreach ($history as $timestamp => $row) {
+  if ($boul)
+    $couleur = "lightblue";
+  else
+    $couleur = "white";
+  $boul = !$boul;
+
+  $service = service_getbyid($row['service_id']);
+  print "<tr bgcolor='$couleur'><td>";
+  print $service['description'] . "({$service['label']})";
+  print "</td><td>";
+  print strftime('%x', $timestamp);
+  print "</td><td>";
+  print $row['message'];
+  print "</td></tr>";
+}
+echo "</table>";
 
 
 ?>

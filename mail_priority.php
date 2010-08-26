@@ -61,7 +61,7 @@ foreach ($history as $timestamp => $id) {
   print strftime('%x', $timestamp);
   print "</td><td>";
   print "{$priority['designation']} ({$priority['nbJours']} j.)";
-  print "</td>";
+  print "</td></tr>";
 }
 echo "</table>";
 

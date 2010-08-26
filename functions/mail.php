@@ -188,10 +188,11 @@ function mail_attachment_get_path($attachment_id) {
 }
 
 function mail_attachment_delete($attachment_id) {
-  $res = db_execute("SELECT mail_id FROM mail_attachment WHERE id = ?",
+  $res = db_execute("SELECT mail_id, filename FROM mail_attachment WHERE id = ?",
 		    array($attachment_id));
   $row = mysql_fetch_array($res);
   $id = intval($row['mail_id']);
+  $filename = $row['filename'];
   if (mail_is_archived($id))
     exit('Cette pièce jointe est rattachée à un courrier archivé');
 
@@ -298,4 +299,23 @@ function mail_handle_attachment($id) {
       status_push($msg);
     }
   }
+}
+
+
+/**
+ * Historique unifié
+ */
+function mail_get_history($id)
+{
+  $id = intval($id);
+  $res = db_execute("SELECT UNIX_TIMESTAMP(event_timestamp) AS timestamp, service_id, message"
+		    . " FROM mail_history WHERE mail_id=?"
+		    . " ORDER BY event_timestamp",
+		    array(intval($id)));
+
+  $ret = array();
+  while ($row = mysql_fetch_array($res))
+    $ret[$row['timestamp']] = $row;
+
+  return $ret;
 }
