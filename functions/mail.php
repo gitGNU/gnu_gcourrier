@@ -191,7 +191,8 @@ function mail_attachment_delete($attachment_id) {
   $res = db_execute("SELECT mail_id FROM mail_attachment WHERE id = ?",
 		    array($attachment_id));
   $row = mysql_fetch_array($res);
-  if (mail_is_archived($row['mail_id']))
+  $id = intval($row['mail_id']);
+  if (mail_is_archived($id))
     exit('Cette pièce jointe est rattachée à un courrier archivé');
 
   $attachment_id = intval($attachment_id);
@@ -200,6 +201,12 @@ function mail_attachment_delete($attachment_id) {
 
   $res = db_execute("DELETE FROM mail_attachment WHERE id = ?",
 		    array($attachment_id));  
+
+  db_autoexecute('mail_history',
+		 array('mail_id' => intval($id),
+		       'service_id' => $_SESSION['idService'],
+		       'message' => "Suppression de la PJ $filename",
+		       ), DB_AUTOQUERY_INSERT);
   return $res;
 }
 
@@ -234,8 +241,20 @@ function mail_attachment_new($id, $tmp_file, $filename)
 			   ), DB_AUTOQUERY_INSERT);
       $new_id = mysql_insert_id();
       status_push('Fichier joint au courrier');
+
+      db_autoexecute('mail_history',
+		     array('mail_id' => intval($id),
+			   'service_id' => $_SESSION['idService'],
+			   'message' => "Ajout de la PJ $filename",
+			   ), DB_AUTOQUERY_INSERT);
     } else {
       status_push('Pièce jointe écrasée');
+
+      db_autoexecute('mail_history',
+		     array('mail_id' => intval($id),
+			   'service_id' => $_SESSION['idService'],
+			   'message' => "Écrasement de la PJ $filename",
+			   ), DB_AUTOQUERY_INSERT);
     }
   }
   
