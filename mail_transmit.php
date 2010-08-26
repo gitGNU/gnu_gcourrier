@@ -122,6 +122,7 @@ if (!isset($_POST["enregistrer"])) {
   $email = $row['email'];
   $new_service_label = $row['label'];
   // libelle emetteur arrivee observation
+  if (false) { // désactivé pour le moment
   if (!empty($email))
     {
       $result = db_execute("SELECT libelle AS label,
@@ -151,6 +152,7 @@ Observation: %s"),
 		   $row['observation']),
 	   "Content-type: text/plain; charset=UTF-8");
     }
+  }
   header("Location: {$_POST['next']}");
   exit();
 }
