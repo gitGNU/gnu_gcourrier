@@ -255,8 +255,28 @@ function mail_handle_attachment($id) {
 			  $_FILES['mail_file']['tmp_name'],
 			  $_FILES['mail_file']['name']);
     } elseif ($_FILES['mail_file']['error'] != UPLOAD_ERR_NO_FILE) {
-      exit("Erreur lors de l'envoi du mail_file {$_FILES['userfile']['name']}"
-	   . " (erreur {$_FILES['mail_file']['error']})");
+      $msg = "Erreur lors de l'envoi du fichier {$_FILES['userfile']['name']}"
+	. " (erreur {$_FILES['mail_file']['error']}: ";
+      switch ($_FILES['mail_file']['error']) {
+      case UPLOAD_ERR_INI_SIZE:
+      case  UPLOAD_ERR_FORM_SIZE:
+	$msg .= "le fichier est trop volumineux";
+	break;
+      case UPLOAD_ERR_PARTIAL:
+	$msg .= "envoi incomplet";
+	break;
+      case UPLOAD_ERR_NO_TMP_DIR:
+	$msg .= "répertoire temporaire manquant";
+	break;
+      case UPLOAD_ERR_CANT_WRITE:
+	$msg .= "erreur d'écriture";
+	break;
+      case UPLOAD_ERR_EXTENSION:
+	$msg .= "extension de fichier interdite";
+	break;
+      }
+      $msg .= ")";
+      status_push($msg);
     }
   }
 }
