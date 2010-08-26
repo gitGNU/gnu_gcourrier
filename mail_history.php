@@ -77,30 +77,30 @@ while ($ligne = mysql_fetch_array($result)) {
 echo "</table><br>";
 
 
-echo "<h2>Autres changements</h2>";
-
 $history = mail_get_history($idCourrier);
-echo "<table>";
-echo "<tr><th>Service</th><th>Date</th><th>Message</th></tr>";
-$boul = true;
-foreach ($history as $timestamp => $row) {
-  if ($boul)
-    $couleur = "lightblue";
-  else
-    $couleur = "white";
-  $boul = !$boul;
-
-  $service = service_getbyid($row['service_id']);
-  print "<tr bgcolor='$couleur'><td>";
-  print $service['description'] . "({$service['label']})";
-  print "</td><td>";
-  print strftime('%x', $timestamp);
-  print "</td><td>";
-  print $row['message'];
-  print "</td></tr>";
+if (count($history) > 0) {
+  echo "<h2>Autres changements</h2>";
+  echo "<table>";
+  echo "<tr><th>Service</th><th>Date</th><th>Message</th></tr>";
+  $boul = true;
+  foreach ($history as $timestamp => $row) {
+    if ($boul)
+      $couleur = "lightblue";
+    else
+      $couleur = "white";
+    $boul = !$boul;
+    
+    $service = service_getbyid($row['service_id']);
+    print "<tr bgcolor='$couleur'><td>";
+    print $service['description'] . "({$service['label']})";
+    print "</td><td>";
+    print strftime('%x', $timestamp);
+    print "</td><td>";
+    print $row['message'];
+    print "</td></tr>";
+  }
+  echo "</table>";
 }
-echo "</table>";
-
 
 ?>
 <p><a href="javascript:history.go(-1)">Retourner au résultat</p>
