@@ -23,87 +23,59 @@ author VELU Jonathan
 */
 
 require_once('init.php');
-?>
+require_once('functions/db.php');
+include('templates/header.php');
 
-<html>
-<head><title>gCourrier</title>
-<LINK HREF="styles2.css" REL="stylesheet">
-</head>
-<body>
-<div id = pageGd><br>
-<center>
-<img src = images/banniere2.jpg><br><br>
-</center>
-
-<?php
 $log = $_SESSION['login'];
-$idCourrier =  $_GET['idCourrier'];
-echo"<center>HISTORIQUE DU COURRIER NUMERO : ".$idCourrier."</center><br/><br/>";
+$idCourrier = intval($_GET['idCourrier']);
+echo"<p>Historiquer du courrier numéro : $idCourrier</p>";
 
-$requete = "select service.libelle as libService,
-		   service.designation as desService,
-		   estTransmis.dateTransmission as dateTransmission,
-		   estTransmis.danger as danger
-	    from courrier, estTransmis,service
-	    where courrier.id = estTransmis.idCourrier
-	    and courrier.id = ".$idCourrier."
-	    and estTransmis.idService = service.id
-	    order by estTransmis.id ASC;";
+$requete = "SELECT service.libelle AS libService,
+		   service.designation AS desService,
+		   UNIX_TIMESTAMP(estTransmis.dateTransmission) AS dateTransmission,
+		   estTransmis.danger AS danger
+	    FROM courrier,estTransmis,service
+	    WHERE courrier.id = estTransmis.idCourrier
+	    AND courrier.id = ".$idCourrier."
+	    AND estTransmis.idService = service.id
+	    ORDER BY estTransmis.id ASC;";
 	
 	$boul = 0;
-	echo "<table align=center>";
+	echo "<table>";
 	echo "<tr>";
-	echo "<td align=center>service</td>";
-	echo "<td align=center>date de modification</td>";
+	echo "<td>Service</td>";
+	echo "<td>Date de modification</td>";
 	echo "<td></td>";
 	echo"</tr>";
 
 
+$result = db_execute($requete);
 
-
-$result = mysql_query( $requete ) or die (mysql_error() );
-
-
-while ( $ligne = mysql_fetch_array($result) ){
-
-	if($boul == 0){
-		$couleur = lightblue;
-		$boul = 1;
-	}
-	else{
-		$couleur = white;
-		$boul = 0;	
-	}
-
-
-		echo "<tr>";	
-	$date = "";	
-	$date .= substr($ligne['dateTransmission'],8,2);
-	$date .= "-";
-	$date .= substr($ligne['dateTransmission'],5,2);
-	$date .= "-";
-	$date .= substr($ligne['dateTransmission'],0,4);
-	
-	$service = $ligne['libService']." ".$ligne['desService'];
-
-	echo "<td bgcolor=".$couleur.">".$service."</td>";
-	echo "<td bgcolor=".$couleur.">".$date."</td>";
-
-	if($ligne['danger']==1)
-		echo "<td ><img src=\"images/attention.png\"></img></td>";
-	else 
-		echo "<td></td>";
-
+while ($ligne = mysql_fetch_array($result)) {
+  if($boul == 0) {
+    $couleur = "lightblue";
+    $boul = 1;
+  } else {
+    $couleur = "white";
+    $boul = 0;
+  }
+  
+  echo "<tr>";
+  $date = strftime("%x", $ligne['dateTransmission']);
+  $service = "{$ligne['desService']} ({$ligne['libService']})";
+  
+  echo "<td bgcolor=".$couleur.">".$service."</td>";
+  echo "<td bgcolor=".$couleur.">".$date."</td>";
+  
+  if ($ligne['danger'] == 1)
+    echo "<td ><img src=\"images/attention.png\"></img></td>";
+  else
+    echo "<td></td>";
 }
 echo "</table><br>";
 
 
 ?>
-
-<br/>
-<center><a href="javascript:history.go(-1)"> <b>retourner au resultat</b></a>
-
-<br><br>
-</div>
-</body>
-</html>
+<p><a href="javascript:history.go(-1)">Retourner au résultat</p>
+<?php
+include('templates/footer.php');
