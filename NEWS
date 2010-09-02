@@ -1,6 +1,8 @@
 v2.0
 ====
 
+* Diffusée en septembre 2010
+
 * Enregistrement permanent des accusés de réception
 
 * Gestion des pièces jointes multiple
@@ -23,3 +25,55 @@ v2.0
 * Autocomplétion lors de la saisie de contacts
 
 * Nettoyage du code
+
+* Passage en licence AGPLv3.
+
+
+v1.8
+====
+
+* Diffusions internes et développement
+
+* Améliorations de l'ergonomie
+
+* Possibilité d'annulation (suppression) d'une facture saisie il y a
+  moins de 24h
+
+* Recherche de factures par année
+
+* Accepte les tirets dans le nom de login
+
+* Possibilité de définir une priorité par défaut
+
+
+v1.7.5
+======
+
+* Diffusions internes et développement
+
+* Multiples améliorations, notamment dans la gestion des factures
+
+* Réécriture de HTML_QuickForm car sous licence PHP, incompatible avec
+  le licence GNU GPL
+
+* Affichage des listes de facture (avec une nouvelle classe
+  SQLDataGrid, gérant la recherche d'un numéro de facture/courrier
+  dans un résultat paginé)
+
+
+v1.7
+====
+
+* Diffusée le 2006-11-24
+
+
+v1.6
+====
+
+* Diffusée le 2006-09-08
+
+
+v1.4
+====
+
+* Diffusée le 2006-01-12
