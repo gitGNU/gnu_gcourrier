@@ -1,6 +1,6 @@
 /* -*-C-*-
 GCourrier
-Copyright (C) 2005, 2006  Cliss XXI
+Copyright (C) 2005, 2006, 2010  Cliss XXI
 
 This file is part of GCourrier.
 
@@ -225,4 +225,8 @@ table.resultats a, table.resultats a:visited {
 
 table.resultats a:hover {
   text-decoration: underline;
+}
+
+.pager {
+  font-size: smaller;
 }

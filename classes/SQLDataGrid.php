@@ -201,19 +201,43 @@ class SQLDataGrid {
     $orig_last = ceil($this->total_rows * 1.0 / $this->pager_size);
 
     $middle = $this->cur_page;
-    if ($middle - $ADJACENT - $FAR - 1 < 1)
+    if ($middle - $ADJACENT < 1)
       $middle = 1 + $ADJACENT;
-    if ($middle + $ADJACENT + $FAR + 1 > $orig_last)
+    if ($middle + $ADJACENT > $orig_last)
       $middle = $orig_last - $ADJACENT;
 
     $middle_start = max($middle - $ADJACENT, 1);
-    $middle_end = min($orig_last, $middle + $ADJACENT);
+    $middle_end = min($middle + $ADJACENT, $orig_last);
+
     $short_page_range = range($middle_start, $middle_end);
     
-    if ($middle_start > 1+$FAR)
-      $short_page_range = array_merge(range(1, $FAR), array('...'), $short_page_range);
-    if ($middle_end < $orig_last-$FAR)
-      $short_page_range = array_merge($short_page_range, array('...'), range($orig_last-$FAR+1, $orig_last));
+    if ($middle_start > 1)
+      {
+	if ($middle_start <= 1+$FAR)
+	  $short_page_range = array_merge(range(1, $middle_start-1), $short_page_range);
+	elseif ($middle_end <= 1+$FAR+(2*$ADJACENT+1))
+	  $short_page_range = array_merge(range(1, $FAR), array('...'), $short_page_range);
+	else
+	  $short_page_range = array_merge(
+            range(1, $FAR), array('...'),
+            array(intval(1+$FAR + (($middle_start-1) - $FAR) / 2)),
+	    array('...'), $short_page_range
+	  );
+      }
+    if ($middle_end < $orig_last)
+      {
+	if ($middle_end >= $orig_last-$FAR)
+	  $short_page_range = array_merge($short_page_range, range($middle_end+1, $orig_last));
+	elseif ($middle_start >= $orig_last-$FAR-(2*$ADJACENT+1))
+	  $short_page_range = array_merge($short_page_range, array('...'),
+					  range($orig_last-$FAR+1, $orig_last));
+	else
+	  $short_page_range = array_merge(
+	    $short_page_range, array('...'),
+	    array(intval($orig_last-$FAR - (($orig_last-$FAR) - $middle_start) / 2)),
+	    array('...'), range($orig_last-$FAR+1, $orig_last)
+          );
+      }
     return $short_page_range;
   }
 
@@ -224,6 +248,7 @@ class SQLDataGrid {
     $myget['direction'] = $this->order_direction;
     $i = 0;
 
+    print '<div class="pager">';
     if ($this->total_rows <=  $this->pager_size)
       return;
 
@@ -270,6 +295,7 @@ class SQLDataGrid {
 	print "&nbsp;&nbsp;&nbsp;&gt;&gt;";
       }
     print "&nbsp;&nbsp;&nbsp;({$this->total_rows} éléments)";
+    print '</div>';
   }
   
   function display_data()
