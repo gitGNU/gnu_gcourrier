@@ -40,7 +40,7 @@ exit();
 <br /><center><span style="font-size: x-small"><a href="rechercherFacture.php">Recherche avancée</a></span></center>
 </td></tr></table></form>
 
-<form method="GET" action="invoice_delete.php">
+<form method="get" action="invoice_delete.php">
 <table align="center" style="border: 1px dotted black;">
   <tr><td><label>Annuler la facture numéro:</label>
     <input type="text" name="id" value="1" size="2" />

@@ -248,10 +248,10 @@ class SQLDataGrid {
     $myget['direction'] = $this->order_direction;
     $i = 0;
 
-    print '<div class="pager">';
     if ($this->total_rows <=  $this->pager_size)
       return;
 
+    print '<div class="pager">';
     if ($this->cur_page != 1)
       {
 	$myget['page'] = $this->cur_page-1;

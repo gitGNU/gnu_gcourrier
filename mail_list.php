@@ -35,7 +35,7 @@ if (!isset($_GET['archived']))
 
 if (!isset($_GET['rechercher'])) {
 ?>
-<center><b>RECHERCHE COURRIER
+<b>RECHERCHE COURRIER
 <?php
 if($_GET['archived'] == 1)
   echo " ARCHIVÉ";
@@ -50,7 +50,7 @@ if($_GET['type'] == 1) {
 }
 ?>
 </b>
-<br><br>
+<br/><br/>
 
 <?php
 echo "<form action=''>";
@@ -102,7 +102,7 @@ echo "<input type='hidden' name='archived' value='{$_GET['archived']}' />";
 
 } else {
 
-  echo "<div id = titre>RESULTAT DE LA RECHERCHE</div><br></b>";
+  echo "<div id = titre>RESULTAT DE LA RECHERCHE</div><br/>";
 
   $libelle = $_GET['libelle'];
   $numero = $_GET['numero'];
@@ -210,12 +210,12 @@ echo "<input type='hidden' name='archived' value='{$_GET['archived']}' />";
   {
     extract($params);
     return "<a href='mail_history.php?idCourrier={$record['idCourrier']}"
-      . "&type={$_GET['type']}'>Historique</a>";
+      . "&amp;type={$_GET['type']}'>Historique</a>";
   }
   function printTransmit($params)
   {
     extract($params);
-    return "<a href='mail_transmit.php?idCourrier={$record['idCourrier']}&next="
+    return "<a href='mail_transmit.php?idCourrier={$record['idCourrier']}&amp;next="
       . urlencode($_SERVER['REQUEST_URI'])
       . "'>Transmettre</a>";
   }
@@ -232,7 +232,7 @@ echo "<input type='hidden' name='archived' value='{$_GET['archived']}' />";
   function printFiles($params)
   {
     extract($params);
-    return "<a href='mail_attachment.php?object_id={$record['idCourrier']}&next="
+    return "<a href='mail_attachment.php?object_id={$record['idCourrier']}&amp;next="
       . urlencode($_SERVER['REQUEST_URI'])
       . "'>Voir</a>";
   }
@@ -268,5 +268,4 @@ echo "<input type='hidden' name='archived' value='{$_GET['archived']}' />";
 
 }//fin du premier else
 
-echo "</center>";
 include('templates/footer.php');

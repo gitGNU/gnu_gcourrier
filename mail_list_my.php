@@ -34,7 +34,7 @@ else
 
 echo " <br/><i style=\"font-size:10px;font-weight:normal\">";
 echo _("Note: Ne sont affichés que les courriers de votre service");
-echo "</i></div></center><br>";
+echo "</i></div></center><br/>";
 
 ?>
 <form method='get' action='#result'>
@@ -43,8 +43,8 @@ echo "</i></div></center><br>";
 <label>Rechercher le courrier numéro:</label>
 <input type="text" name="idCourrierRecherche" value=1 size=2></input>
 <input type="submit" value="OK"></input>
-<br><a href="mail_list.php?type=1"><font size=1px><center>Recherche Avancée</center></font></a>
-</tr></td></table></form>
+<br/><center><a href="mail_list.php?type=1"><font size="1">Recherche Avancée</font></a></center>
+</td></table></form>
 
 
 <?php
@@ -74,7 +74,7 @@ function printLabel($params)
   extract($params);
   if ($record[$fieldName] == "")
     $record[$fieldName] = '[modifier]';
-  return "<a href='modifLibelleCourrier.php?idCourrier={$record['idCourrier']}&type={$_GET['type']}'"
+  return "<a href='modifLibelleCourrier.php?idCourrier={$record['idCourrier']}&amp;type={$_GET['type']}'"
     . " style='text-decoration: none; font-weight: normal;'>{$record[$fieldName]}</a>";
 }
 function printContact($params)
@@ -83,7 +83,7 @@ function printContact($params)
   $name = $record['nomDestinataire'] . ' ' . $record['prenomDestinataire'];
   if ($name == '')
     $name = '[modifier]';
-  return "<a href='modifDestinataireCourrier.php?idCourrier={$record['idCourrier']}&type={$_GET['type']}'"
+  return "<a href='modifDestinataireCourrier.php?idCourrier={$record['idCourrier']}&amp;type={$_GET['type']}'"
     . " style='text-decoration: none; font-weight: normal;'>"
     . "$name</a>";
 }
@@ -98,7 +98,7 @@ function printComment($params)
   if ($record[$fieldName] == "")
     $record[$fieldName] = '[modifier]';
   $comment_short = text_truncatewords($record[$fieldName], 10);
-  return "<a href='modifObservationCourrier.php?idCourrier={$record['idCourrier']}&type={$_GET['type']}'"
+  return "<a href='modifObservationCourrier.php?idCourrier={$record['idCourrier']}&amp;type={$_GET['type']}'"
     . " style='text-decoration: none; font-weight: normal;'"
     . " title='" . htmlspecialchars($record[$fieldName], ENT_QUOTES) . "'>{$comment_short}</a>";
 }
@@ -106,12 +106,12 @@ function printHistory($params)
 {
   extract($params);
   return "<a href='mail_history.php?idCourrier={$record['idCourrier']}"
-    . "&type={$_GET['type']}'>Historique</a>";
+    . "&amp;type={$_GET['type']}'>Historique</a>";
 }
 function printTransmit($params)
 {
   extract($params);
-  return "<a href='mail_transmit.php?idCourrier={$record['idCourrier']}&next="
+  return "<a href='mail_transmit.php?idCourrier={$record['idCourrier']}&amp;next="
     . urlencode($_SERVER['REQUEST_URI'])
     . "'>Transmettre</a>";
 }
@@ -119,13 +119,13 @@ function printArchive($params)
 {
   extract($params);
   return "<a href='valider.php?idCourrier={$record['idCourrier']}"
-    . "&type={$_GET['type']}'>Terminer</a>";
+    . "&amp;type={$_GET['type']}'>Terminer</a>";
 }
 function printReceipt($params)
 {
   extract($params);
   return "<a href='receipt_form.php?idCourrier={$record['idCourrier']}"
-    . "&type={$_GET['type']}'>Créer</a>";
+    . "&amp;type={$_GET['type']}'>Créer</a>";
 }
 function printPriority($params)
 {
@@ -134,14 +134,16 @@ function printPriority($params)
   $nbJours = $record['nbJours'];
   $nbJoursRestant = intval($nbJours - $delta_days);
 
-  echo "<a href='mail_priority.php?object_id={$record['idCourrier']}&next="
+  $ret = '';
+  $ret .= "<a href='mail_priority.php?object_id={$record['idCourrier']}&amp;next="
     . urlencode($_SERVER['REQUEST_URI'])
     . "'>";
   if ($nbJoursRestant <= 0)
-    return "<img src=images/annuler.png title='dépassé depuis ".-$nbJoursRestant." jours' />";
+    $ret .= "<img src=images/annuler.png title='dépassé depuis ".-$nbJoursRestant." jours' />";
   else
-    return "<img src=images/ok.png title='reste $nbJoursRestant jours' />";
-  echo "</a>";
+    $ret .= "<img src=images/ok.png title='reste $nbJoursRestant jours' />";
+  $ret .= "</a>";
+  return $ret;
 }
 function printReply($params)
 {
@@ -156,7 +158,7 @@ function printInReplyTo($params)
 function printFiles($params)
 {
   extract($params);
-  return "<a href='mail_attachment.php?object_id={$record['idCourrier']}&next="
+  return "<a href='mail_attachment.php?object_id={$record['idCourrier']}&amp;next="
     . urlencode($_SERVER['REQUEST_URI'])
     . "'>Voir</a>";
 }
