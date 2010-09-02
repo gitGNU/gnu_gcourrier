@@ -42,7 +42,7 @@ function priority_display($default_index=NULL) {
     echo "Veuillez contacter l'admin pour ajouter une priorité";
   } else { /* Only one result */
     $ligne = mysql_fetch_array($result);
-    echo "<input type='hidden' name='priorite' value='{$ligne['id']}' />";
+    echo "<input type='hidden' name='priority' value='{$ligne['id']}' />";
     echo "{$ligne['designation']} ({$ligne['nbJours']} j.)";
   }
 }
