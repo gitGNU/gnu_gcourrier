@@ -43,20 +43,30 @@ if ($archived) {
   echo "<h2>Changer la priorité</h2>";
   echo "<form action='?' method='post' >";
   priority_display($cur_priority);
-  echo "<input type='hidden' name='object_id' value='{$_GET['object_id']}'/>";
-  echo "<input type='hidden' name='next' value='{$_GET['next']}'/>";
-  echo "<br />";
-  echo "<input type='submit' value='Modifier' />";
+  if (priority_count() > 1) {
+    echo "<input type='hidden' name='object_id' value='{$_GET['object_id']}'/>";
+    echo "<input type='hidden' name='next' value='{$_GET['next']}'/>";
+    echo "<br />";
+    echo "<input type='submit' value='Modifier' />";
+  }
   echo "</form>";
 }
 
 $history = mail_get_priority_history($_GET['object_id']);
-echo "<p>Historique</p>";
+echo "<br />";
+echo "<h2>Historique</h2>";
 echo "<table>";
 echo "<tr><th>Date</th><th>Valeur</th></tr>";
+$boul = true;
 foreach ($history as $timestamp => $id) {
+  if ($boul)
+    $couleur = "lightblue";
+  else
+    $couleur = "white";
+  $boul = !$boul;
+
   $priority = priority_getbyid($id);
-  print "<tr><td>";
+  print "<tr bgcolor='$couleur'><td>";
   print strftime('%x', $timestamp);
   print "</td><td>";
   print "{$priority['designation']} ({$priority['nbJours']} j.)";

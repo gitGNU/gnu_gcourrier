@@ -79,6 +79,12 @@ function priority_getbyid($id) {
   return $line;
 }
 
+function priority_count() {
+  $req = "SELECT COUNT(*) FROM priorite";
+  $result = mysql_query($req) or die(mysql_error());
+  return mysql_num_rows($result);
+}
+
 function priority_exists($id) {
   $res = db_execute("SELECT id FROM priorite WHERE id = ?",
 		    array(intval($id)));
