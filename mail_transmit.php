@@ -39,11 +39,6 @@ $row = mysql_fetch_array($result);
 $old_service_id = $row['old_service_id'];
 $old_service_label = $row['old_service_label'];
 
-if ($old_service_id == $_POST['service'])
-  {
-    exit("Choisissez un service différent.");
-  }
-
 if (!isset($_POST["enregistrer"])) {
   include ('templates/header.php');
 ?>
