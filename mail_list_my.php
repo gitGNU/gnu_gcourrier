@@ -23,6 +23,14 @@ require_once('init.php');
 require_once('classes/SQLDataGrid.php');
 require_once('functions/db.php');
 require_once('functions/text.php');
+require_once('functions/mail.php');
+
+if (!empty($_GET['idCourrierRecherche'])) {
+  if (!mail_exists('id=? AND serviceCourant=?',
+		   array($_GET['idCourrierRecherche'], $_SESSION['idService']))) {
+    die("Ce courrier n'existe pas ou n'est pas actuellement dans votre service.");
+  }
+}
 
 include('templates/header.php');
 

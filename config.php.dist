@@ -6,3 +6,8 @@ $db_base = 'gcourrier'; // nom de la base
 $db_user = 'root';      // nom d'utilisateur 
 $db_pass = '';          // mot de passe
 $db_host = 'localhost'; // nom du serveur MySQL
+
+// Saisissez l'adresse de votre installation de GCourrier
+// (utilisée dans les courriels automatiques de récapitulation des
+//  courriers en retard)
+$url = 'http://myhost/gcourrier/';

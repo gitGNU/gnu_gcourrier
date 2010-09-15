@@ -21,27 +21,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 require_once(dirname(__FILE__) . '/../config.php');
 
 mysql_connect($db_host, $db_user, $db_pass) or 
-die("Connection MySQL impossible pour l'utilisateur " . $db_user . " sur l'hôte " . $db_host);
+die("Erreur GCourrier: connection MySQL impossible pour l'utilisateur " . $db_user . " sur l'hôte " . $db_host);
 mysql_select_db($db_base) or
-die("Connection impossible sur la base " . $db_base . "(" . $db_user . ", " . $db_host . ")");
+die("Erreur GCourrier: connection impossible sur la base " . $db_base . "(" . $db_user . ", " . $db_host . ")");
+
+if (!isset($url_base)) {
+  die("Erreur GCourrier: il faut définir le paramètre \$url_base dans 'config.php'.");
+}
 
 $query = "SELECT id, libelle, designation, email FROM service";
 // . "WHERE email IS NOT NULL";
 $res_service = mysql_query($query) or die(mysql_error() . ": " . $query);;
 $body = "";
-while ($cur_service = mysql_fetch_array($res_service))
-  {
-    $delay = "((TO_DAYS(CURDATE()) - TO_DAYS(dateArrivee)) + nbJours)";
-    // Courriers en retard, tout type
-    $query = "SELECT COUNT(*) AS count"
-      . " FROM courrier JOIN priorite ON courrier.idPriorite = priorite.id"
-      . " WHERE validite=0 AND serviceCourant = {$cur_service['id']}"
-      . " AND $delay > 0";
-    $res = mysql_query($query) or die(mysql_error() . ": " . $query);
-    $row = mysql_fetch_array($res);
-    $nb = $row['count'];
-    print "Service {$cur_service['libelle']}:\t$nb courriers en retard\n";
-
+while ($cur_service = mysql_fetch_array($res_service)) {
+  if (empty($cur_service['email']))
+    continue;
+  
+  $delay = "((TO_DAYS(CURDATE()) - TO_DAYS(dateArrivee)) + nbJours)";
+  // Courriers en retard, tout type
+  $query = "SELECT COUNT(*) AS count"
+    . " FROM courrier JOIN priorite ON courrier.idPriorite = priorite.id"
+    . " WHERE validite=0 AND serviceCourant = {$cur_service['id']}"
+    . " AND $delay > 0";
+  //die($query);
+  $res = mysql_query($query) or die(mysql_error() . ": " . $query);
+  $row = mysql_fetch_array($res);
+  $nb = $row['count'];
+  
+  if ($nb == 0)
+    continue;
+  
+  $body = '';
+  $body = "<html><head><title></title></head><body>\n";
+  $body .= "<p><strong>Service {$cur_service['libelle']}: $nb courriers non archivés hors délai</strong></p>\n";
+  
+  foreach (array('entrant' => 1, 'sortant' => 2) as $type => $type_id) {
     // Courriers en retard, entrant
     $query = "SELECT courrier.id, courrier.libelle,"
       . " UNIX_TIMESTAMP(courrier.dateArrivee) as date_here,"
@@ -50,18 +64,34 @@ while ($cur_service = mysql_fetch_array($res_service))
       . " FROM courrier JOIN priorite ON courrier.idPriorite = priorite.id"
       . "   JOIN destinataire ON idDestinataire = destinataire.id"
       . " WHERE validite=0 AND serviceCourant = {$cur_service['id']}"
-      . " AND type=1"
+      . " AND type=$type_id"
       . " AND $delay > 0"
       . " ORDER BY $delay ASC LIMIT 50";
+    //die($query);
     $res = mysql_query($query) or die(mysql_error() . ": " . $query);
+    
+    $body .= "<p><strong>Courrier $type</strong></p>\n";
+    $body .= "<table>\n";
+    $body .= "<tr><th>N°</th><th>Date</th><th>Libellé</th><th>Destinataire</th><th>Retard</th></tr>\n";
     while ($row = mysql_fetch_array($res))
       {
-	$body .= "{$row['id']} - " . strftime("%x", $row['date_here'])
-	  . " - {$row['libelle']} - {$row['nom']} {$row['prenom']} - {$row['delay']} j.\n";
+	$body .= "<tr>";
+	$body .= "<td><a href='{$url_base}mail_list_my.php?type=1&idCourrierRecherche={$row['id']}#result'>"
+	  . "{$row['id']}</a></td>";
+	$body .= "<td>" . strftime("%x", $row['date_here']) . "</td>";
+	$body .= "<td>" . htmlspecialchars($row['libelle']) . "</td>";
+	$body .= "<td>" . htmlspecialchars($row['nom'] . ' ' . $row['prenom']) . "</td>";
+	$body .= "<td>" . htmlspecialchars($row['delay']) . " j.</td>";
+	$body .= "</tr>\n";
       }
-    if ($nb > 50)
-      $body .= "...\n";
-    print $body;
-    print "\n";
-    $body = '';
-  }
+    if (mysql_num_rows($res) > 50)
+      $body .= "<tr><td colspan=5>...</td></tr>\n";
+    $body .= "</table>\n";
+    $body .= "</body></html>";
+  } 
+  
+  $to      = $cur_service['email'];
+  $subject = 'Courriers en retard pour le service ' . $cur_service['designation'];
+  $headers = "Content-type: text/html;charset=UTF-8\r\n";
+  mail($to, $subject, $body, $headers);
+}
