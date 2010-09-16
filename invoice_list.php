@@ -73,10 +73,10 @@ if ($_SESSION['login'] == 'admin')
 			  destinataire.prenom AS prenomFournisseur,
 			  priorite.nbJours AS nbJours,
 			  unix_timestamp(datesaisie) AS internal_timestamp
- 		   FROM facture, destinataire, priorite
-		   WHERE facture.idFournisseur = destinataire.id
-		   AND validite = 0
-		   AND facture.idPriorite = priorite.id";
+ 		   FROM facture
+                   LEFT JOIN destinataire ON facture.idFournisseur = destinataire.id
+                   LEFT JOIN priorite ON facture.idPriorite = priorite.id
+		   WHERE validite = 0";
 }
 else
 {
@@ -93,11 +93,11 @@ else
 			  destinataire.prenom AS prenomFournisseur,
 			  priorite.nbJours AS nbJours,
 			  unix_timestamp(datesaisie) AS internal_timestamp
- 		    FROM facture,destinataire,priorite
+ 		    FROM facture
+                    LEFT JOIN destinataire ON facture.idFournisseur = destinataire.id
+                    LEFT JOIN priorite ON facture.idPriorite = priorite.id
 		    WHERE facture.validite = 0
-			  AND facture.idServiceCreation = ".$_SESSION['idService']."
-			  AND facture.idPriorite = priorite.id
-			  AND facture.idFournisseur = destinataire.id";
+			  AND facture.idServiceCreation = {$_SESSION['idService']}";
 }
 
 $sdg = new SQLDataGrid($requeteFacture,

@@ -33,7 +33,7 @@ if (isset($_POST["enregistrer"]) or isset($_POST["enregistrer_puis_copie"])) {
   $dateFactureOrigine=$_POST["dateFactureOrigine"];
   $observation=$_POST["observation"];
   $idServiceCreation = $_SESSION["idService"];
-  $idPriorite = $_POST["priorite"];
+  $idPriorite = $_POST["priority"];
   $idFournisseur = $_POST["fournisseur"];
   
   $tmp= substr($dateFacture, 6,4);
