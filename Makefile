@@ -9,7 +9,8 @@ help:        # Available targets
 	@-grep ^[a-z]\\+: Makefile
 
 dist:        # Tarball
-	tla export $(PACKAGE)
+	mkdir $(PACKAGE)/
+	git archive master | tar -x -C $(PACKAGE)/
 	make -C $(PACKAGE)/doc
 	cp $(PACKAGE)/config.php.dist $(PACKAGE)/config.php
 	tar czf $(PACKAGE).tar.gz $(PACKAGE)
